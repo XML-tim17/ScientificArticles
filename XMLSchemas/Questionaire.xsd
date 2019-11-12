@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns="https://github.com/XML-tim17/ScientificArticles"
+    targetNamespace="https://github.com/XML-tim17/ScientificArticles" elementFormDefault="qualified">
+    <xs:include schemaLocation="SimpleParagraph.xsd"/>
+    <xs:element name="Questionaire">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Authors">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element maxOccurs="unbounded" minOccurs="1" name="Author">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="Name" type="xs:string"/>
+                                        <xs:element name="Institution" type="xs:string"/>
+                                        <xs:element name="City" type="xs:string"/>
+                                        <xs:element name="Country" type="xs:string"/>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Reviewer">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Name" type="xs:string"/>
+                            <xs:element name="Institution" type="xs:string"/>
+                            <xs:element name="City" type="xs:string"/>
+                            <xs:element name="Country" type="xs:string"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Questions">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element maxOccurs="unbounded" minOccurs="0" name="YesNoQuestion">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="QuestionText" type="xs:string"/>
+                                        <xs:element name="Answer">
+                                            <xs:simpleType>
+                                                <xs:restriction base="xs:string">
+                                                  <xs:pattern value="([yY]es)|([nN]o)"/>
+                                                </xs:restriction>
+                                            </xs:simpleType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="Question">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="QuestionText" type="xs:string"/>
+                                        <xs:element name="Answer" type="TSimpleParagraph"/>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+    targetNamespace="https://github.com/XML-tim17/ScientificArticles"
+    xmlns="https://github.com/XML-tim17/ScientificArticles"
+    xmlns:art="https://github.com/XML-tim17/ScientificArticles/Article">
+    <xs:include schemaLocation="Article.xsd"/>
+    <xs:element name="Review">
+        <xs:complexType>
+            <xs:all>
+                <xs:element ref="Article">
+                    <xs:key name="id">
+                        <xs:selector xpath="."/>
+                        <xs:field xpath="@id"/>
+                    </xs:key>
+                </xs:element>
+                <xs:element name="Reviewer">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Name"/>
+                            <xs:element name="Institution"/>
+                            <xs:element name="City"/>
+                            <xs:element name="Country"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Comments">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element maxOccurs="unbounded" minOccurs="0" name="Comment">
+                                <xs:complexType>
+                                    <xs:simpleContent>
+                                        <xs:extension base="xs:string">
+                                            <xs:attribute name="refId"/>
+                                        </xs:extension>
+                                    </xs:simpleContent>
+                                </xs:complexType>
+                                <xs:keyref name="refId" refer="id">
+                                    <xs:selector xpath="Article"/>
+                                    <xs:field xpath="@refId"/>
+                                </xs:keyref>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Date" type="xs:date"/>
+            </xs:all>
+            <xs:attribute name="status">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:pattern value="&quot;accept&quot;|&quot;reject&quot;|&quot;revise&quot;"
+                        />
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
