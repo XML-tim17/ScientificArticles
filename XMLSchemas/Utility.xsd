@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+    xmlns:ns1="https://github.com/XML-tim17/ScientificArticles">
+    <xs:complexType name="TParagraph" mixed="true">
+        <xs:complexContent>
+            <xs:extension base="TDecorator">
+                <xs:sequence>
+                    <xs:element name="list">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element maxOccurs="unbounded" minOccurs="1" name="item"
+                                    type="TParagraph"/>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="quote" type="TDecorator"/>
+                    <xs:element name="ref">
+                        <xs:complexType>
+                            <xs:simpleContent>
+                                <xs:extension base="xs:string"> </xs:extension>
+                            </xs:simpleContent>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="table">
+                        <xs:complexType>
+                            <xs:sequence maxOccurs="unbounded" minOccurs="1">
+                                <xs:element name="tr">
+                                    <xs:complexType>
+                                        <xs:sequence>
+                                            <xs:element maxOccurs="unbounded" minOccurs="1"
+                                                name="td"/>
+                                        </xs:sequence>
+                                    </xs:complexType>
+                                </xs:element>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType mixed="true" name="TDecorator">
+        <xs:choice>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="bold" type="TDecorator"/>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="italic" type="TDecorator"/>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="underline" type="TDecorator"/>
+        </xs:choice>
+    </xs:complexType>
+    <xs:attribute name="id" type="xs:ID"/>
+</xs:schema>

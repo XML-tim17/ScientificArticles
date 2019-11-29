@@ -3,34 +3,33 @@
     targetNamespace="https://github.com/XML-tim17/ScientificArticles"
     xmlns="https://github.com/XML-tim17/ScientificArticles"
     xmlns:art="https://github.com/XML-tim17/ScientificArticles/Article">
-    <xs:include schemaLocation="Article.xsd"/>
-    <xs:element name="Review">
+    <xs:element name="review">
         <xs:complexType>
             <xs:all>
-                <xs:element ref="Article">
+                <xs:element name="article-id" type="xs:string">
                     <xs:key name="id">
                         <xs:selector xpath="."/>
                         <xs:field xpath="@id"/>
                     </xs:key>
                 </xs:element>
-                <xs:element name="Reviewer">
+                <xs:element name="reviewer">
                     <xs:complexType>
                         <xs:sequence>
-                            <xs:element name="Name"/>
-                            <xs:element name="Institution"/>
-                            <xs:element name="City"/>
-                            <xs:element name="Country"/>
+                            <xs:element name="name"/>
+                            <xs:element name="institution"/>
+                            <xs:element name="city"/>
+                            <xs:element name="country"/>
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
-                <xs:element name="Comments">
+                <xs:element name="comments">
                     <xs:complexType>
                         <xs:sequence>
-                            <xs:element maxOccurs="unbounded" minOccurs="0" name="Comment">
+                            <xs:element maxOccurs="unbounded" minOccurs="0" name="comment">
                                 <xs:complexType>
                                     <xs:simpleContent>
                                         <xs:extension base="xs:string">
-                                            <xs:attribute name="refId"/>
+                                            <xs:attribute name="reference-id"/>
                                         </xs:extension>
                                     </xs:simpleContent>
                                 </xs:complexType>
@@ -42,7 +41,7 @@
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
-                <xs:element name="Date" type="xs:date"/>
+                <xs:element name="date" type="xs:date"/>
             </xs:all>
             <xs:attribute name="status">
                 <xs:simpleType>

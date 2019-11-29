@@ -4,8 +4,8 @@
     vc:minVersion="1.0" vc:maxVersion="1.1"
     targetNamespace="https://github.com/XML-tim17/ScientificArticles"
     xmlns="https://github.com/XML-tim17/ScientificArticles">
-    <xs:include schemaLocation="SimpleParagraph.xsd"/>
-    <xs:element name="Article" type="TArticle">
+    <xs:include schemaLocation="Utility.xsd"/>
+    <xs:element name="article" type="TArticle">
         <xs:key name="id">
             <xs:selector xpath=".//*[@id]"/>
             <xs:field xpath="@id"/>
@@ -13,8 +13,8 @@
     </xs:element>
     <xs:complexType name="TArticle">
         <xs:sequence>
-            <xs:element name="Title" type="xs:string"/>
-            <xs:element name="Info">
+            <xs:element name="title" type="xs:string"/>
+            <xs:element name="info">
                 <xs:complexType>
                     <xs:sequence>
                         <xs:element name="Authors">
@@ -42,115 +42,91 @@
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
-            <xs:element ref="Abstract"/>
-            <xs:element ref="Content"/>
-            <xs:element ref="References"/>
+            <xs:element ref="abstract"/>
+            <xs:element ref="content"/>
+            <xs:element ref="references"/>
         </xs:sequence>
     </xs:complexType>
-    <xs:element name="Author">
+    <xs:element name="author">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="Name" type="xs:string"/>
-                <xs:element name="Institution">
+                <xs:element name="name" type="xs:string"/>
+                <xs:element name="institution">
                     <xs:complexType>
                         <xs:sequence>
-                            <xs:element name="Name" type="xs:string"/>
-                            <xs:element name="City" type="xs:string"/>
-                            <xs:element name="Country" type="xs:string"/>
+                            <xs:element name="name" type="xs:string"/>
+                            <xs:element name="city" type="xs:string"/>
+                            <xs:element name="country" type="xs:string"/>
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
-    <xs:element name="Abstract">
+    <xs:element name="abstract">
         <xs:complexType>
             <xs:sequence>
-                <xs:element maxOccurs="unbounded" name="Paragraph" type="TParagraph"/>
-                <xs:element name="Keywords" type="xs:string"/>
+                <xs:element maxOccurs="unbounded" name="paragraph" type="TParagraph"/>
+                <xs:element name="keywords" type="xs:string"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
-    <xs:element name="Content">
+    <xs:element name="content">
         <xs:complexType>
             <xs:sequence>
-                <xs:element maxOccurs="unbounded" minOccurs="0" ref="Section"/>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="section"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
-    <xs:element name="References">
+    <xs:element name="references">
         <xs:complexType>
             <xs:sequence>
-                <xs:element maxOccurs="unbounded" minOccurs="0" name="Reference">
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="reference">
                     <xs:complexType>
                         <xs:sequence>
-                            <xs:element name="Authors">
+                            <xs:element name="authors">
                                 <xs:complexType>
                                     <xs:sequence>
-                                        <xs:element maxOccurs="unbounded" minOccurs="0"
-                                            name="Author" type="xs:string"/>
+                                        <xs:element maxOccurs="unbounded" minOccurs="0" ref="author"
+                                        />
                                     </xs:sequence>
                                 </xs:complexType>
                             </xs:element>
-                            <xs:element name="PublicationDate" type="xs:date"/>
-                            <xs:element name="Title" type="xs:string"/>
-                            <xs:element name="Publisher">
+                            <xs:element name="publication-date" type="xs:date"/>
+                            <xs:element name="title" type="xs:string"/>
+                            <xs:element name="publisher">
                                 <xs:complexType>
                                     <xs:sequence>
                                         <xs:element name="Institution" type="xs:string"/>
-                                        <xs:element name="City" type="xs:string"/>
+                                        <xs:element name="city" type="xs:string"/>
                                     </xs:sequence>
                                 </xs:complexType>
                             </xs:element>
                         </xs:sequence>
-                        <xs:attribute name="id" use="required"/>
                     </xs:complexType>
                 </xs:element>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
-    <xs:complexType mixed="true" name="TParagraph">
-        <xs:complexContent>
-            <xs:extension base="TSimpleParagraph">
-                <xs:sequence>
-                    <xs:element name="Quote" type="TDecorator"/>
-                    <xs:element name="Ref">
-                        <xs:complexType>
-                            <xs:complexContent>
-                                <xs:extension base="TDecorator">
-                                    <xs:attribute name="refId" use="required"/>
-                                </xs:extension>
-                            </xs:complexContent>
-                        </xs:complexType>
-                        <xs:keyref name="refKey" refer="id">
-                            <xs:selector xpath="*"/>
-                            <xs:field xpath="@refId"/>
-                        </xs:keyref>
-                    </xs:element>
-                </xs:sequence>
-                <xs:attribute name="id" use="required"/>
-            </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
-    <xs:element name="Section">
+    <xs:element name="section">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="Title" type="xs:string"/>
+                <xs:element name="title" type="xs:string"/>
                 <xs:choice maxOccurs="unbounded">
-                    <xs:element name="Paragraph" type="TParagraph"/>
-                    <xs:element name="Figure">
+                    <xs:element name="paragraph" type="TParagraph"/>
+                    <xs:element name="figure">
                         <xs:complexType>
                             <xs:sequence>
                                 <xs:element name="Image" type="xs:base64Binary"/>
                             </xs:sequence>
-                            <xs:attribute name="id"/>
+                            <xs:attribute ref="id"/>
                             <xs:attribute name="title"/>
                         </xs:complexType>
                     </xs:element>
-                    <xs:element ref="Section"/>
+                    <xs:element ref="section"/>
                 </xs:choice>
             </xs:sequence>
-            <xs:attribute name="id" use="required"/>
+            <xs:attribute use="required" ref="id"/>
         </xs:complexType>
     </xs:element>
 </xs:schema>
