@@ -10,9 +10,9 @@ module.exports.saveXML = async (XMLstring) => {
         .catch(e => console.error('fail', e))
 }
 
-module.exports.readXML = async (documentName) => {
+module.exports.readXML = async (documentId) => {
     const db = exist.connect(options);
-    let result = await db.documents.read(`${articlesURI}/${documentName}.xml`, {})
+    let result = await db.documents.read(`${articlesURI}/${documentId}.xml`, {})
         .catch(e => console.error('fail', e))
     return result.toString();
 }
