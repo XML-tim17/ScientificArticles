@@ -8,6 +8,8 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var existRouter = require('./routes/exist');
 var articlesRouter = require('./routes/articlesRouter');
+var reviewsRouter = require('./routes/reviewsRouter');
+var coverLettersRouter = require('./routes/coverLettersRouter');
 
 var existRepository = require('./repository/existRepository');
 
@@ -27,6 +29,8 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/exist', existRouter);
 app.use('/articles', articlesRouter);
+app.use('/reviews', reviewsRouter);
+app.use('/coverLetters', coverLettersRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
