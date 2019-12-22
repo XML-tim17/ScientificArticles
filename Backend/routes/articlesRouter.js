@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var articlesRepository = require('../repository/articlesRepository');
 
-router.post('/save', (req, res) => {
+router.post('', (req, res) => {
     articlesRepository.saveXML(req.body.data);
     res.send('resource created');
 });

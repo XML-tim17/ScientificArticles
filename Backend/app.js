@@ -13,6 +13,8 @@ var coverLettersRouter = require('./routes/coverLettersRouter');
 
 var existRepository = require('./repository/existRepository');
 
+var questionnaireRouter = require('./routes/questionnaireRouter');
+
 var app = express();
 
 // view engine setup
@@ -31,6 +33,7 @@ app.use('/exist', existRouter);
 app.use('/articles', articlesRouter);
 app.use('/reviews', reviewsRouter);
 app.use('/coverLetters', coverLettersRouter);
+app.use('/questionnaires', questionnaireRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
