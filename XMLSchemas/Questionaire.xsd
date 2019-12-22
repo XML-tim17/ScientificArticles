@@ -9,29 +9,12 @@
                 <xs:element name="authors">
                     <xs:complexType>
                         <xs:sequence>
-                            <xs:element maxOccurs="unbounded" minOccurs="1" name="author">
-                                <xs:complexType>
-                                    <xs:sequence>
-                                        <xs:element name="Name" type="xs:string"/>
-                                        <xs:element name="Institution" type="xs:string"/>
-                                        <xs:element name="City" type="xs:string"/>
-                                        <xs:element name="Country" type="xs:string"/>
-                                    </xs:sequence>
-                                </xs:complexType>
-                            </xs:element>
+                            <xs:element maxOccurs="unbounded" minOccurs="0" name="author"
+                                type="TPerson"/>
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
-                <xs:element name="reviewer">
-                    <xs:complexType>
-                        <xs:sequence>
-                            <xs:element name="name" type="xs:string"/>
-                            <xs:element name="institution" type="xs:string"/>
-                            <xs:element name="city" type="xs:string"/>
-                            <xs:element name="country" type="xs:string"/>
-                        </xs:sequence>
-                    </xs:complexType>
-                </xs:element>
+                <xs:element name="reviewer" type="TPerson"> </xs:element>
                 <xs:element name="questions">
                     <xs:complexType>
                         <xs:sequence>

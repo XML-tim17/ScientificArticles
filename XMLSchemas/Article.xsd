@@ -5,30 +5,18 @@
     targetNamespace="https://github.com/XML-tim17/ScientificArticles"
     xmlns="https://github.com/XML-tim17/ScientificArticles">
     <xs:include schemaLocation="Utility.xsd"/>
-    <xs:element name="article" type="TArticle">
-        <xs:key name="id">
-            <xs:selector xpath=".//*[@id]"/>
-            <xs:field xpath="@id"/>
-        </xs:key>
-    </xs:element>
     <xs:complexType name="TArticle">
         <xs:sequence>
             <xs:element name="title" type="xs:string"/>
             <xs:element name="info">
                 <xs:complexType>
                     <xs:sequence>
-                        <xs:element name="Authors">
-                            <xs:complexType>
-                                <xs:sequence>
-                                    <xs:element ref="Author"/>
-                                </xs:sequence>
-                            </xs:complexType>
-                        </xs:element>
-                        <xs:element name="Received" type="xs:date"/>
-                        <xs:element name="Revised" type="xs:date"/>
-                        <xs:element name="Accepted" type="xs:date"/>
-                        <xs:element name="Category" type="xs:string"/>
-                        <xs:element name="Status">
+                        <xs:element ref="authors"/>
+                        <xs:element name="received" type="xs:date"/>
+                        <xs:element name="revised" type="xs:date"/>
+                        <xs:element name="accepted" type="xs:date"/>
+                        <xs:element name="category" type="xs:string"/>
+                        <xs:element name="status">
                             <xs:simpleType>
                                 <xs:restriction base="xs:string">
                                     <xs:enumeration value="accepted"/>
@@ -38,7 +26,7 @@
                                 </xs:restriction>
                             </xs:simpleType>
                         </xs:element>
-                        <xs:element default="1.0" name="Version" type="xs:string"/>
+                        <xs:element default="1.0" name="version" type="xs:string"/>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
@@ -47,27 +35,28 @@
             <xs:element ref="references"/>
         </xs:sequence>
     </xs:complexType>
+    <xs:element name="article" type="TArticle"> </xs:element>
     <xs:element name="author">
         <xs:complexType>
-            <xs:sequence>
-                <xs:element name="name" type="xs:string"/>
-                <xs:element name="institution">
-                    <xs:complexType>
-                        <xs:sequence>
-                            <xs:element name="name" type="xs:string"/>
-                            <xs:element name="city" type="xs:string"/>
-                            <xs:element name="country" type="xs:string"/>
-                        </xs:sequence>
-                    </xs:complexType>
-                </xs:element>
-            </xs:sequence>
+            <xs:complexContent>
+                <xs:extension base="TPerson">
+                    <xs:attribute name="property" fixed="author" use="required"/>
+                    <xs:attribute name="href"/>
+                </xs:extension>
+            </xs:complexContent>
         </xs:complexType>
     </xs:element>
     <xs:element name="abstract">
         <xs:complexType>
             <xs:sequence>
                 <xs:element maxOccurs="unbounded" name="paragraph" type="TParagraph"/>
-                <xs:element name="keywords" type="xs:string"/>
+                <xs:element name="keywords">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="keyword" type="xs:string"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -84,20 +73,13 @@
                 <xs:element maxOccurs="unbounded" minOccurs="0" name="reference">
                     <xs:complexType>
                         <xs:sequence>
-                            <xs:element name="authors">
-                                <xs:complexType>
-                                    <xs:sequence>
-                                        <xs:element maxOccurs="unbounded" minOccurs="0" ref="author"
-                                        />
-                                    </xs:sequence>
-                                </xs:complexType>
-                            </xs:element>
+                            <xs:element ref="authors"/>
                             <xs:element name="publication-date" type="xs:date"/>
                             <xs:element name="title" type="xs:string"/>
                             <xs:element name="publisher">
                                 <xs:complexType>
                                     <xs:sequence>
-                                        <xs:element name="Institution" type="xs:string"/>
+                                        <xs:element name="institution" type="xs:string"/>
                                         <xs:element name="city" type="xs:string"/>
                                     </xs:sequence>
                                 </xs:complexType>
@@ -117,7 +99,7 @@
                     <xs:element name="figure">
                         <xs:complexType>
                             <xs:sequence>
-                                <xs:element name="Image" type="xs:base64Binary"/>
+                                <xs:element name="image" type="xs:base64Binary"/>
                             </xs:sequence>
                             <xs:attribute ref="id"/>
                             <xs:attribute name="title"/>
@@ -127,6 +109,13 @@
                 </xs:choice>
             </xs:sequence>
             <xs:attribute use="required" ref="id"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="authors">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="author"/>
+            </xs:sequence>
         </xs:complexType>
     </xs:element>
 </xs:schema>

@@ -3,25 +3,12 @@
     targetNamespace="https://github.com/XML-tim17/ScientificArticles"
     xmlns="https://github.com/XML-tim17/ScientificArticles"
     xmlns:art="https://github.com/XML-tim17/ScientificArticles/Article">
+    <xs:include schemaLocation="Utility.xsd"/>
     <xs:element name="review">
         <xs:complexType>
             <xs:all>
-                <xs:element name="article-id" type="xs:string">
-                    <xs:key name="id">
-                        <xs:selector xpath="."/>
-                        <xs:field xpath="@id"/>
-                    </xs:key>
-                </xs:element>
-                <xs:element name="reviewer">
-                    <xs:complexType>
-                        <xs:sequence>
-                            <xs:element name="name"/>
-                            <xs:element name="institution"/>
-                            <xs:element name="city"/>
-                            <xs:element name="country"/>
-                        </xs:sequence>
-                    </xs:complexType>
-                </xs:element>
+                <xs:element name="article-id" type="xs:anyURI"> </xs:element>
+                <xs:element name="reviewer" type="TPerson"> </xs:element>
                 <xs:element name="comments">
                     <xs:complexType>
                         <xs:sequence>
@@ -29,14 +16,10 @@
                                 <xs:complexType>
                                     <xs:simpleContent>
                                         <xs:extension base="xs:string">
-                                            <xs:attribute name="reference-id"/>
+                                            <xs:attribute name="reference-id" type="xs:anyURI"/>
                                         </xs:extension>
                                     </xs:simpleContent>
                                 </xs:complexType>
-                                <xs:keyref name="refId" refer="id">
-                                    <xs:selector xpath="Article"/>
-                                    <xs:field xpath="@refId"/>
-                                </xs:keyref>
                             </xs:element>
                         </xs:sequence>
                     </xs:complexType>
@@ -46,7 +29,7 @@
             <xs:attribute name="status">
                 <xs:simpleType>
                     <xs:restriction base="xs:string">
-                        <xs:pattern value="&quot;accept&quot;|&quot;reject&quot;|&quot;revise&quot;"
+                        <xs:pattern value="accept|reject|revise"
                         />
                     </xs:restriction>
                 </xs:simpleType>
