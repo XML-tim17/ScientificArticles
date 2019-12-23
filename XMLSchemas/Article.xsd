@@ -7,26 +7,69 @@
     <xs:include schemaLocation="Utility.xsd"/>
     <xs:complexType name="TArticle">
         <xs:sequence>
-            <xs:element name="title" type="xs:string"/>
+            <xs:element name="title">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:string">
+                            <xs:attribute fixed="headline" name="property"/>
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
             <xs:element name="info">
                 <xs:complexType>
                     <xs:sequence>
                         <xs:element ref="authors"/>
-                        <xs:element name="received" type="xs:date"/>
-                        <xs:element name="revised" type="xs:date"/>
-                        <xs:element name="accepted" type="xs:date"/>
-                        <xs:element name="category" type="xs:string"/>
-                        <xs:element name="status">
-                            <xs:simpleType>
-                                <xs:restriction base="xs:string">
-                                    <xs:enumeration value="accepted"/>
-                                    <xs:enumeration value="rejected"/>
-                                    <xs:enumeration value="revision"/>
-                                    <xs:enumeration value="cancelled"/>
-                                </xs:restriction>
-                            </xs:simpleType>
+                        <xs:element name="received">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:date">
+                                        <xs:attribute fixed="dateCreated" name="property"
+                                            type="xs:string"/>
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
                         </xs:element>
-                        <xs:element default="1.0" name="version" type="xs:string"/>
+                        <xs:element name="revised">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:date">
+                                        <xs:attribute fixed="dateModified" name="property"
+                                            type="xs:string"/>
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="accepted">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:date">
+                                        <xs:attribute fixed="datePublished " name="property"
+                                            type="xs:string"/>
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="status">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="TStatus">
+                                        <xs:attribute fixed="creativeWorkStatus" name="property"
+                                            type="xs:string"/>
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element default="1.0" name="version">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:string">
+                                        <xs:attribute fixed="version" name="property"
+                                            type="xs:string"/>
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
@@ -34,14 +77,15 @@
             <xs:element ref="content"/>
             <xs:element ref="references"/>
         </xs:sequence>
+        <xs:attribute fixed="http://schema.org/" name="vocab" type="xs:string"/>
     </xs:complexType>
     <xs:element name="article" type="TArticle"> </xs:element>
     <xs:element name="author">
         <xs:complexType>
             <xs:complexContent>
-                <xs:extension base="TPerson">
-                    <xs:attribute name="property" fixed="author" use="required"/>
-                    <xs:attribute name="href"/>
+                <xs:extension base="TAuthor">
+                    <xs:attribute fixed="author" name="property" type="xs:string"/>
+                    <xs:attribute name="href" type="xs:anyURI"/>
                 </xs:extension>
             </xs:complexContent>
         </xs:complexType>
@@ -53,7 +97,16 @@
                 <xs:element name="keywords">
                     <xs:complexType>
                         <xs:sequence>
-                            <xs:element name="keyword" type="xs:string"/>
+                            <xs:element name="keyword" maxOccurs="unbounded" minOccurs="1">
+                                <xs:complexType>
+                                    <xs:simpleContent>
+                                        <xs:extension base="xs:string">
+                                            <xs:attribute fixed="keywords" name="property"
+                                                type="xs:string"/>
+                                        </xs:extension>
+                                    </xs:simpleContent>
+                                </xs:complexType>
+                            </xs:element>
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
@@ -73,7 +126,7 @@
                 <xs:element maxOccurs="unbounded" minOccurs="0" name="reference">
                     <xs:complexType>
                         <xs:sequence>
-                            <xs:element ref="authors"/>
+                            <xs:element ref="referencedAuthors"/>
                             <xs:element name="publication-date" type="xs:date"/>
                             <xs:element name="title" type="xs:string"/>
                             <xs:element name="publisher">
@@ -105,16 +158,61 @@
                             <xs:attribute name="title"/>
                         </xs:complexType>
                     </xs:element>
+                    <xs:element name="table">
+                        <xs:complexType>
+                            <xs:sequence maxOccurs="unbounded" minOccurs="1">
+                                <xs:element name="tr">
+                                    <xs:complexType>
+                                        <xs:sequence>
+                                            <xs:element maxOccurs="unbounded" minOccurs="1"
+                                                name="td"/>
+                                        </xs:sequence>
+                                    </xs:complexType>
+                                </xs:element>
+                            </xs:sequence>
+                            <xs:attribute ref="id"/>
+                        </xs:complexType>
+                    </xs:element>
                     <xs:element ref="section"/>
                 </xs:choice>
             </xs:sequence>
             <xs:attribute use="required" ref="id"/>
+            <xs:attribute name="level">
+                <xs:simpleType>
+                    <xs:restriction base="xs:int">
+                        <xs:minInclusive value="0"/>
+                        <xs:maxInclusive value="10"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
         </xs:complexType>
     </xs:element>
     <xs:element name="authors">
         <xs:complexType>
             <xs:sequence>
                 <xs:element maxOccurs="unbounded" minOccurs="0" ref="author"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:simpleType name="TStatus">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="accepted"/>
+            <xs:enumeration value="rejected"/>
+            <xs:enumeration value="revision"/>
+            <xs:enumeration value="cancelled"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:element name="referencedAuthor">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="TPerson"> </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="referencedAuthors">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="referencedAuthor"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>

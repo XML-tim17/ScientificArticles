@@ -26,11 +26,12 @@
                 </xs:element>
                 <xs:element name="date" type="xs:date"/>
             </xs:all>
-            <xs:attribute name="status">
+            <xs:attribute name="judgment">
                 <xs:simpleType>
                     <xs:restriction base="xs:string">
-                        <xs:pattern value="accept|reject|revise"
-                        />
+                        <xs:enumeration value="accept"/>
+                        <xs:enumeration value="reject"/>
+                        <xs:enumeration value="revise"/>
                     </xs:restriction>
                 </xs:simpleType>
             </xs:attribute>

@@ -28,25 +28,16 @@
                     </xs:simpleContent>
                 </xs:complexType>
             </xs:element>
-            <xs:element name="table">
-                <xs:complexType>
-                    <xs:sequence maxOccurs="unbounded" minOccurs="1">
-                        <xs:element name="tr">
-                            <xs:complexType>
-                                <xs:sequence>
-                                    <xs:element maxOccurs="unbounded" minOccurs="1" name="td"/>
-                                </xs:sequence>
-                            </xs:complexType>
-                        </xs:element>
-                    </xs:sequence>
-                    <xs:attribute ref="id"/>
-                </xs:complexType>
-            </xs:element>
             <xs:choice maxOccurs="unbounded" minOccurs="0">
                 <xs:element maxOccurs="unbounded" minOccurs="0" name="bold" type="TDecorator"/>
                 <xs:element maxOccurs="unbounded" minOccurs="0" name="italic" type="TDecorator"/>
                 <xs:element maxOccurs="unbounded" minOccurs="0" name="underline" type="TDecorator"/>
             </xs:choice>
+            <xs:element name="formule">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string"> </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
         </xs:choice>
     </xs:complexType>
     <xs:complexType mixed="true" name="TDecorator">
@@ -56,27 +47,149 @@
             <xs:element maxOccurs="unbounded" minOccurs="0" name="underline" type="TDecorator"/>
         </xs:choice>
     </xs:complexType>
-    <xs:complexType name="TPerson">
+    <xs:complexType name="TAuthor">
         <xs:sequence>
-            <xs:element name="name" type="xs:string"/>
-            <xs:element name="institution" type="xs:string"/>
-            <xs:element name="city" type="xs:string"/>
-            <xs:element name="country" type="xs:string"/>
+            <xs:element name="name">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:string">
+                            <xs:attribute fixed="name" name="property" type="xs:string"
+                                use="required"/>
+                            <xs:attribute name="about" type="xs:anyURI" use="required"/>
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="institution">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:string">
+                            <xs:attribute fixed="memberOf" name="property" type="xs:string"
+                                use="required"/>
+                            <xs:attribute name="about" type="xs:anyURI" use="required"/>
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
             <xs:element minOccurs="0" name="phone-number">
-                <xs:simpleType>
-                    <xs:restriction base="xs:string">
-                        <xs:pattern value="([(+]*[0-9]+[()+. -]*)"/>
-                    </xs:restriction>
-                </xs:simpleType>
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="TPhoneNumber">
+                            <xs:attribute fixed="telephone" name="property" type="xs:string"
+                                use="required"/>
+                            <xs:attribute name="about" type="xs:anyURI" use="required"/>
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
             </xs:element>
             <xs:element name="email">
-                <xs:simpleType>
-                    <xs:restriction base="xs:string">
-                        <xs:pattern value="[^@]+@[^\.]+\..+"/>
-                    </xs:restriction>
-                </xs:simpleType>
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="TEmail">
+                            <xs:attribute fixed="email" name="property" type="xs:string"
+                                use="required"/>
+                            <xs:attribute name="about" type="xs:anyURI" use="required"/>
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="address">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="city">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:string">
+                                        <xs:attribute fixed="addressLocality" name="property"
+                                            type="xs:string" use="required"/>
+                                        <xs:attribute name="about" type="xs:anyURI" use="required"/>
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="country">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:string">
+                                        <xs:attribute fixed="addressCountry" name="property"
+                                            type="xs:string" use="required"/>
+                                        <xs:attribute name="about" type="xs:anyURI" use="required"/>
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                    <xs:attribute name="property" fixed="address" use="required"/>
+                    <xs:attribute name="href" use="required" type="xs:anyURI"/>
+                    <xs:attribute name="about" type="xs:anyURI" use="required"/>
+                </xs:complexType>
             </xs:element>
         </xs:sequence>
     </xs:complexType>
     <xs:attribute name="id" type="xs:anyURI" default=""/>
+    <xs:group name="newGroup">
+        <xs:sequence/>
+    </xs:group>
+    <xs:simpleType name="TPhoneNumber">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="([(+]*[0-9]+[()+. -]*)"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="TEmail">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[^@]+@[^\.]+\..+"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="TPerson">
+        <xs:sequence>
+            <xs:element name="name">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:string"> </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="institution">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:string"> </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element minOccurs="0" name="phone-number">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="TPhoneNumber"> </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="email">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="TEmail"> </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="address">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="city">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:string"> </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="country">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:string"> </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
 </xs:schema>
