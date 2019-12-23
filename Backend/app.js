@@ -24,7 +24,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/exist', existRouter);
 app.use('/articles', articlesRouter);
 app.use('/reviews', reviewsRouter);
 app.use('/coverLetters', coverLettersRouter);

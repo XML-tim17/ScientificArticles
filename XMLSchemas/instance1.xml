@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ns1:article xmlns:ns1="https://github.com/XML-tim17/ScientificArticles"
+<ns1:article 
+ xmlns="https://github.com/XML-tim17/ScientificArticles"
+ xmlns:ns1="https://github.com/XML-tim17/ScientificArticles"
  xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="https://github.com/XML-tim17/ScientificArticles file:/E:/Mi/Alex/Faks/Moji%20predmeti/Sedmi%20semestar/XML%20i%20veb%20servisi/ScientificArticles/XMLSchemas/Article.xsd" vocab="http://schema.org/">

@@ -6,9 +6,8 @@ var router = express.Router();
 var questionnaireService = require('../service/questionnaireService');
 
 router.post('', async (req, res) => {
-    var dom = new DOMParser().parseFromString(req.body.data, 'text/xml');
-    try{
-        await questionnaireService.saveXML(dom);
+    try {
+        await questionnaireService.saveXML(req.body.data);
         res.send('created')
     } catch (e) {
         res.send(e.message);
@@ -16,7 +15,7 @@ router.post('', async (req, res) => {
 });
 
 router.get('/:questionnaireId', async (req, res) => {
-    try{
+    try {
         var dom = await questionnaireService.readXML(req.params.questionnaireId);
         var document = new XMLSerializer().serializeToString(dom)
         res.send(document);
