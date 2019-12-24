@@ -7,8 +7,8 @@ var articlesService = require('../service/articleService');
 
 router.post('', async (req, res) => {
     try {
-        await articlesService.saveXML(req.body.data);
-        res.send('created')
+        let result = await articlesService.saveXML(req.body.data);
+        res.send(result)
     } catch (e) {
         res.send(e.message);
     }
