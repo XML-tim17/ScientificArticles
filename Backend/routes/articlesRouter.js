@@ -24,4 +24,16 @@ router.get('/:documentId', async (req, res) => {
     }
 });
 
+router.get('', async (req, res) => {
+    try {
+        var dom = await articlesService.getAll();
+        var document = new XMLSerializer().serializeToString(dom)
+        res.send(document);
+    } catch (e) {
+        res.send(e.message);
+    }
+});
+
+
+
 module.exports = router;
