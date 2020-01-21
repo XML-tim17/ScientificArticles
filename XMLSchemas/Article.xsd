@@ -187,7 +187,17 @@
     <xs:element name="authors">
         <xs:complexType>
             <xs:sequence>
-                <xs:element maxOccurs="unbounded" minOccurs="1" ref="author"/>
+                <xs:element name="corresponding-author">
+                    <xs:complexType>
+                        <xs:complexContent>
+                            <xs:extension base="TAuthor">
+                                <xs:anyAttribute processContents="lax"
+                                    namespace="https://www.w3.org/ns/rdfa#"/>
+                            </xs:extension>
+                        </xs:complexContent>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="author"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>

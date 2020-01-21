@@ -6,7 +6,7 @@
     <ns1:title>title0</ns1:title>
     <ns1:info>
         <ns1:authors>
-            <ns1:author>
+            <ns1:corresponding-author>
                 <ns1:name>name0</ns1:name>
                 <ns1:institution>institution0</ns1:institution>
                 <ns1:phone-number>0</ns1:phone-number>
@@ -15,7 +15,7 @@
                     <ns1:city>city0</ns1:city>
                     <ns1:country>country0</ns1:country>
                 </ns1:address>
-            </ns1:author>
+            </ns1:corresponding-author>
             <ns1:author>
                 <ns1:name>name1</ns1:name>
                 <ns1:institution>institution1</ns1:institution>
@@ -24,6 +24,16 @@
                 <ns1:address>
                     <ns1:city>city1</ns1:city>
                     <ns1:country>country1</ns1:country>
+                </ns1:address>
+            </ns1:author>
+            <ns1:author>
+                <ns1:name>name2</ns1:name>
+                <ns1:institution>institution2</ns1:institution>
+                <ns1:phone-number>0</ns1:phone-number>
+                <ns1:email> @ .a</ns1:email>
+                <ns1:address>
+                    <ns1:city>city2</ns1:city>
+                    <ns1:country>country2</ns1:country>
                 </ns1:address>
             </ns1:author>
         </ns1:authors>
@@ -35,158 +45,12 @@
     </ns1:info>
     <ns1:abstract>
         <ns1:paragraph>
-            <ns1:underline>
-                <ns1:italic>
-                    <ns1:underline>
-                    </ns1:underline>
-                    <ns1:underline>
-                    </ns1:underline>
-                    <ns1:underline>
-                    </ns1:underline>
-                    <ns1:underline>
-                    </ns1:underline>
-                </ns1:italic>
+            <ns1:quote ns1:id="">
                 <ns1:italic>
                     <ns1:bold>
                     </ns1:bold>
                     <ns1:bold>
                     </ns1:bold>
-                    <ns1:underline>
-                    </ns1:underline>
-                    <ns1:underline>
-                    </ns1:underline>
-                </ns1:italic>
-                <ns1:underline>
-                    <ns1:bold>
-                    </ns1:bold>
-                    <ns1:bold>
-                    </ns1:bold>
-                    <ns1:bold>
-                    </ns1:bold>
-                    <ns1:bold>
-                    </ns1:bold>
-                </ns1:underline>
-                <ns1:underline>
-                    <ns1:italic>
-                    </ns1:italic>
-                    <ns1:italic>
-                    </ns1:italic>
-                    <ns1:italic>
-                    </ns1:italic>
-                    <ns1:italic>
-                    </ns1:italic>
-                </ns1:underline>
-            </ns1:underline>
-            <ns1:underline>
-                <ns1:underline>
-                    <ns1:bold>
-                    </ns1:bold>
-                    <ns1:bold>
-                    </ns1:bold>
-                    <ns1:bold>
-                    </ns1:bold>
-                    <ns1:bold>
-                    </ns1:bold>
-                </ns1:underline>
-                <ns1:underline>
-                    <ns1:italic>
-                    </ns1:italic>
-                    <ns1:italic>
-                    </ns1:italic>
-                    <ns1:bold>
-                    </ns1:bold>
-                    <ns1:bold>
-                    </ns1:bold>
-                </ns1:underline>
-                <ns1:bold>
-                    <ns1:underline>
-                    </ns1:underline>
-                    <ns1:underline>
-                    </ns1:underline>
-                    <ns1:italic>
-                    </ns1:italic>
-                    <ns1:italic>
-                    </ns1:italic>
-                </ns1:bold>
-                <ns1:bold>
-                    <ns1:underline>
-                    </ns1:underline>
-                    <ns1:underline>
-                    </ns1:underline>
-                    <ns1:italic>
-                    </ns1:italic>
-                    <ns1:italic>
-                    </ns1:italic>
-                </ns1:bold>
-            </ns1:underline>
-            <ns1:underline>
-                <ns1:underline>
-                    <ns1:italic>
-                    </ns1:italic>
-                    <ns1:italic>
-                    </ns1:italic>
-                    <ns1:italic>
-                    </ns1:italic>
-                    <ns1:italic>
-                    </ns1:italic>
-                </ns1:underline>
-                <ns1:underline>
-                    <ns1:bold>
-                    </ns1:bold>
-                    <ns1:bold>
-                    </ns1:bold>
-                    <ns1:bold>
-                    </ns1:bold>
-                    <ns1:bold>
-                    </ns1:bold>
-                </ns1:underline>
-                <ns1:italic>
-                    <ns1:underline>
-                    </ns1:underline>
-                    <ns1:underline>
-                    </ns1:underline>
-                    <ns1:bold>
-                    </ns1:bold>
-                    <ns1:bold>
-                    </ns1:bold>
-                </ns1:italic>
-                <ns1:italic>
-                    <ns1:underline>
-                    </ns1:underline>
-                    <ns1:underline>
-                    </ns1:underline>
-                    <ns1:underline>
-                    </ns1:underline>
-                    <ns1:underline>
-                    </ns1:underline>
-                </ns1:italic>
-            </ns1:underline>
-            <ns1:underline>
-                <ns1:underline>
-                    <ns1:italic>
-                    </ns1:italic>
-                    <ns1:italic>
-                    </ns1:italic>
-                    <ns1:bold>
-                    </ns1:bold>
-                    <ns1:bold>
-                    </ns1:bold>
-                </ns1:underline>
-                <ns1:underline>
-                    <ns1:italic>
-                    </ns1:italic>
-                    <ns1:italic>
-                    </ns1:italic>
-                    <ns1:bold>
-                    </ns1:bold>
-                    <ns1:bold>
-                    </ns1:bold>
-                </ns1:underline>
-                <ns1:italic>
-                    <ns1:underline>
-                    </ns1:underline>
-                    <ns1:underline>
-                    </ns1:underline>
                     <ns1:underline>
                     </ns1:underline>
                     <ns1:underline>
@@ -202,9 +66,7 @@
                     <ns1:bold>
                     </ns1:bold>
                 </ns1:italic>
-            </ns1:underline>
-            <ns1:list ns1:id="">
-                <ns1:item>
+                <ns1:underline>
                     <ns1:italic>
                     </ns1:italic>
                     <ns1:italic>
@@ -213,40 +75,64 @@
                     </ns1:italic>
                     <ns1:italic>
                     </ns1:italic>
-                    <ns1:formule>formule0</ns1:formule>
-                </ns1:item>
-                <ns1:item>
-                    <ns1:formule>formule1</ns1:formule>
-                    <ns1:formule>formule2</ns1:formule>
-                </ns1:item>
-            </ns1:list>
+                </ns1:underline>
+                <ns1:underline>
+                    <ns1:bold>
+                    </ns1:bold>
+                    <ns1:bold>
+                    </ns1:bold>
+                    <ns1:bold>
+                    </ns1:bold>
+                    <ns1:bold>
+                    </ns1:bold>
+                </ns1:underline>
+            </ns1:quote>
+            <ns1:formule>formule0</ns1:formule>
         </ns1:paragraph>
         <ns1:paragraph>
             <ns1:ref>http://www.oxygenxml.com/</ns1:ref>
-            <ns1:list ns1:id="">
-                <ns1:item>
-                    <ns1:ref>http://www.oxygenxml.com/</ns1:ref>
+            <ns1:quote ns1:id="">
+                <ns1:italic>
+                    <ns1:bold>
+                    </ns1:bold>
+                    <ns1:bold>
+                    </ns1:bold>
+                    <ns1:bold>
+                    </ns1:bold>
+                    <ns1:bold>
+                    </ns1:bold>
+                </ns1:italic>
+                <ns1:italic>
                     <ns1:underline>
                     </ns1:underline>
                     <ns1:underline>
                     </ns1:underline>
-                    <ns1:bold>
-                    </ns1:bold>
-                    <ns1:bold>
-                    </ns1:bold>
-                </ns1:item>
-                <ns1:item>
-                    <ns1:ref>http://www.oxygenxml.com/</ns1:ref>
-                    <ns1:bold>
-                    </ns1:bold>
-                    <ns1:bold>
-                    </ns1:bold>
+                    <ns1:underline>
+                    </ns1:underline>
+                    <ns1:underline>
+                    </ns1:underline>
+                </ns1:italic>
+                <ns1:underline>
                     <ns1:italic>
                     </ns1:italic>
                     <ns1:italic>
                     </ns1:italic>
-                </ns1:item>
-            </ns1:list>
+                    <ns1:bold>
+                    </ns1:bold>
+                    <ns1:bold>
+                    </ns1:bold>
+                </ns1:underline>
+                <ns1:underline>
+                    <ns1:bold>
+                    </ns1:bold>
+                    <ns1:bold>
+                    </ns1:bold>
+                    <ns1:bold>
+                    </ns1:bold>
+                    <ns1:bold>
+                    </ns1:bold>
+                </ns1:underline>
+            </ns1:quote>
         </ns1:paragraph>
         <ns1:keywords>
             <ns1:keyword>keyword0</ns1:keyword>
@@ -256,20 +142,9 @@
     <ns1:content>
         <ns1:section ns1:id="" level="5">
             <ns1:title>title1</ns1:title>
-            <ns1:table ns1:id="">
-                <ns1:tr>
-                    <ns1:td>
-                    </ns1:td>
-                    <ns1:td>
-                    </ns1:td>
-                </ns1:tr>
-                <ns1:tr>
-                    <ns1:td>
-                    </ns1:td>
-                    <ns1:td>
-                    </ns1:td>
-                </ns1:tr>
-            </ns1:table>
+            <ns1:figure ns1:id="" title="title0">
+                <ns1:image>ZGVmYXVsdA==</ns1:image>
+            </ns1:figure>
             <ns1:table ns1:id="">
                 <ns1:tr>
                     <ns1:td>
@@ -287,11 +162,60 @@
         </ns1:section>
         <ns1:section ns1:id="" level="5">
             <ns1:title>title2</ns1:title>
-            <ns1:figure ns1:id="" title="title0">
-                <ns1:image>ZGVmYXVsdA==</ns1:image>
-            </ns1:figure>
             <ns1:paragraph>
-                <ns1:ref>http://www.oxygenxml.com/</ns1:ref>
+                <ns1:quote ns1:id="">
+                    <ns1:bold>
+                    </ns1:bold>
+                    <ns1:bold>
+                    </ns1:bold>
+                    <ns1:bold>
+                    </ns1:bold>
+                    <ns1:bold>
+                    </ns1:bold>
+                </ns1:quote>
+                <ns1:formule>formule1</ns1:formule>
+            </ns1:paragraph>
+            <ns1:paragraph>
+                <ns1:italic>
+                    <ns1:bold>
+                    </ns1:bold>
+                    <ns1:bold>
+                    </ns1:bold>
+                    <ns1:underline>
+                    </ns1:underline>
+                    <ns1:underline>
+                    </ns1:underline>
+                </ns1:italic>
+                <ns1:italic>
+                    <ns1:underline>
+                    </ns1:underline>
+                    <ns1:underline>
+                    </ns1:underline>
+                    <ns1:bold>
+                    </ns1:bold>
+                    <ns1:bold>
+                    </ns1:bold>
+                </ns1:italic>
+                <ns1:italic>
+                    <ns1:underline>
+                    </ns1:underline>
+                    <ns1:underline>
+                    </ns1:underline>
+                    <ns1:underline>
+                    </ns1:underline>
+                    <ns1:underline>
+                    </ns1:underline>
+                </ns1:italic>
+                <ns1:italic>
+                    <ns1:underline>
+                    </ns1:underline>
+                    <ns1:underline>
+                    </ns1:underline>
+                    <ns1:underline>
+                    </ns1:underline>
+                    <ns1:underline>
+                    </ns1:underline>
+                </ns1:italic>
                 <ns1:ref>http://www.oxygenxml.com/</ns1:ref>
             </ns1:paragraph>
         </ns1:section>
@@ -299,16 +223,6 @@
     <ns1:references>
         <ns1:reference>
             <ns1:referencedAuthors>
-                <ns1:referencedAuthor>
-                    <ns1:name>name2</ns1:name>
-                    <ns1:institution>institution2</ns1:institution>
-                    <ns1:phone-number>0</ns1:phone-number>
-                    <ns1:email> @ .a</ns1:email>
-                    <ns1:address>
-                        <ns1:city>city2</ns1:city>
-                        <ns1:country>country2</ns1:country>
-                    </ns1:address>
-                </ns1:referencedAuthor>
                 <ns1:referencedAuthor>
                     <ns1:name>name3</ns1:name>
                     <ns1:institution>institution3</ns1:institution>
@@ -319,26 +233,26 @@
                         <ns1:country>country3</ns1:country>
                     </ns1:address>
                 </ns1:referencedAuthor>
+                <ns1:referencedAuthor>
+                    <ns1:name>name4</ns1:name>
+                    <ns1:institution>institution4</ns1:institution>
+                    <ns1:phone-number>0</ns1:phone-number>
+                    <ns1:email> @ .a</ns1:email>
+                    <ns1:address>
+                        <ns1:city>city4</ns1:city>
+                        <ns1:country>country4</ns1:country>
+                    </ns1:address>
+                </ns1:referencedAuthor>
             </ns1:referencedAuthors>
             <ns1:publication-date>2006-05-04</ns1:publication-date>
             <ns1:title>title3</ns1:title>
             <ns1:publisher>
-                <ns1:institution>institution4</ns1:institution>
-                <ns1:city>city4</ns1:city>
+                <ns1:institution>institution5</ns1:institution>
+                <ns1:city>city5</ns1:city>
             </ns1:publisher>
         </ns1:reference>
         <ns1:reference>
             <ns1:referencedAuthors>
-                <ns1:referencedAuthor>
-                    <ns1:name>name4</ns1:name>
-                    <ns1:institution>institution5</ns1:institution>
-                    <ns1:phone-number>0</ns1:phone-number>
-                    <ns1:email> @ .a</ns1:email>
-                    <ns1:address>
-                        <ns1:city>city5</ns1:city>
-                        <ns1:country>country4</ns1:country>
-                    </ns1:address>
-                </ns1:referencedAuthor>
                 <ns1:referencedAuthor>
                     <ns1:name>name5</ns1:name>
                     <ns1:institution>institution6</ns1:institution>
@@ -349,12 +263,22 @@
                         <ns1:country>country5</ns1:country>
                     </ns1:address>
                 </ns1:referencedAuthor>
+                <ns1:referencedAuthor>
+                    <ns1:name>name6</ns1:name>
+                    <ns1:institution>institution7</ns1:institution>
+                    <ns1:phone-number>0</ns1:phone-number>
+                    <ns1:email> @ .a</ns1:email>
+                    <ns1:address>
+                        <ns1:city>city7</ns1:city>
+                        <ns1:country>country6</ns1:country>
+                    </ns1:address>
+                </ns1:referencedAuthor>
             </ns1:referencedAuthors>
             <ns1:publication-date>2006-05-04</ns1:publication-date>
             <ns1:title>title4</ns1:title>
             <ns1:publisher>
-                <ns1:institution>institution7</ns1:institution>
-                <ns1:city>city7</ns1:city>
+                <ns1:institution>institution8</ns1:institution>
+                <ns1:city>city8</ns1:city>
             </ns1:publisher>
         </ns1:reference>
     </ns1:references>
