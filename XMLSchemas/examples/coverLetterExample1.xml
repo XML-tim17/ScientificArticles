@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sc:cover-letter xmlns:sc="https://github.com/XML-tim17/ScientificArticles"
+ xmlns:cl="cover-letter"
+ xmlns:ns1="tsp"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="https://github.com/XML-tim17/ScientificArticles file:/E:/Mi/Alex/Faks/Moji%20predmeti/Sedmi%20semestar/XML%20i%20veb%20servisi/ScientificArticles/XMLSchemas/CoverLetter.xsd">
+    <sc:info>
+        <sc:author>
+            <sc:name>name0</sc:name>
+            <sc:institution>institution0</sc:institution>
+            <sc:phone-number>0</sc:phone-number>
+            <sc:email> @ .a</sc:email>
+            <sc:address>
+                <sc:city>city0</sc:city>
+                <sc:country>country0</sc:country>
+            </sc:address>
+        </sc:author>
+        <sc:date>2006-05-04</sc:date>
+    </sc:info>
+    <sc:content>
+        <sc:paragraph>
+            <sc:quote sc:id="">
+                <sc:bold>
+                    <sc:underline>
+                    </sc:underline>
+                    <sc:underline>
+                    </sc:underline>
+                    <sc:underline>
+                    </sc:underline>
+                    <sc:underline>
+                    </sc:underline>
+                </sc:bold>
+                <sc:bold>
+                    <sc:underline>
+                    </sc:underline>
+                    <sc:underline>
+                    </sc:underline>
+                    <sc:underline>
+                    </sc:underline>
+                    <sc:underline>
+                    </sc:underline>
+                </sc:bold>
+                <sc:italic>
+                    <sc:underline>
+                    </sc:underline>
+                    <sc:underline>
+                    </sc:underline>
+                    <sc:bold>
+                    </sc:bold>
+                    <sc:bold>
+                    </sc:bold>
+                </sc:italic>
+                <sc:italic>
+                    <sc:underline>
+                    </sc:underline>
+                    <sc:underline>
+                    </sc:underline>
+                    <sc:underline>
+                    </sc:underline>
+                    <sc:underline>
+                    </sc:underline>
+                </sc:italic>
+            </sc:quote>
+            <sc:formule>formule0</sc:formule>
+        </sc:paragraph>
+        <sc:paragraph>
+            <sc:formule>formule1</sc:formule>
+            <sc:list sc:id="">
+                <sc:item>
+                    <sc:quote sc:id="">
+                    </sc:quote>
+                    <sc:quote sc:id="">
+                    </sc:quote>
+                </sc:item>
+                <sc:item>
+                    <sc:underline>
+                    </sc:underline>
+                    <sc:underline>
+                    </sc:underline>
+                    <sc:bold>
+                    </sc:bold>
+                    <sc:bold>
+                    </sc:bold>
+                    <sc:ref>http://www.oxygenxml.com/</sc:ref>
+                </sc:item>
+            </sc:list>
+        </sc:paragraph>
+    </sc:content>
+    <sc:signature>
+        <sc:image>ZGVmYXVsdA==</sc:image>
+        <sc:name>name1</sc:name>
+        <sc:title>title0</sc:title>
+        <sc:institution>institution1</sc:institution>
+    </sc:signature>
+</sc:cover-letter>

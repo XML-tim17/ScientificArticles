@@ -53,9 +53,8 @@
                 <xs:complexType>
                     <xs:simpleContent>
                         <xs:extension base="xs:string">
-                            <xs:attribute fixed="name" name="property" type="xs:string"
-                                use="required"/>
-                            <xs:attribute name="about" type="xs:anyURI" use="required"/>
+                            <xs:anyAttribute processContents="lax"
+                                namespace="https://www.w3.org/ns/rdfa#"/>
                         </xs:extension>
                     </xs:simpleContent>
                 </xs:complexType>
@@ -64,9 +63,8 @@
                 <xs:complexType>
                     <xs:simpleContent>
                         <xs:extension base="xs:string">
-                            <xs:attribute fixed="memberOf" name="property" type="xs:string"
-                                use="required"/>
-                            <xs:attribute name="about" type="xs:anyURI" use="required"/>
+                            <xs:anyAttribute processContents="lax"
+                                namespace="https://www.w3.org/ns/rdfa#"/>
                         </xs:extension>
                     </xs:simpleContent>
                 </xs:complexType>
@@ -75,9 +73,8 @@
                 <xs:complexType>
                     <xs:simpleContent>
                         <xs:extension base="TPhoneNumber">
-                            <xs:attribute fixed="telephone" name="property" type="xs:string"
-                                use="required"/>
-                            <xs:attribute name="about" type="xs:anyURI" use="required"/>
+                            <xs:anyAttribute processContents="lax"
+                                namespace="https://www.w3.org/ns/rdfa#"/>
                         </xs:extension>
                     </xs:simpleContent>
                 </xs:complexType>
@@ -86,9 +83,8 @@
                 <xs:complexType>
                     <xs:simpleContent>
                         <xs:extension base="TEmail">
-                            <xs:attribute fixed="email" name="property" type="xs:string"
-                                use="required"/>
-                            <xs:attribute name="about" type="xs:anyURI" use="required"/>
+                            <xs:anyAttribute processContents="lax"
+                                namespace="https://www.w3.org/ns/rdfa#"/>
                         </xs:extension>
                     </xs:simpleContent>
                 </xs:complexType>
@@ -100,9 +96,8 @@
                             <xs:complexType>
                                 <xs:simpleContent>
                                     <xs:extension base="xs:string">
-                                        <xs:attribute fixed="addressLocality" name="property"
-                                            type="xs:string" use="required"/>
-                                        <xs:attribute name="about" type="xs:anyURI" use="required"/>
+                                        <xs:anyAttribute processContents="lax"
+                                            namespace="https://www.w3.org/ns/rdfa#"/>
                                     </xs:extension>
                                 </xs:simpleContent>
                             </xs:complexType>
@@ -111,25 +106,20 @@
                             <xs:complexType>
                                 <xs:simpleContent>
                                     <xs:extension base="xs:string">
-                                        <xs:attribute fixed="addressCountry" name="property"
-                                            type="xs:string" use="required"/>
-                                        <xs:attribute name="about" type="xs:anyURI" use="required"/>
+                                        <xs:anyAttribute processContents="lax"
+                                            namespace="https://www.w3.org/ns/rdfa#"/>
                                     </xs:extension>
                                 </xs:simpleContent>
                             </xs:complexType>
                         </xs:element>
                     </xs:sequence>
-                    <xs:attribute name="property" fixed="address" use="required"/>
-                    <xs:attribute name="href" use="required" type="xs:anyURI"/>
-                    <xs:attribute name="about" type="xs:anyURI" use="required"/>
+                    <xs:anyAttribute processContents="lax"
+                        namespace="https://www.w3.org/ns/rdfa#"/>
                 </xs:complexType>
             </xs:element>
         </xs:sequence>
     </xs:complexType>
     <xs:attribute name="id" type="xs:anyURI" default=""/>
-    <xs:group name="newGroup">
-        <xs:sequence/>
-    </xs:group>
     <xs:simpleType name="TPhoneNumber">
         <xs:restriction base="xs:string">
             <xs:pattern value="([(+]*[0-9]+[()+. -]*)"/>
