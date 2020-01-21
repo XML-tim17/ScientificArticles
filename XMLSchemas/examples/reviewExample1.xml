@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns1:review xmlns:art="https://github.com/XML-tim17/ScientificArticles/Article"
+ xmlns:ns1="https://github.com/XML-tim17/ScientificArticles"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="https://github.com/XML-tim17/ScientificArticles file:/E:/Mi/Alex/Faks/Moji%20predmeti/Sedmi%20semestar/XML%20i%20veb%20servisi/ScientificArticles/XMLSchemas/Review.xsd" judgment="accept">
+    <ns1:article-id>http://www.oxygenxml.com/</ns1:article-id>
+    <ns1:reviewer>
+        <ns1:name>name0</ns1:name>
+        <ns1:institution>institution0</ns1:institution>
+        <ns1:phone-number>0</ns1:phone-number>
+        <ns1:email> @ .a</ns1:email>
+        <ns1:address>
+            <ns1:city>city0</ns1:city>
+            <ns1:country>country0</ns1:country>
+        </ns1:address>
+    </ns1:reviewer>
+    <ns1:comments>
+        <ns1:comment reference-id="http://www.oxygenxml.com/">comment0</ns1:comment>
+        <ns1:comment reference-id="http://www.oxygenxml.com/">comment1</ns1:comment>
+    </ns1:comments>
+    <ns1:date>2006-05-04</ns1:date>
+    <ns1:questionaire>
+        <ns1:questions>
+            <ns1:yes-no-question>
+                <ns1:question-text>question-text0</ns1:question-text>
+                <ns1:answer>Yes</ns1:answer>
+            </ns1:yes-no-question>
+            <ns1:yes-no-question>
+                <ns1:question-text>question-text1</ns1:question-text>
+                <ns1:answer>Yes</ns1:answer>
+            </ns1:yes-no-question>
+            <ns1:question>
+                <ns1:question-text>question-text2</ns1:question-text>
+                <ns1:answer>
+                    <ns1:underline>
+                    </ns1:underline>
+                    <ns1:underline>
+                    </ns1:underline>
+                    <ns1:italic>
+                    </ns1:italic>
+                    <ns1:italic>
+                    </ns1:italic>
+                    <ns1:formule>formule0</ns1:formule>
+                </ns1:answer>
+            </ns1:question>
+        </ns1:questions>
+    </ns1:questionaire>
+    <ns1:grade>5.5</ns1:grade>
+</ns1:review>
