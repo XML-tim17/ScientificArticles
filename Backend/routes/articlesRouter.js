@@ -6,12 +6,13 @@ var router = express.Router();
 var articlesService = require('../service/articleService');
 
 
-// get article by id
+// get article by id (last version)
 // AUTHOR
 router.get('/:documentId', async (req, res) => {
     try {
         // check if user has access to article
-        var dom = await articlesService.readXML(req.params.documentId);
+        var lastVersion = await articlesService.getLastVersion(req.params.documentId);
+        var dom = await articlesService.readXML(req.params.documentId, lastVersion);
         var document = new XMLSerializer().serializeToString(dom)
         res.send(document);
     } catch (e) {
@@ -46,7 +47,7 @@ router.get('/:articleId/reviews', async (req, res) => {
 // EDITOR
 router.get('/toBeReviewed', async (req, res) => {
     try {
-        var articles = await articlesService.getToBeReviewed();
+        var articles = await articlesService.toBeReviewed();
         res.send(articles);
     } catch (e) {
         res.send(e.message);
