@@ -5,21 +5,6 @@ var DOMParser = xmldom.DOMParser;
 var router = express.Router();
 var articlesService = require('../service/articleService');
 
-
-// get article by id (last version)
-// AUTHOR
-router.get('/:documentId', async (req, res) => {
-    try {
-        // check if user has access to article
-        var lastVersion = await articlesService.getLastVersion(+req.params.documentId);
-        var dom = await articlesService.readXML(+req.params.documentId, lastVersion);
-        var document = new XMLSerializer().serializeToString(dom)
-        res.send(document);
-    } catch (e) {
-        res.send(e.message);
-    }
-});
-
 // get all published articles
 // VISITOR
 router.get('', async (req, res) => {
@@ -31,28 +16,6 @@ router.get('', async (req, res) => {
     }
 });
 
-// get all reviews for given article
-// AUTHOR
-router.get('/:articleId/reviews', async (req, res) => {
-    try {
-        // check if user has access to this article
-        var reviews = await articlesService.getReviews(req.params.articleId);
-        res.send(reviews);
-    } catch(e) {
-        res.send(e.message);
-    }
-})
-
-// get all articles in toBeReviewed state
-// EDITOR
-router.get('/toBeReviewed', async (req, res) => {
-    try {
-        var articles = await articlesService.toBeReviewed();
-        res.send(articles);
-    } catch (e) {
-        res.send(e.message);
-    }
-});
 
 // post new article
 // AUTHOR
@@ -65,12 +28,12 @@ router.post('', async (req, res) => {
     }
 });
 
-// post revision
-// AUTHOR
-router.post('/:articleId', async (req, res) => {
+// get all articles in toBeReviewed state
+// EDITOR
+router.get('/toBeReviewed', async (req, res) => {
     try {
-        let result = await articlesService.postRevision(req.params.articleId, req.body.data);
-        res.send(result)
+        var articles = await articlesService.toBeReviewed();
+        res.send(articles);
     } catch (e) {
         res.send(e.message);
     }
@@ -100,11 +63,50 @@ router.post('/search', async (req, res) => {
     }
 })
 
+// get article by id (last version)
+// AUTHOR
+router.get('/:documentId', async (req, res) => {
+    try {
+        // check if user has access to article
+        var lastVersion = await articlesService.getLastVersion(+req.params.documentId);
+        var dom = await articlesService.readXML(+req.params.documentId, lastVersion);
+        var document = new XMLSerializer().serializeToString(dom)
+        res.send(document);
+    } catch (e) {
+        res.send(e.message);
+    }
+});
+
+// post revision
+// AUTHOR
+router.post('/:articleId', async (req, res) => {
+    try {
+        let result = await articlesService.postRevision(+req.params.articleId, req.body.data);
+        res.send(result)
+    } catch (e) {
+        res.send(e.message);
+    }
+});
+
+
+
+// get all reviews for given article
+// AUTHOR
+router.get('/:articleId/reviews', async (req, res) => {
+    try {
+        // check if user has access to this article
+        var reviews = await articlesService.getReviews(+req.params.articleId);
+        res.send(reviews);
+    } catch(e) {
+        res.send(e.message);
+    }
+})
+
 // change status of article
 // UREDNIK
-router.put('/:articleId/status/:status', async (req, res) => {
+router.get('/:articleId/status/:status', async (req, res) => {
     try {
-        await articlesService.setStatus(articleId, status);
+        await articlesService.setStatus(+req.params.articleId, req.params.status);
         res.send("success")
     } catch (e) {
         res.send(e.message);
@@ -112,3 +114,9 @@ router.put('/:articleId/status/:status', async (req, res) => {
 })
 
 module.exports = router;
+
+
+
+
+
+

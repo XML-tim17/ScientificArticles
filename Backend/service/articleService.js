@@ -87,9 +87,9 @@ module.exports.getArticlesToReview = async (reviewerId) => {
 module.exports.setStatus = async (articleId, status) => {
     // check if status is valid according to state diagram
     
-    let version = articlesRepository.getLastVersion(articleId);
-    let currentStatus = articlesRepository.getStatusOf(articleId, version);
-    if (this.isNextStateValid(currentStatus, status)) {
+    let version = await articlesRepository.getLastVersion(articleId);
+    let currentStatus = await articlesRepository.getStatusOf(articleId, version);
+    if (isNextStateValid(currentStatus, status)) {
         articlesRepository.setStatus(articleId, version, status);
         return true;
     }

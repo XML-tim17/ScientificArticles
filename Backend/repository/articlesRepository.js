@@ -78,7 +78,7 @@ module.exports.createVersionSequencer = async (articleId) => {
     return 1;
 }
 
-module.exports.readXML = async (articleId, versison) => {
+module.exports.readXML = async (articleId, version) => {
     const db = exist.connect(options);
     let result = await db.documents.read(`${articlesURI}/article${articleId}/v${version}.xml`, {})
     return new DOMParser().parseFromString(result.toString(), 'text/xml');
@@ -104,11 +104,11 @@ module.exports.getAllByTitle = async (title) => {
 
 module.exports.getStatusOf = async (articleId, version) => {
     const db = exist.connect(options);
-    let status = await db.queries.read(getArticleStatus.query(articleId, version));
-    return status;
+    let result = await db.queries.readAll(getArticleStatus.query(articleId, version), {});
+    return Buffer.concat(result.pages).toString();
 }
 
 module.exports.setStatus = async (articleId, version, status) => {
     const db = exist.connect(options);
-    await db.queries.read(updateArticleStatus.query(articleId, version, status));
+    await db.queries.execute(updateArticleStatus.query(articleId, version, status), {});
 }
