@@ -11,26 +11,27 @@ export class AddArticleComponentComponent implements OnInit {
   constructor(private articlesService: ArticlesService) { }
 
   file: File;
+  files: FileList;
 
   ngOnInit() {
   }
 
-  handleFileInput(files: FileList) {
-    this.file = files.item(0);
+  handleFileInput(event) {
+    this.file = event.target.files[0]
   }
 
-  onSubmit() {
+  async onSubmit() {
+    console.log(this.file)
+
     
     let reader = new FileReader;
-    let xmlString = '';
 
     reader.onload = (e) => {
-      xmlString = reader.result as string;
+      this.articlesService.addArticle(reader.result as string);
     }
 
-    reader.readAsText(this.file);
+    reader.readAsText(this.file)
     
-    this.articlesService.addArticle(xmlString);
   }
 
 }
