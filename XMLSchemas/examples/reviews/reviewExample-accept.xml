@@ -2,8 +2,8 @@
 <ns1:review xmlns:art="https://github.com/XML-tim17/ScientificArticles/Article"
  xmlns:ns1="https://github.com/XML-tim17/ScientificArticles"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:schemaLocation="https://github.com/XML-tim17/ScientificArticles file:/C:/Fakultet/7.%20semestar/XML/Projekat/git_repo/ScientificArticles/XMLSchemas/Review.xsd" judgment="accept">
-    <ns1:article-id>12</ns1:article-id>
+ xsi:schemaLocation="https://github.com/XML-tim17/ScientificArticles ./../../Review.xsd" judgment="accept">
+    <ns1:article-id>article_1/v_1</ns1:article-id>
     <ns1:reviewer>
         <ns1:name>Nikola Nikolić</ns1:name>
         <ns1:institution>Fakultet Tehničkih Nauka</ns1:institution>
