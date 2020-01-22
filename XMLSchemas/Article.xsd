@@ -204,7 +204,7 @@
     <xs:simpleType name="TStatus">
         <xs:restriction base="xs:string">
             <xs:enumeration value="toBeReviewed"/>
-            <xs:enumeration value="inReviewProgress"/>
+            <xs:enumeration value="inReviewProcess"/>
             <xs:enumeration value="reviewed"/>
             <xs:enumeration value="accepted"/>
             <xs:enumeration value="rejected"/>

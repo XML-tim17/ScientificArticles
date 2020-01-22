@@ -3,7 +3,7 @@
  xmlns:cl="cover-letter"
  xmlns:ns1="tsp"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:schemaLocation="https://github.com/XML-tim17/ScientificArticles file:/C:/Fakultet/7.%20semestar/XML/Projekat/git_repo/ScientificArticles/XMLSchemas/CoverLetter.xsd">
+ xsi:schemaLocation="https://github.com/XML-tim17/ScientificArticles ./../../coverLetter.xsd">
     <sc:info>
         <sc:author>
             <sc:name>Branislav Anđelić</sc:name>
