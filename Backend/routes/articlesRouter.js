@@ -58,7 +58,7 @@ router.get('/toBeReviewed', async (req, res) => {
 // AUTHOR
 router.post('', async (req, res) => {
     try {
-        let result = await articlesService.saveXML(req.body.data);
+        let result = await articlesService.addNewArticle(req.body.data);
         res.send(result)
     } catch (e) {
         res.send(e.message);

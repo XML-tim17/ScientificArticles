@@ -6,7 +6,7 @@ const xsltService = require('./xsltService')
 
 const test = require('./test');
 
-module.exports.saveXML = async (xml) => {
+module.exports.addNewArticle = async (xml) => {
     // transformed = await xsltService.transform(test.test.xml, test.test.xsl);
     //save to rdf
 
@@ -33,8 +33,7 @@ module.exports.readXML = async (articleId, version) => {
 }
 
 module.exports.getAll = async () => {
-    documents = [];
-    let debugx = await articlesRepository.getAll();
+    let documents = await articlesRepository.getAll();
     // get simple data of all published articles
     return documents;
 
@@ -50,21 +49,24 @@ module.exports.getReviews = async (articleId) => {
 }
 
 module.exports.toBeReviewed = async () => {
-    articles = [];
-    // get all articles in toBeReviewed state
-    // extract simple data to show on frontend
-    return articles;
+    let documents = await articlesRepository.toBeReviewed();
+    // get simple data of all published articles
+    return documents;
 }
 
 module.exports.postRevision = async (articleId, article) => {
-    // save article as new version of article with id articleId
+
+    let version = await articlesRepository.getLastVersion(articleId);
+
+    await articlesRepository.addNewArticle(article, articleId, version + 1);
+
+    articlesRepository.incrementVersionCount(articleId, 1);
 }
 
 module.exports.basicSearch = async (queryString) => {
-    result = [];
-    // do basic search on eXist database
-    // extract simple data from articles
-    return result;
+    let documents = await articlesRepository.getAllByTitle(queryString);
+    // get simple data of all published articles
+    return documents;
 }
 
 module.exports.advancedSearch = async (searchData) => {
@@ -84,5 +86,28 @@ module.exports.getArticlesToReview = async (reviewerId) => {
 
 module.exports.setStatus = async (articleId, status) => {
     // check if status is valid according to state diagram
-    // change status
+    
+    let version = articlesRepository.getLastVersion(articleId);
+    let currentStatus = articlesRepository.getStatusOf(articleId, version);
+    if (this.isNextStateValid(currentStatus, status)) {
+        articlesRepository.setStatus(articleId, version, status);
+        return true;
+    }
+
+    return false;
+
+}
+
+isNextStateValid = (currentState, nextState) => {
+    const stateMachine = {
+        'toBeReviewed': ['inReviewProgress'],
+        'inReviewProcess': ['reviewed'],
+        'reviewed': ['rejected', 'accepted', 'revisionRequired'],
+        'rejected': [],
+        'accepted': [],
+        'revisionRequired': ['revisionRecieved'],
+        'revisionRecieved': ['inReviewProcess', 'rejected', 'accepted']
+    }
+
+    return stateMachine[currentState].indexOf(nextState) !== -1;
 }
