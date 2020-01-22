@@ -1,5 +1,5 @@
 
-module.exports.options = {
+module.exports = {
     host: 'localhost',
     port: '8080',
     basic_auth: {

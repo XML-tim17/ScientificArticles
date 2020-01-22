@@ -7,15 +7,19 @@ const xsltService = require('./xsltService')
 const test = require('./test');
 
 module.exports.saveXML = async (xml) => {
-
-
-    transformed = await xsltService.transform(test.test.xml, test.test.xsl);
+    // transformed = await xsltService.transform(test.test.xml, test.test.xsl);
     //save to rdf
     return articlesRepository.saveXML(xml);
 }
 
-module.exports.readXML = async (articleId) => {
-    return articlesRepository.readXML(articleId);
+module.exports.getLastVersion = async (articleId) => {
+    let dom = articlesRepository.getLastVersion(articleId);
+    console.log(dom);
+    return dom;
+}
+
+module.exports.readXML = async (articleId, version) => {
+    return articlesRepository.readXML(articleId, version);
 }
 
 module.exports.getAll = async () => {
