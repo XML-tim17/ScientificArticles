@@ -9,13 +9,23 @@ const test = require('./test');
 module.exports.saveXML = async (xml) => {
     // transformed = await xsltService.transform(test.test.xml, test.test.xsl);
     //save to rdf
-    return articlesRepository.saveXML(xml);
+
+    // update articleSequencer
+    let articleId = await articlesRepository.incrementArticleCount(1);
+
+    // create collection for article
+    await articlesRepository.addNewArticleCollection(articleId);
+
+    //create version sequencer
+    let version = await articlesRepository.createVersionSequencer(articleId);
+
+    // create new xml document
+    await articlesRepository.addNewArticle(xml, articleId, version);
 }
 
 module.exports.getLastVersion = async (articleId) => {
-    let dom = articlesRepository.getLastVersion(articleId);
-    console.log(dom);
-    return dom;
+    let version = articlesRepository.getLastVersion(articleId);
+    return version;
 }
 
 module.exports.readXML = async (articleId, version) => {
@@ -24,6 +34,7 @@ module.exports.readXML = async (articleId, version) => {
 
 module.exports.getAll = async () => {
     documents = [];
+    let debugx = await articlesRepository.getAll();
     // get simple data of all published articles
     return documents;
 

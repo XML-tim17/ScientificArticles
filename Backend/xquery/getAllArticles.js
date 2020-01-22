@@ -1,0 +1,1 @@
+module.exports.query = 'xquery version "3.1"; declare namespace ns1 = "https://github.com/XML-tim17/ScientificArticles"; for $article in collection("/db/scientificArticles/articles/")/ns1:article return $article';

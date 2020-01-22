@@ -11,8 +11,8 @@ var articlesService = require('../service/articleService');
 router.get('/:documentId', async (req, res) => {
     try {
         // check if user has access to article
-        var lastVersion = await articlesService.getLastVersion(req.params.documentId);
-        var dom = await articlesService.readXML(req.params.documentId, lastVersion);
+        var lastVersion = await articlesService.getLastVersion(+req.params.documentId);
+        var dom = await articlesService.readXML(+req.params.documentId, lastVersion);
         var document = new XMLSerializer().serializeToString(dom)
         res.send(document);
     } catch (e) {
