@@ -108,6 +108,7 @@
                     </xs:complexType>
                 </xs:element>
             </xs:sequence>
+            <xs:attribute ref="id"/>
         </xs:complexType>
     </xs:element>
     <xs:element name="content">
