@@ -3,14 +3,28 @@ const axios = require('axios');
 var articlesRepository = require('../repository/articlesRepository');
 const grddlPath = "./xsl/grddl.xsl";
 const xsltService = require('./xsltService')
+var xmldom = require('xmldom');
+var XMLSerializer = xmldom.XMLSerializer;
+var DOMParser = xmldom.DOMParser;
+var xpath = require('xpath')
+var _ = require('lodash')
 
 const test = require('./test');
 
-module.exports.addNewArticle = async (xml) => {
-    // transformed = await xsltService.transform(test.test.xml, test.test.xsl);
-    //save to rdf
+var ns1 = "https://github.com/XML-tim17/ScientificArticles";
 
-    // update articleSequencer
+module.exports.addNewArticle = async (xml) => {
+    
+    let articleDOM = (new DOMParser).parseFromString(xml, 'text/xml');
+
+    articleDOM = checkAndGenerateIds(articleDOM);
+
+    articleXML = new XMLSerializer().serializeToString(articleDOM);
+
+    // transformed = await xsltService.transform(test.test.xml, test.test.xsl);
+    // save to rdf
+
+    //update articleSequencer
     let articleId = await articlesRepository.incrementArticleCount(1);
 
     // create collection for article
@@ -20,8 +34,46 @@ module.exports.addNewArticle = async (xml) => {
     let version = await articlesRepository.createVersionSequencer(articleId);
 
     // create new xml document
-    await articlesRepository.addNewArticle(xml, articleId, version);
+    await articlesRepository.addNewArticle(articleXML, articleId, version);
 }
+
+checkAndGenerateIds = (articleDOM) => {
+    // validate ids
+    let select = xpath.useNamespaces({"ns1": ns1});
+    let nodes = select('//@ns1:id', articleDOM)
+    let ids = nodes.map(node => node.value)
+
+    if (_.uniq(ids).length !== ids.length) throw new Error('Invalid article, duplicate ids found.')
+
+    //generate ids
+    let prefix = '';
+    let nsMap = select('/*', articleDOM)[0]._nsMap
+    for (let key in nsMap) {
+        if (nsMap[key] === ns1) {
+            prefix = key+':'
+        }
+    }
+
+    let abstract = select('//ns1:abstract', articleDOM)
+    let figures = select('//ns1:figure', articleDOM)
+    let tables = select('//ns1:table', articleDOM)
+    let sections = select('//ns1:section', articleDOM)
+    let allNodes = abstract.concat(figures).concat(tables).concat(sections);
+
+    let count = 1;
+    for(let node of allNodes) {
+        while(ids.includes(count.toString())) {
+            count += 1;
+        }
+        if(!node.getAttributeNS(ns1, 'id')) {
+            node.setAttributeNS(ns1, prefix + 'id', count);
+            count += 1;
+        }
+    }
+
+    return articleDOM;
+}
+
 
 module.exports.getLastVersion = async (articleId) => {
     let version = articlesRepository.getLastVersion(articleId);

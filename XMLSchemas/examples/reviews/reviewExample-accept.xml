@@ -16,6 +16,8 @@
     </ns1:reviewer>
     <ns1:comments>
         <ns1:comment reference-id="Veliki naslov">Vrlo ljepo!</ns1:comment>
+        <ns1:comment reference-id="Manji Nalov">Dodajte oxygenxml u keywords!</ns1:comment>
+        <ns1:comment reference-id="Najmanji naslov">Vrlo ljepo!</ns1:comment>
         <ns1:comment reference-id="Marinkov Citat">Bravo!</ns1:comment>
     </ns1:comments>
     <ns1:date>2020-01-03</ns1:date>
