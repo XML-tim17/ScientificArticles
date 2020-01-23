@@ -13,7 +13,7 @@ module.exports.postReview = async (reviewXML) => {
     let reviewDOM = new DOMParser().parseFromString(reviewXML, 'text/xml');
     let select = xpath.useNamespaces({'ns': ns})
     let articleNode = select('//ns:article-id', reviewDOM)[0]
-    let articleId = articleNode.firstChild.data;
+    let articleId = articleNode.firstChild.data; // example: article1/v1
 
     // check article state
     let status = await articleRepository.getStatusOfByURI(articleId);
