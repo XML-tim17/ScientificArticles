@@ -5,12 +5,26 @@ var DOMParser = xmldom.DOMParser;
 var router = express.Router();
 var reviewsService = require('../service/reviewsService');
 var articlesService = require('../service/articleService');
+var validator = require('xsd-schema-validator');
+const reviewSchemaLocation = 'resources/XMLSchemas/Review.xsd';
 
+const validateDocument = (xml) => {
+    return new Promise((resolve, reject) => {
+        validator.validateXML(xml, reviewSchemaLocation, (err, data) => {
+          if (err) return reject(err)
+          resolve(data.valid)
+        });
+      });
+}
 
 // post review
 // REVIEWER
 router.post('', async (req, res) => {
     try {
+        let valid = validateDocument(req.body.data);
+        if (!valid) {
+            throw new Error('Invalid review, document does not match required scheme.')
+        }
         await reviewsService.postReview(req.body.data);
         res.send('created')
     } catch (e) {

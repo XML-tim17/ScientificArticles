@@ -3,6 +3,7 @@
  xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="https://github.com/XML-tim17/ScientificArticles ./../../Article.xsd">
+    <ns1:id>Random vrednost</ns1:id>
     <ns1:title>Zivot iz ugla gospode inReviewProcess</ns1:title>
     <ns1:info>
         <ns1:authors>
