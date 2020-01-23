@@ -11,7 +11,6 @@ export class AddArticleComponentComponent implements OnInit {
   constructor(private articlesService: ArticlesService) { }
 
   file: File;
-  files: FileList;
 
   ngOnInit() {
   }

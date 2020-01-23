@@ -3,21 +3,47 @@ var XMLSerializer = xmldom.XMLSerializer;
 var DOMParser = xmldom.DOMParser;
 const exist = require('@existdb/node-exist');
 const options = require('./config');
-const revieswsURI = '/db/scientificArticles/reviews';
+const reviewsURI = '/db/scientificArticles/reviews';
 
 module.exports.saveXML = async (dom) => {
     var XMLstring = new XMLSerializer().serializeToString(dom);
     const db = exist.connect(options);
     let reviewsCount = (await db.queries.readAll(`xquery version "3.1"; xmldb:get-child-resources("${reviewsURI}")`, {})).hits;
     db.documents.upload(Buffer.from(XMLstring))
-        .then(fileHandle => db.documents.parseLocal(fileHandle, `${revieswsURI}/review${reviewsCount + 1}.xml`, {}))
+        .then(fileHandle => db.documents.parseLocal(fileHandle, `${reviewsURI}/review${reviewsCount + 1}.xml`, {}))
         .catch(e => console.error('fail', e))
 }
 
 module.exports.readXML = async (reviewId) => {
     const db = exist.connect(options);
-    let result = await db.documents.read(`${revieswsURI}/${reviewId}.xml`, {})
+    let result = await db.documents.read(`${reviewsURI}/${reviewId}.xml`, {})
         .catch(e => console.error('fail', e))
     return DOMParser.parseFromString(result.toString(), 'text/xml');
 }
 
+module.exports.addNewReview = async (reviewXML, reviewId) => {
+    const db = exist.connect(options);
+    fileHandle = await db.documents.upload(Buffer.from(reviewXML));
+    await db.documents.parseLocal(fileHandle, `${reviewsURI}/review${reviewId}.xml`, {});
+}
+
+module.exports.incrementReviewCount = async (incrementBy) => {
+    const db = exist.connect(options);
+    let reviewCountXML;
+    try {
+        reviewCountXML = await db.documents.read(`${reviewsURI}/review-sequencer.xml`, {});
+    } catch (e) {
+        reviewCountXML = '<count>0</count>';
+        let sequencerFileHandle = await db.documents.upload(Buffer.from(reviewCountXML));
+        await db.documents.parseLocal(sequencerFileHandle, `${reviewsURI}/review-sequencer.xml`, {});
+    }
+    let reviewCountDOM = (new DOMParser()).parseFromString(reviewCountXML.toString(), 'text/xml');
+    let reviewCount = +reviewCountDOM.getElementsByTagName('count')[0].textContent;
+    reviewCountDOM.getElementsByTagName('count')[0].textContent = reviewCount + incrementBy;
+    reviewCountXML = new XMLSerializer().serializeToString(reviewCountDOM);
+
+    let fileHandle =  await db.documents.upload(Buffer.from(reviewCountXML));
+    await db.documents.parseLocal(fileHandle, `${reviewsURI}/review-sequencer.xml`, {});
+
+    return reviewCount + incrementBy;
+}
