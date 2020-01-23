@@ -10,6 +10,7 @@ const getAllAcceptedArticles = require('../xquery/getAllAcceptedArticles');
 const getAllToBeReviewedArticles = require('../xquery/getAllToBeReviewedArticles');
 const getAllByTitle = require('../xquery/getAllByTitle');
 const getArticleStatus = require('../xquery/getArticleStatus');
+const getArticleStatusByURI = require('../xquery/getArticleStatusByURI');
 
 const updateArticleStatus = require('../xquery/updateArticleStatus');
 
@@ -84,6 +85,12 @@ module.exports.readXML = async (articleId, version) => {
     return new DOMParser().parseFromString(result.toString(), 'text/xml');
 }
 
+module.exports.getById = async (articleURI) => {
+    const db = exist.connect(options);
+    let result = await db.documents.read(`${articlesURI}/${articleURI}.xml`, {});
+    return new DOMParser().parseFromString(result.toString(), 'text/xml');
+}
+
 module.exports.getAll = async () => {
     const db = exist.connect(options);
     let result = await db.queries.readAll(getAllAcceptedArticles.query, {});
@@ -105,6 +112,12 @@ module.exports.getAllByTitle = async (title) => {
 module.exports.getStatusOf = async (articleId, version) => {
     const db = exist.connect(options);
     let result = await db.queries.readAll(getArticleStatus.query(articleId, version), {});
+    return Buffer.concat(result.pages).toString();
+}
+
+module.exports.getStatusOfByURI = async (articleURI) => {
+    const db = exist.connect(options);
+    let result = await db.queries.readAll(getArticleStatusByURI.query(articleURI), {});
     return Buffer.concat(result.pages).toString();
 }
 

@@ -14,6 +14,7 @@ router.post('', async (req, res) => {
         await reviewsService.postReview(req.body.data);
         res.send('created')
     } catch (e) {
+        console.log(e);
         res.send(e.message);
     }
 });

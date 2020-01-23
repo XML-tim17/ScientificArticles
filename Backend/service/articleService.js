@@ -58,7 +58,8 @@ checkAndGenerateIds = (articleDOM) => {
     let figures = select('//ns1:figure', articleDOM)
     let tables = select('//ns1:table', articleDOM)
     let sections = select('//ns1:section', articleDOM)
-    let allNodes = abstract.concat(figures).concat(tables).concat(sections);
+    let quotes = select('//ns1:quote', articleDOM)
+    let allNodes = abstract.concat(figures).concat(tables).concat(sections).concat(quotes);
 
     let count = 1;
     for(let node of allNodes) {

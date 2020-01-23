@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns1:review xmlns:art="https://github.com/XML-tim17/ScientificArticles/Article"
+ xmlns:ns1="https://github.com/XML-tim17/ScientificArticles"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="https://github.com/XML-tim17/ScientificArticles ./../../Review.xsd" judgment="accept">
+    <ns1:article-id>article1/v1</ns1:article-id>
+    <ns1:reviewer>
+        <ns1:name>Nikola Nikolić</ns1:name>
+        <ns1:institution>Fakultet Tehničkih Nauka</ns1:institution>
+        <ns1:phone-number>0634454335</ns1:phone-number>
+        <ns1:email>nn@gmail.com</ns1:email>
+        <ns1:address>
+            <ns1:city>Novi Sad</ns1:city>
+            <ns1:country>Srbija</ns1:country>
+        </ns1:address>
+    </ns1:reviewer>
+    <ns1:comments>
+        <ns1:comment reference-id="Veliki naslov">Vrlo ljepo!</ns1:comment>
+        <ns1:comment reference-id="Manji naslov">Dodajte oxygenxml u keywords!</ns1:comment>
+        <ns1:comment reference-id="Najmanji naslov">Vrlo ljepo!</ns1:comment>
+        <ns1:comment reference-id="Marinkov citat">Bravo!</ns1:comment>
+    </ns1:comments>
+    <ns1:date>2020-01-03</ns1:date>
+    <ns1:questionaire>
+        <ns1:questions>
+            <ns1:yes-no-question>
+                <ns1:question-text>Je l Vam se dopao rad?</ns1:question-text>
+                <ns1:answer>Yes</ns1:answer>
+            </ns1:yes-no-question>
+            <ns1:yes-no-question>
+                <ns1:question-text>Je l Vas je rad intelektualno uzbudio?</ns1:question-text>
+                <ns1:answer>Yes</ns1:answer>
+            </ns1:yes-no-question>
+            <ns1:question>
+                <ns1:question-text>Opišite svoje osećanje dok ste čitali rad!</ns1:question-text>
+                <ns1:answer>
+                    Bio sam vrlo <ns1:bold>UZBUĐEN</ns1:bold> i <ns1:bold><ns1:italic>USHIĆEN</ns1:italic></ns1:bold>!
+                    <ns1:formule>2 + 2 = 3</ns1:formule>
+                </ns1:answer>
+            </ns1:question>
+        </ns1:questions>
+    </ns1:questionaire>
+    <ns1:grade>9</ns1:grade>
+</ns1:review>
