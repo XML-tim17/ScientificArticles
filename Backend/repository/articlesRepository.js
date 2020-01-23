@@ -5,13 +5,13 @@ const exist = require('@existdb/node-exist');
 const options = require('./config');
 const articlesURI = '/db/scientificArticles/articles';
 
-
 const getAllAcceptedArticles = require('../xquery/getAllAcceptedArticles');
 const getAllToBeReviewedArticles = require('../xquery/getAllToBeReviewedArticles');
 const getAllByTitle = require('../xquery/getAllByTitle');
 const getArticleStatus = require('../xquery/getArticleStatus');
 
 const updateArticleStatus = require('../xquery/updateArticleStatus');
+const updateArticleId = require('../xquery/updateArticleId');
 
 module.exports.addNewArticle = async (xmlString, articleId, version) => {
     const db = exist.connect(options);
@@ -111,4 +111,9 @@ module.exports.getStatusOf = async (articleId, version) => {
 module.exports.setStatus = async (articleId, version, status) => {
     const db = exist.connect(options);
     await db.queries.execute(updateArticleStatus.query(articleId, version, status), {});
+}
+
+module.exports.updateArticleId = async (articleId, version) => {
+    const db = exist.connect(options);
+    await db.queries.execute(updateArticleId.query(articleId, version), {});
 }

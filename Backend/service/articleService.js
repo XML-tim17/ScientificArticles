@@ -21,6 +21,8 @@ module.exports.addNewArticle = async (xml) => {
 
     // create new xml document
     await articlesRepository.addNewArticle(xml, articleId, version);
+
+    await articlesRepository.updateArticleId(articleId, version);
 }
 
 module.exports.getLastVersion = async (articleId) => {

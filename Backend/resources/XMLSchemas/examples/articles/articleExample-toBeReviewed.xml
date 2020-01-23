@@ -3,8 +3,7 @@
  xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="https://github.com/XML-tim17/ScientificArticles ./../../Article.xsd">
-    <ns1:id>6942069</ns1:id>
-    <ns1:title>Zivot iz ugla gospode accepted</ns1:title>
+    <ns1:title>Zivot iz ugla gospode toBeReviewed</ns1:title>
     <ns1:info>
         <ns1:authors>
             <ns1:corresponding-author>
@@ -41,7 +40,7 @@
         <ns1:received>2020-01-01</ns1:received>
         <ns1:revised>2020-01-03</ns1:revised>
         <ns1:accepted>2020-01-04</ns1:accepted>
-        <ns1:status>accepted</ns1:status>
+        <ns1:status>toBeReviewed</ns1:status>
         <ns1:version>1.0</ns1:version>
     </ns1:info>
     <ns1:abstract>
