@@ -4,7 +4,17 @@ var XMLSerializer = xmldom.XMLSerializer;
 var DOMParser = xmldom.DOMParser;
 var router = express.Router();
 var articlesService = require('../service/articleService');
+var validator = require('xsd-schema-validator');
+const articleSchemaLocation = 'resources/XMLSchemas/Article.xsd';
 
+const validateDocument = (xml) => {
+    return new Promise((resolve, reject) => {
+        validator.validateXML(xml, articleSchemaLocation, (err, data) => {
+          if (err) return reject(err)
+          resolve(data.valid)
+        });
+      });
+}
 // get all published articles
 // VISITOR
 router.get('', async (req, res) => {
@@ -21,8 +31,13 @@ router.get('', async (req, res) => {
 // AUTHOR
 router.post('', async (req, res) => {
     try {
-        let result = await articlesService.addNewArticle(req.body.data);
-        res.send(result)
+        let valid = await validateDocument(req.body.data);
+        if (valid) {
+            let result = await articlesService.addNewArticle(req.body.data);
+            res.send(result)
+        } else {
+            throw Error('Document is not valid according to schema.');
+        }
     } catch (e) {
         res.send(e.message);
     }
@@ -81,8 +96,13 @@ router.get('/:documentId', async (req, res) => {
 // AUTHOR
 router.post('/:articleId', async (req, res) => {
     try {
-        let result = await articlesService.postRevision(+req.params.articleId, req.body.data);
-        res.send(result)
+        let valid = await validateDocument(req.body.data);
+        if (valid) {
+            let result = await articlesService.postRevision(+req.params.articleId, req.body.data);
+            res.send(result)
+        } else {
+            throw Error('Document is not valid according to schema.');
+        }
     } catch (e) {
         res.send(e.message);
     }

@@ -5,6 +5,9 @@ const collectionsURI = '/db/scientificArticles';
 module.exports.createCollections = () => {
     const db = exist.connect(config.options);
 
+    db.collections.create(`${collectionsURI}/users`)
+        .catch(e => console.error('fail', e));
+
     db.collections.create(`${collectionsURI}/articles`)
         .catch(e => console.error('fail', e));
 

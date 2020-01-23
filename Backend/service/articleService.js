@@ -34,7 +34,9 @@ module.exports.addNewArticle = async (xml) => {
     let version = await articlesRepository.createVersionSequencer(articleId);
 
     // create new xml document
-    await articlesRepository.addNewArticle(articleXML, articleId, version);
+    await articlesRepository.addNewArticle(xml, articleId, version);
+
+    await articlesRepository.updateArticleId(articleId, version);
 }
 
 checkAndGenerateIds = (articleDOM) => {
