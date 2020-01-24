@@ -4,6 +4,7 @@ var DOMParser = xmldom.DOMParser;
 const exist = require('@existdb/node-exist');
 const options = require('./config');
 const reviewsURI = '/db/scientificArticles/reviews';
+const addArticleToReviewer = require('../xquery/addArticleToReviewer');
 
 module.exports.saveXML = async (dom) => {
     var XMLstring = new XMLSerializer().serializeToString(dom);
@@ -46,4 +47,9 @@ module.exports.incrementReviewCount = async (incrementBy) => {
     await db.documents.parseLocal(fileHandle, `${reviewsURI}/review-sequencer.xml`, {});
 
     return reviewCount + incrementBy;
+}
+
+module.exports.addArticleToReviewer = async (email, articleURI) => {
+    const db = exist.connect(options);
+    await db.queries.execute(addArticleToReviewer.query(email, articleURI), {});
 }

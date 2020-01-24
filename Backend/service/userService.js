@@ -25,7 +25,7 @@ module.exports.register = async (userObject) => {
     if (exists === 'true') {
         throw new Error(`User with email ${userObject.email} already exists.`)
     }
-
+    userObject.toReview = [];
     // create xml from object
     let userXML
     try {
@@ -39,8 +39,8 @@ module.exports.register = async (userObject) => {
     await userRepository.addUser(userId, userXML);
 }
 
-userObjectToXml = (userObject) => 
-    `<user>
+userObjectToXml = (userObject) => {
+    let userXML = `<user>
     <role>AUTHOR</role>
     <name>${userObject.name}</name>
     <institution>${userObject.institution}</institution>
@@ -51,8 +51,13 @@ userObjectToXml = (userObject) =>
         <city>${userObject.address.city}</city>
         <country>${userObject.address.country}</country>
     </address>
-    <to-review></to-review>
+    <toReview>${userObject.toReview.map(articleId => `\n\t\t<articleId>${articleId}</articleId>`)}
+    </toReview>
 </user>`
+
+    return userXML;
+}
+    
 
 userDomToObject = (userDOM) => {
     let name = xpath.select('//name', userDOM)[0].textContent;
@@ -62,6 +67,13 @@ userDomToObject = (userDOM) => {
     let city = xpath.select('//city', userDOM)[0].textContent;
     let country = xpath.select('//country', userDOM)[0].textContent;
     let role = xpath.select('//role', userDOM)[0].textContent;
+    let toReview;
+    try {
+        toReview = xpath.select('//articleId')
+            .map(node => node.textContent);
+    } catch (e) {
+        toReview = [];
+    }
     return {
         name,
         institution,
@@ -71,7 +83,8 @@ userDomToObject = (userDOM) => {
             city,
             country
         },
-        role
+        role,
+        toReview
     }
     
 }

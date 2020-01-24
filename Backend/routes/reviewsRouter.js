@@ -54,6 +54,25 @@ router.get('/:reviewerId/articles', async (req, res) => {
     }
 })
 
+// assign reviewers to article
+// EDITOR
+// expected json body { reviewers: [] }
+router.post('/assign/article/:articleId/version/:versionId', async (req, res) => {
+    try {
+        
+        if(!authorizationService.checkAuthorization(req, authorizationService.roles.editor)) {
+            res.send("Unauthorized");
+            return;
+        }
+
+        await reviewsService.assignReviewers(req.params.articleId, req.params.versionId, req.body.reviewers)
+        res.send("success");
+        
+    } catch (e) {
+        res.send(e.message);
+    }
+})
+
 // // get single review
 // // AUTHOR
 // router.get('/:reviewId', async (req, res) => {

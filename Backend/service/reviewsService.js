@@ -1,9 +1,11 @@
 var reviewsRepository = require('../repository/reviewsRepository');
-var articleRepository = require('../repository/articlesRepository')
+var articleRepository = require('../repository/articlesRepository');
+var userRepository = require('../repository/userRepository');
 var xmldom = require('xmldom');
 var XMLSerializer = xmldom.XMLSerializer;
 var DOMParser = xmldom.DOMParser;
 var xpath = require('xpath');
+
 
 
 var ns = "https://github.com/XML-tim17/ScientificArticles";
@@ -46,6 +48,32 @@ module.exports.postReview = async (reviewXML) => {
     // save review in exist
     let reviewCount = await reviewsRepository.incrementReviewCount(1);
     reviewsRepository.addNewReview(reviewXML, reviewCount);
+}
+
+module.exports.assignReviewers = async (articleId, version, reviewers) => {
+    // check article status
+    let status = await articleRepository.getStatusOf(articleId, version);
+    if (status !== 'toBeReviewed') {
+        throw new Error("Article already has reviewers.")
+    }
+    let articleURI = `article${articleId}/v${version}`
+    // assign article to reviewers
+    for(let email of reviewers) {
+        let exists = userRepository.existsByEmail(email);
+        if (!exists) {
+            throw new Error(`Reviewer with email ${email} does not exists.`)
+        }
+        await reviewsRepository.addArticleToReviewer(email, articleURI);
+
+        // TODO get role of reviewer and change if needed
+        let role = await userRepository.getUserRole(email);
+        if (role === "AUTHOR") {
+            await userRepository.setUserRole(email, "REVIEWER");
+        }
+    
+    }
+    // set article status to inReviewProcess
+    articleRepository.setStatus(articleId, version, 'inReviewProcess');
 }
 
 module.exports.saveXML = async (xml) => {

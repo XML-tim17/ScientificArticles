@@ -3,6 +3,8 @@ const getUserByEmail = require('../xquery/getUserByEmail');
 var xmldom = require('xmldom');
 var XMLSerializer = xmldom.XMLSerializer;
 var DOMParser = xmldom.DOMParser;
+const setUserRoleXQ = require('../xquery/setUserRole');
+const getUserRoleXQ = require('../xquery/getUserRole');
 
 const exist = require('@existdb/node-exist');
 const options = require('./config');
@@ -54,4 +56,15 @@ module.exports.incrementUserCount = async (incrementBy) => {
     await db.documents.parseLocal(fileHandle, `${usersURI}/user-sequencer.xml`, {});
 
     return userCount + incrementBy;
+}
+
+module.exports.setUserRole = async (email, role) => {
+    const db = exist.connect(options);
+    await db.queries.execute(setUserRoleXQ.query(email, role), {});
+}
+
+module.exports.getUserRole = async (email) => {
+    const db = exist.connect(options);
+    let result = await db.queries.readAll(getUserRoleXQ.query(email), {});
+    return Buffer.concat(result.pages).toString();
 }
