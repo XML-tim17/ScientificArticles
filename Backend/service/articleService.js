@@ -14,14 +14,15 @@ const test = require('./test');
 var ns1 = "https://github.com/XML-tim17/ScientificArticles";
 
 module.exports.addNewArticle = async (xml) => {
-    
+
     let articleDOM = (new DOMParser).parseFromString(xml, 'text/xml');
 
     articleDOM = checkAndGenerateIds(articleDOM);
 
-    articleXML = new XMLSerializer().serializeToString(articleDOM);
+    let articleXML = new XMLSerializer().serializeToString(articleDOM);
 
-    // transformed = await xsltService.transform(test.test.xml, test.test.xsl);
+    articleRDFa = await xsltService.transform(articleXML, fs.readFileSync('./xsl/article-to-rdfa.xsl', 'utf8'));
+    let articleRDFxml = await xsltService.transform(articleRDFa, fs.readFileSync('./xsl/grddl.xsl', 'utf8'));
     // save to rdf
 
     //update articleSequencer
@@ -41,7 +42,7 @@ module.exports.addNewArticle = async (xml) => {
 
 checkAndGenerateIds = (articleDOM) => {
     // validate ids
-    let select = xpath.useNamespaces({"ns1": ns1});
+    let select = xpath.useNamespaces({ "ns1": ns1 });
     let nodes = select('//@ns1:id', articleDOM)
     let ids = nodes.map(node => node.value)
 
@@ -52,7 +53,7 @@ checkAndGenerateIds = (articleDOM) => {
     let nsMap = select('/*', articleDOM)[0]._nsMap
     for (let key in nsMap) {
         if (nsMap[key] === ns1) {
-            prefix = key+':'
+            prefix = key + ':'
         }
     }
 
@@ -64,11 +65,11 @@ checkAndGenerateIds = (articleDOM) => {
     let allNodes = abstract.concat(figures).concat(tables).concat(sections).concat(quotes);
 
     let count = 1;
-    for(let node of allNodes) {
-        while(ids.includes(count.toString())) {
+    for (let node of allNodes) {
+        while (ids.includes(count.toString())) {
             count += 1;
         }
-        if(!node.getAttributeNS(ns1, 'id')) {
+        if (!node.getAttributeNS(ns1, 'id')) {
             node.setAttributeNS(ns1, prefix + 'id', count);
             count += 1;
         }
@@ -141,7 +142,7 @@ module.exports.getArticlesToReview = async (reviewerId) => {
 
 module.exports.setStatus = async (articleId, status) => {
     // check if status is valid according to state diagram
-    
+
     let version = await articlesRepository.getLastVersion(articleId);
     let currentStatus = await articlesRepository.getStatusOf(articleId, version);
     if (isNextStateValid(currentStatus, status)) {

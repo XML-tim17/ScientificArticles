@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ns1:article xmlns:ns1="https://github.com/XML-tim17/ScientificArticles"
- xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning"
+ xmlns="http://www.w3.org/ns/rdfa#"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="https://github.com/XML-tim17/ScientificArticles ./../../Article.xsd">
     <ns1:id>6942069</ns1:id>
