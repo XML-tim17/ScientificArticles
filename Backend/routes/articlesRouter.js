@@ -6,6 +6,7 @@ var router = express.Router();
 var articlesService = require('../service/articleService');
 var validator = require('xsd-schema-validator');
 const articleSchemaLocation = 'resources/XMLSchemas/Article.xsd';
+const authorizationService = require('../service/authorizationService')
 
 const validateDocument = (xml) => {
     return new Promise((resolve, reject) => {
@@ -16,7 +17,7 @@ const validateDocument = (xml) => {
       });
 }
 // get all published articles
-// VISITOR
+// GUEST
 router.get('', async (req, res) => {
     try {
         var documents = await articlesService.getAll();
@@ -31,6 +32,10 @@ router.get('', async (req, res) => {
 // AUTHOR
 router.post('', async (req, res) => {
     try {
+        if(!authorizationService.checkAuthorization(req, authorizationService.roles.author)) {
+            res.send("Unauthorized");
+            return;
+        }
         let valid = await validateDocument(req.body.data);
         if (valid) {
             let result = await articlesService.addNewArticle(req.body.data);
@@ -47,6 +52,10 @@ router.post('', async (req, res) => {
 // EDITOR
 router.get('/toBeReviewed', async (req, res) => {
     try {
+        if(!authorizationService.checkAuthorization(req, authorizationService.roles.editor)) {
+            res.send("Unauthorized");
+            return;
+        }
         var articles = await articlesService.toBeReviewed();
         res.send(articles);
     } catch (e) {
@@ -56,7 +65,7 @@ router.get('/toBeReviewed', async (req, res) => {
 
 // basic search
 // single url param q="search string"
-// VISITOR
+// GUEST
 router.get('/search', async (req, res) => {
     try {
         let result = await articlesService.basicSearch(req.param('q'))
@@ -68,7 +77,7 @@ router.get('/search', async (req, res) => {
 
 // advanced search (rdf metadata)
 // body params
-// VISITOR
+// GUEST
 router.post('/search', async (req, res) => {
     try {
         let result = await articlesService.advancedSearch(req.body.data);
@@ -82,6 +91,10 @@ router.post('/search', async (req, res) => {
 // AUTHOR
 router.get('/:documentId', async (req, res) => {
     try {
+        if(!authorizationService.checkAuthorization(req, authorizationService.roles.author)) {
+            res.send("Unauthorized");
+            return;
+        }
         // check if user has access to article
         var lastVersion = await articlesService.getLastVersion(+req.params.documentId);
         var dom = await articlesService.readXML(+req.params.documentId, lastVersion);
@@ -96,6 +109,10 @@ router.get('/:documentId', async (req, res) => {
 // AUTHOR
 router.post('/:articleId', async (req, res) => {
     try {
+        if(!authorizationService.checkAuthorization(req, authorizationService.roles.author)) {
+            res.send("Unauthorized");
+            return;
+        }
         let valid = await validateDocument(req.body.data);
         if (valid) {
             let result = await articlesService.postRevision(+req.params.articleId, req.body.data);
@@ -114,6 +131,10 @@ router.post('/:articleId', async (req, res) => {
 // AUTHOR
 router.get('/:articleId/reviews', async (req, res) => {
     try {
+        if(!authorizationService.checkAuthorization(req, authorizationService.roles.author)) {
+            res.send("Unauthorized");
+            return;
+        }
         // check if user has access to this article
         var reviews = await articlesService.getReviews(+req.params.articleId);
         res.send(reviews);
@@ -126,6 +147,10 @@ router.get('/:articleId/reviews', async (req, res) => {
 // UREDNIK
 router.get('/:articleId/status/:status', async (req, res) => {
     try {
+        if(!authorizationService.checkAuthorization(req, authorizationService.roles.editor)) {
+            res.send("Unauthorized");
+            return;
+        }
         await articlesService.setStatus(+req.params.articleId, req.params.status);
         res.send("success")
     } catch (e) {

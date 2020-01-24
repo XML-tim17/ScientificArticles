@@ -13,6 +13,8 @@ var authorsRouter = require('./routes/authorsRouter');
 
 var existRepository = require('./repository/existRepository');
 
+const authorizationInterceptor = require('./authorization/authorizationInterceptor')
+
 
 var app = express();
 
@@ -31,6 +33,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// jwt authorization intercepter
+app.use(async function(req, res, next) {
+  try {
+    req = await authorizationInterceptor.autorize(req);
+  } catch (e) {
+    next(e);
+    return;
+  }
+  next();
+})
 
 app.use('/articles', articlesRouter);
 app.use('/reviews', reviewsRouter);
