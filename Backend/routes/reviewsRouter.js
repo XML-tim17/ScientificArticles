@@ -20,7 +20,7 @@ const validateDocument = (xml) => {
 
 // post review
 // REVIEWER
-router.post('', async (req, res) => {
+router.post('', async (req, res, next) => {
     try {
         if(!authorizationService.checkAuthorization(req, authorizationService.roles.reviewer)) {
             let error = new Error('Unauthorized')
@@ -43,7 +43,7 @@ router.post('', async (req, res) => {
 
 // get articles to review
 // REVIEWER
-router.get('/toReview', async (req, res) => {
+router.get('/toReview', async (req, res, next) => {
     try {
         if(!authorizationService.checkAuthorization(req, authorizationService.roles.reviewer)) {
             let error = new Error('Unauthorized')
@@ -61,7 +61,7 @@ router.get('/toReview', async (req, res) => {
 // assign reviewers to article
 // EDITOR
 // expected json body { reviewers: [] }
-router.post('/assign/article/:articleId/version/:versionId', async (req, res) => {
+router.post('/assign/article/:articleId/version/:versionId', async (req, res, next) => {
     try {
         
         if(!authorizationService.checkAuthorization(req, authorizationService.roles.editor)) {
@@ -81,7 +81,7 @@ router.post('/assign/article/:articleId/version/:versionId', async (req, res) =>
 
 // // get single review
 // // AUTHOR
-// router.get('/:reviewId', async (req, res) => {
+// router.get('/:reviewId', async (req, res, next) => {
 //     try {
 //         var dom = await reviewsService.readXML(req.params.reviewId);
 //         var document = new XMLSerializer().serializeToString(dom)

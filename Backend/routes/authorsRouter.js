@@ -5,7 +5,7 @@ const authorizationService = require('../service/authorizationService')
 
 // get all articles for author (revision?)
 // AUTHOR
-router.get('/:authorId/articles/:status', async (req, res) => {
+router.get('/:authorId/articles/:status', async (req, res, next) => {
     try {
         if(!authorizationService.checkAuthorization(req, authorizationService.roles.author)) {
             let error = new Error('Unauthorized')
@@ -23,7 +23,7 @@ router.get('/:authorId/articles/:status', async (req, res) => {
 
 // get all authors ranked by correspondance with article
 // EDITOR
-router.get('/:articleId', async (req, res) => {
+router.get('/:articleId', async (req, res, next) => {
     try {
         if(!authorizationService.checkAuthorization(req, authorizationService.roles.editor)) {
             let error = new Error('Unauthorized')

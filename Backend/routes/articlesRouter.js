@@ -18,7 +18,7 @@ const validateDocument = (xml) => {
 }
 // get all published articles
 // GUEST
-router.get('', async (req, res) => {
+router.get('', async (req, res, next) => {
     try {
         var documents = await articlesService.getAll();
         res.send(documents);
@@ -30,7 +30,7 @@ router.get('', async (req, res) => {
 
 // post new article
 // AUTHOR
-router.post('', async (req, res) => {
+router.post('', async (req, res, next) => {
     try {
         if(!authorizationService.checkAuthorization(req, authorizationService.roles.author)) {
             let error = new Error('Unauthorized')
@@ -40,7 +40,7 @@ router.post('', async (req, res) => {
         }
         let valid = await validateDocument(req.body.data);
         if (valid) {
-            let result = await articlesService.addNewArticle(req.body.data);
+            let result = await articlesService.addNewArticle(req.body.data, req.user);
             res.send(result)
         } else {
             throw Error('Document is not valid according to schema.');
@@ -52,7 +52,7 @@ router.post('', async (req, res) => {
 
 // get all articles in toBeReviewed state
 // EDITOR
-router.get('/toBeReviewed', async (req, res) => {
+router.get('/toBeReviewed', async (req, res, next) => {
     try {
         if(!authorizationService.checkAuthorization(req, authorizationService.roles.editor)) {
             let error = new Error('Unauthorized')
@@ -70,7 +70,7 @@ router.get('/toBeReviewed', async (req, res) => {
 // basic search
 // single url param q="search string"
 // GUEST
-router.get('/search', async (req, res) => {
+router.get('/search', async (req, res, next) => {
     try {
         let result = await articlesService.basicSearch(req.param('q'))
         res.send(result);
@@ -82,7 +82,7 @@ router.get('/search', async (req, res) => {
 // advanced search (rdf metadata)
 // body params
 // GUEST
-router.post('/search', async (req, res) => {
+router.post('/search', async (req, res, next) => {
     try {
         let result = await articlesService.advancedSearch(req.body.data);
         res.send(result);
@@ -93,7 +93,7 @@ router.post('/search', async (req, res) => {
 
 // get article by id (last version)
 // AUTHOR
-router.get('/:documentId', async (req, res) => {
+router.get('/:documentId', async (req, res, next) => {
     try {
         if(!authorizationService.checkAuthorization(req, authorizationService.roles.author)) {
             let error = new Error('Unauthorized')
@@ -113,7 +113,7 @@ router.get('/:documentId', async (req, res) => {
 
 // post revision
 // AUTHOR
-router.post('/:articleId', async (req, res) => {
+router.post('/:articleId', async (req, res, next) => {
     try {
         if(!authorizationService.checkAuthorization(req, authorizationService.roles.author)) {
             let error = new Error('Unauthorized')
@@ -123,7 +123,7 @@ router.post('/:articleId', async (req, res) => {
         }
         let valid = await validateDocument(req.body.data);
         if (valid) {
-            let result = await articlesService.postRevision(+req.params.articleId, req.body.data);
+            let result = await articlesService.postRevision(+req.params.articleId, req.body.data, req.user);
             res.send(result)
         } else {
             throw Error('Document is not valid according to schema.');
@@ -137,7 +137,7 @@ router.post('/:articleId', async (req, res) => {
 
 // get all reviews for given article
 // AUTHOR
-router.get('/:articleId/reviews', async (req, res) => {
+router.get('/:articleId/reviews', async (req, res, next) => {
     try {
         if(!authorizationService.checkAuthorization(req, authorizationService.roles.author)) {
             let error = new Error('Unauthorized')
@@ -155,7 +155,7 @@ router.get('/:articleId/reviews', async (req, res) => {
 
 // change status of article
 // UREDNIK
-router.get('/:articleId/status/:status', async (req, res) => {
+router.get('/:articleId/status/:status', async (req, res, next) => {
     try {
         if(!authorizationService.checkAuthorization(req, authorizationService.roles.editor)) {
             let error = new Error('Unauthorized')

@@ -13,9 +13,17 @@ const test = require('./test');
 
 var ns1 = "https://github.com/XML-tim17/ScientificArticles";
 
-module.exports.addNewArticle = async (xml) => {
+module.exports.addNewArticle = async (xml, author) => {
 
     let articleDOM = (new DOMParser).parseFromString(xml, 'text/xml');
+
+    // check corresponding author === author
+    const authorValid = checkCorrespondingAuthor(articleDOM, author.email);
+    if(!authorValid) {
+        let error = new Error('Article must be submitted by its corresponding author');
+        error.status = 400;
+        throw error;
+    }
 
     articleDOM = checkAndGenerateIds(articleDOM);
 
@@ -38,6 +46,12 @@ module.exports.addNewArticle = async (xml) => {
     await articlesRepository.addNewArticle(xml, articleId, version);
 
     await articlesRepository.updateArticleId(articleId, version);
+}
+
+checkCorrespondingAuthor = (articleDOM, email) => {
+    let select = xpath.useNamespaces({ "ns1": ns1 });
+    let corrAuthorEmail = select('//ns1:info/ns1:authors/ns1:corresponding-author/ns1:email', articleDOM)[0].textContent;
+    return corrAuthorEmail === email;
 }
 
 checkAndGenerateIds = (articleDOM) => {
@@ -114,8 +128,8 @@ module.exports.toBeReviewed = async () => {
     return documents;
 }
 
-module.exports.postRevision = async (articleId, article) => {
-
+module.exports.postRevision = async (articleId, article, author) => {
+    
     let version = await articlesRepository.getLastVersion(articleId);
 
     const status = await articlesRepository.getStatusOf(articleId, version);
@@ -126,6 +140,22 @@ module.exports.postRevision = async (articleId, article) => {
     }
 
     let articleDOM = new DOMParser().parseFromString(article, 'text/xml');
+
+    const authorValid = checkCorrespondingAuthor(articleDOM, author.email);
+    if(!authorValid) {
+        let error = new Error('Article revision must be submitted by its corresponding author');
+        error.status = 400;
+        throw error;
+    }
+
+    const oldArticleDOM = await articlesRepository.readXML(articleId, version);
+
+    const previousAuthorValid = checkCorrespondingAuthor(oldArticleDOM, author.email);
+    if(!previousAuthorValid) {
+        let error = new Error('Article revision must have the same corresponding author as original article');
+        error.status = 400;
+        throw error;
+    }
 
     articleDOM = checkAndGenerateIds(articleDOM);
 

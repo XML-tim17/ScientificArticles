@@ -4,7 +4,7 @@ var express = require('express');
 var router = express.Router();
 
 
-router.get('/', async (req, res) => {
+router.get('/', async (req, res, next) => {
     try {
         var user = await userService.getUserByEmail(req.param('email'));
         res.send(user);
@@ -13,7 +13,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.get('/password', async (req, res) => {
+router.get('/password', async (req, res, next) => {
     try {
         var password = await userService.getPaswordOf(req.body.email);
         res.send(password);
@@ -33,7 +33,7 @@ router.get('/password', async (req, res) => {
 //         "country": "Serbija"
 //     }
 // }
-router.post('/register', async (req, res) => {
+router.post('/register', async (req, res, next) => {
     try {
         await userService.register(req.body);
         res.send("success");
@@ -42,7 +42,7 @@ router.post('/register', async (req, res) => {
     }   
 });
 
-router.post('/login', async (req, res) => {
+router.post('/login', async (req, res, next) => {
     try {
         let token = await userService.login(req.body.email, req.body.password);
         res.send(token)

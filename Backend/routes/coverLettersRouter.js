@@ -5,7 +5,7 @@ var DOMParser = xmldom.DOMParser;
 var router = express.Router();
 var coverLetterService = require('../service/coverLetterService');
 
-router.post('', async (req, res) => {
+router.post('', async (req, res, next) => {
     try {
         await coverLetterService.saveXML(req.body.data);
         res.send('created')
@@ -14,7 +14,7 @@ router.post('', async (req, res) => {
     }
 });
 
-router.get('/:coverLetterId', async (req, res) => {
+router.get('/:coverLetterId', async (req, res, next) => {
     try {
         var dom = await coverLetterService.readXML(req.params.coverLetterId);
         var document = new XMLSerializer().serializeToString(dom)
