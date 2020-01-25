@@ -13,7 +13,7 @@
                     <xs:simpleContent>
                         <xs:extension base="xs:string">
                             <xs:anyAttribute processContents="lax"
-                                namespace="https://www.w3.org/ns/rdfa#"/>
+                                namespace="##local"/>
                         </xs:extension>
                     </xs:simpleContent>
                 </xs:complexType>
@@ -34,7 +34,7 @@
                                 <xs:simpleContent>
                                     <xs:extension base="xs:date">
                                         <xs:anyAttribute processContents="lax"
-                                            namespace="https://www.w3.org/ns/rdfa#"/>
+                                            namespace="##local"/>
                                     </xs:extension>
                                 </xs:simpleContent>
                             </xs:complexType>
@@ -44,7 +44,7 @@
                                 <xs:simpleContent>
                                     <xs:extension base="xs:date">
                                         <xs:anyAttribute processContents="lax"
-                                            namespace="https://www.w3.org/ns/rdfa#"/>
+                                            namespace="##local"/>
                                     </xs:extension>
                                 </xs:simpleContent>
                             </xs:complexType>
@@ -54,7 +54,7 @@
                                 <xs:simpleContent>
                                     <xs:extension base="TStatus">
                                         <xs:anyAttribute processContents="lax"
-                                            namespace="https://www.w3.org/ns/rdfa#"/>
+                                            namespace="##local"/>
                                     </xs:extension>
                                 </xs:simpleContent>
                             </xs:complexType>
@@ -64,7 +64,7 @@
                                 <xs:simpleContent>
                                     <xs:extension base="xs:string">
                                         <xs:anyAttribute processContents="lax"
-                                            namespace="https://www.w3.org/ns/rdfa#"/>
+                                            namespace="##local"/>
                                     </xs:extension>
                                 </xs:simpleContent>
                             </xs:complexType>
@@ -76,14 +76,14 @@
             <xs:element ref="content"/>
             <xs:element ref="references"/>
         </xs:sequence>
-        <xs:anyAttribute processContents="lax" namespace="https://www.w3.org/ns/rdfa#"/>
+        <xs:anyAttribute processContents="lax" namespace="##local"/>
     </xs:complexType>
     <xs:element name="article" type="TArticle"> </xs:element>
     <xs:element name="author">
         <xs:complexType>
             <xs:complexContent>
                 <xs:extension base="TAuthor">
-                    <xs:anyAttribute processContents="lax" namespace="https://www.w3.org/ns/rdfa#"/>
+                    <xs:anyAttribute processContents="lax" namespace="##local"/>
                 </xs:extension>
             </xs:complexContent>
         </xs:complexType>
@@ -100,7 +100,7 @@
                                     <xs:simpleContent>
                                         <xs:extension base="xs:string">
                                             <xs:anyAttribute processContents="lax"
-                                                namespace="https://www.w3.org/ns/rdfa#"/>
+                                                namespace="##local"/>
                                         </xs:extension>
                                     </xs:simpleContent>
                                 </xs:complexType>
@@ -194,7 +194,7 @@
                         <xs:complexContent>
                             <xs:extension base="TAuthor">
                                 <xs:anyAttribute processContents="lax"
-                                    namespace="https://www.w3.org/ns/rdfa#"/>
+                                    namespace="##local"/>
                             </xs:extension>
                         </xs:complexContent>
                     </xs:complexType>
