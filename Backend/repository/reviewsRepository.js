@@ -7,6 +7,7 @@ const reviewsURI = '/db/scientificArticles/reviews';
 const addArticleToReviewer = require('../xquery/addArticleToReviewer');
 const getReviewsByArticleURIXQ = require('../xquery/gerReviewsByArticleURI');
 const getToReviewCountByArticleIdXQ = require('../xquery/getToReviewCountByArticleId');
+const existsByEmailAndArticleIdXQ = require('../xquery/reviewExistsByReviewerEmailAndArticleId')
 
 module.exports.saveXML = async (dom) => {
     var XMLstring = new XMLSerializer().serializeToString(dom);
@@ -66,5 +67,11 @@ module.exports.getArticleReviewCount = async (articleURI) => {
 module.exports.getToReviewByArticleId = async (articleId) => {
     const db = exist.connect(options);
     let result = await db.queries.readAll(getToReviewCountByArticleIdXQ.query(articleId), {});
+    return Buffer.concat(result.pages).toString();
+}
+
+module.exports.existsByEmailAndArticleURI = async (email, articleURI) => {
+    const db = exist.connect(options);
+    let result = await db.queries.readAll(existsByEmailAndArticleIdXQ.query(articleURI, email), {});
     return Buffer.concat(result.pages).toString();
 }

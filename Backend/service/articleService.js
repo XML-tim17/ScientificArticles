@@ -141,6 +141,7 @@ module.exports.postRevision = async (articleId, article, author) => {
 
     let articleDOM = new DOMParser().parseFromString(article, 'text/xml');
 
+    // validate corresponding author
     const authorValid = checkCorrespondingAuthor(articleDOM, author.email);
     if(!authorValid) {
         let error = new Error('Article revision must be submitted by its corresponding author');

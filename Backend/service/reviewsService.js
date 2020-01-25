@@ -17,6 +17,14 @@ module.exports.postReview = async (reviewXML, reviewer) => {
     let articleNode = select('//ns:article-id', reviewDOM)[0]
     let articleId = articleNode.firstChild.data; // example: article1/v1
 
+    // check if reviewer email is correct in review
+    let reviewerEmail = select('//ns:reviewer/ns:email', reviewDOM)[0].textContent;
+    if(reviewerEmail !== reviewer.email) {
+        let error = new Error('Reviewer email in review does not match users email.')
+        error.status = 400;
+        throw error;
+    }
+
     // check article state
     let status = await articleRepository.getStatusOfByURI(articleId);
     console.log('status', status);
@@ -27,9 +35,17 @@ module.exports.postReview = async (reviewXML, reviewer) => {
     }
     
 
-    // TODO check if user can review this article
+    // check if user can review this article
     if(!reviewer.toReview.includes(articleId.split('/')[0])) {
         let error = new Error('Article is not assigned to this reviewer');
+        error.status = 400;
+        throw error;
+    }
+
+    // check if user has already reviewed this article
+    const reviewed = await reviewsRepository.existsByEmailAndArticleURI(reviewer.email, articleId);
+    if (reviewed === 'true') {
+        let error = new Error('Article has already been reviewed by this user.')
         error.status = 400;
         throw error;
     }
@@ -51,7 +67,7 @@ module.exports.postReview = async (reviewXML, reviewer) => {
 
     // save review in exist
     let reviewCount = await reviewsRepository.incrementReviewCount(1);
-    reviewsRepository.addNewReview(reviewXML, reviewCount);
+    await reviewsRepository.addNewReview(reviewXML, reviewCount);
 
     // get count of reviews for article
     let articleReviewCount = await reviewsRepository.getArticleReviewCount(articleId);

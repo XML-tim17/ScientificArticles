@@ -3,12 +3,12 @@
  xmlns:ns1="https://github.com/XML-tim17/ScientificArticles"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="https://github.com/XML-tim17/ScientificArticles ./../../Review.xsd" judgment="accept">
-    <ns1:article-id>article11/v1</ns1:article-id>
+    <ns1:article-id>article13/v2</ns1:article-id>
     <ns1:reviewer>
         <ns1:name>Nikola Nikolić</ns1:name>
         <ns1:institution>Fakultet Tehničkih Nauka</ns1:institution>
         <ns1:phone-number>0634454335</ns1:phone-number>
-        <ns1:email>nn@gmail.com</ns1:email>
+        <ns1:email>nenad.misicaaaa@gmail.com</ns1:email>
         <ns1:address>
             <ns1:city>Novi Sad</ns1:city>
             <ns1:country>Srbija</ns1:country>
