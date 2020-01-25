@@ -1,0 +1,36 @@
+<mat-tab-group>
+  <ng-container *ngFor="let magija of magicalObject">
+    <mat-tab label="{{magija.label}}">
+      <table class="stretch">
+        <tr>
+          <td align="center">
+            <div class="container" *ngFor="let ht of magija.data">
+              <table class="lowstretch">
+                <tr>
+                  <td align="center">
+                    <div [innerHTML]="ht.html"></div>
+                  </td>
+                </tr>
+                <tr style="background-color: #696969">
+                  <td align="center">
+                    <button mat-raised-button [routerLink]="['/article', ht.id.substring(7)]">View article</button>
+                    <button mat-raised-button [routerLink]="['/articlePdf', ht.id.substring(7)]">View article (pdf)</button>
+                    <button mat-raised-button [disabled]="['inReviewProcess', 'toBeReviewed', 'reviewed', 'revisionRecieved'].indexOf(magija.status) !== -1">View review (pdf)</button>
+                    <button mat-raised-button [disabled]="magija.status !== 'revisionRequired'">Add revision</button>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </mat-tab>
+  </ng-container>
+
+
+</mat-tab-group>
+
+
+
+
+
