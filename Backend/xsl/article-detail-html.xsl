@@ -4,13 +4,9 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     version="2.0">
     <xsl:template match="ns1:article">
-        <html>
+        <!-- <html>
             <head>
                 <style>
-
-                    body {
-                        background: #e0e0e0;
-                    }
 
                     .article {
                         max-width: 75%;
@@ -47,20 +43,20 @@
                 </style>
             </head>
 
-            <body>
-                <div class="article">
-                    <table class="content">
+            <body> -->
+                <div class="article-detail-article">
+                    <table class="article-detail-content">
                         <xsl:apply-templates/>
                     </table>
                 </div>
-            </body>
-        </html>
+            <!-- </body>
+        </html> -->
     </xsl:template>
 
     <xsl:template match="ns1:article/ns1:title">
-        <tr class="heading">
+        <tr class="article-detail-heading">
             <td align="center">
-                <h1><xsl:apply-templates/></h1>
+                <h1 class="article-detail-h1"><xsl:apply-templates/></h1>
             </td>
         </tr>
     </xsl:template>
@@ -68,7 +64,7 @@
     <xsl:template match="ns1:article/ns1:info">
         <tr>
             <td align="center">
-                <table class="authors">
+                <table class="article-detail-authors">
                     <tr>
                         <td align="center" width="33%">
                                 <h4><xsl:value-of select="./ns1:authors/ns1:corresponding-author/ns1:name"></xsl:value-of></h4>
@@ -94,7 +90,7 @@
     <xsl:template match="ns1:abstract">
         <tr>
             <td align="left">
-                <div class="margin-big">
+                <div class="article-detail-margin-big">
                     <p><b>Abstract: </b> <xsl:apply-templates/></p>
                 </div>
             </td>
@@ -104,7 +100,7 @@
     <xsl:template match="ns1:content">
         <tr>
             <td align="left">
-                <div class="margin-big">
+                <div class="article-detail-margin-big">
                     <xsl:apply-templates/>
                 </div>
             </td>
@@ -134,7 +130,7 @@
     </xsl:template>
 
     <xsl:template match="ns1:table">
-        <table border="1px" class="margin-big child-padding5">
+        <table border="1px" class="article-detail-margin-big article-detail-child-padding5">
             <xsl:for-each select="./ns1:tr">
                 <tr>
                     <xsl:for-each select="./ns1:td">
@@ -157,7 +153,7 @@
                     <xsl:for-each select="./ns1:reference">
                     
                         <xsl:variable name="count" select="position()"/>
-                        <p class="margin">
+                        <p class="article-detail-margin">
                             
                             <b><xsl:value-of select="count"></xsl:value-of>. </b>
                             <xsl:for-each select="./ns1:referencedAuthors/ns1:referencedAuthor">
@@ -177,7 +173,7 @@
     </xsl:template>
 
     <xsl:template match="ns1:figure">
-        <table border="1px" class="margin child-padding5">
+        <table border="1px" class="article-detail-margin child-padding5">
             <tr>
                 <td align="center">
                     <img>
@@ -201,7 +197,7 @@
     </xsl:template>
 
     <xsl:template match="ns1:paragraph">
-        <p class="margin"><xsl:apply-templates/></p>
+        <p class="article-detail-margin"><xsl:apply-templates/></p>
     </xsl:template>
 
     <xsl:template match="ns1:quote">

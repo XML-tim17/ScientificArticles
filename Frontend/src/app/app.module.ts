@@ -14,6 +14,10 @@ import { JwtInterceptor } from './interceptors/jwt-interceptor';
 import { LoginComponent } from './login/login.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { RegisterComponent } from './register/register.component';
+import { MyArticlesComponent } from './my-articles/my-articles.component';
+import { ArticleViewComponent } from './article-view/article-view.component';
+import { SafePipe } from './pipes/safe.pipe';
+import { ArticleViewPdfComponent } from './article-view-pdf/article-view-pdf.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +26,11 @@ import { RegisterComponent } from './register/register.component';
     AddReviewComponent,
     LoginComponent,
     NavbarComponent,
-    RegisterComponent
+    RegisterComponent,
+    MyArticlesComponent,
+    ArticleViewComponent,
+    SafePipe,
+    ArticleViewPdfComponent,
   ],
   imports: [
     BrowserModule,

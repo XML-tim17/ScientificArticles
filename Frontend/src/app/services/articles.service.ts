@@ -12,4 +12,8 @@ export class ArticlesService {
   addArticle(xmlString: string) {
     return this.httpClient.post(environment.apiEndpoint + 'articles', { data: xmlString }).toPromise();
   }
+
+  getArticle(articleId: string) {
+    return this.httpClient.get(environment.apiEndpoint + 'articles/html/' + articleId).toPromise();
+  }
 }

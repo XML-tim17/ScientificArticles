@@ -5,14 +5,14 @@ const authorizationService = require('../service/authorizationService')
 
 // get all articles for author (revision?)
 // AUTHOR
-router.get('/:authorId/articles/:status', async (req, res) => {
+router.get('/articles/:status', async (req, res) => {
     try {
         if(!authorizationService.checkAuthorization(req, authorizationService.roles.author)) {
             res.send("Unauthorized");
             return;
         }
         // check if user has access
-        let articles = await this.authorsService.getArticles(req.params.authorId, req.params.status);
+        let articles = await authorsService.getArticles(req.user.email, req.params.status);
         res.send(articles);
     } catch (e) {
         res.send(e.message);
@@ -27,7 +27,7 @@ router.get('/:articleId', async (req, res) => {
             res.send("Unauthorized");
             return;
         }
-        let authors = await this.authorsService.getCorresponcingAuthors(req.params.articleId);
+        let authors = await authorsService.getCorresponcingAuthors(req.params.articleId);
         res.send(authors);
     } catch (e) {
         res.send(e.message);
