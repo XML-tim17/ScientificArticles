@@ -2,7 +2,7 @@
 const axios = require('axios');
 
 function decodeEntities(encodedString) {
-    return encodedString.replace(/&#(\d+);/gi, function(match, numStr) {
+    return encodedString.replace(/&#(\d+);/gi, function (match, numStr) {
         var num = parseInt(numStr, 10);
         return String.fromCharCode(num);
     });
@@ -14,7 +14,7 @@ module.exports.transform = async (xmlString, xsltString) => {
             xmlString,
             xsltString
         })
-        return decodeEntities(res);
+        return decodeEntities(res.data);
 
     } catch (e) {
         console.log(e);

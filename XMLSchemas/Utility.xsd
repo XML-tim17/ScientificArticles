@@ -54,7 +54,7 @@
                     <xs:simpleContent>
                         <xs:extension base="xs:string">
                             <xs:anyAttribute processContents="lax"
-                                namespace="https://www.w3.org/ns/rdfa#"/>
+                                namespace="##local"/>
                         </xs:extension>
                     </xs:simpleContent>
                 </xs:complexType>
@@ -64,7 +64,7 @@
                     <xs:simpleContent>
                         <xs:extension base="xs:string">
                             <xs:anyAttribute processContents="lax"
-                                namespace="https://www.w3.org/ns/rdfa#"/>
+                                namespace="##local"/>
                         </xs:extension>
                     </xs:simpleContent>
                 </xs:complexType>
@@ -74,7 +74,7 @@
                     <xs:simpleContent>
                         <xs:extension base="TPhoneNumber">
                             <xs:anyAttribute processContents="lax"
-                                namespace="https://www.w3.org/ns/rdfa#"/>
+                                namespace="##local"/>
                         </xs:extension>
                     </xs:simpleContent>
                 </xs:complexType>
@@ -84,7 +84,7 @@
                     <xs:simpleContent>
                         <xs:extension base="TEmail">
                             <xs:anyAttribute processContents="lax"
-                                namespace="https://www.w3.org/ns/rdfa#"/>
+                                namespace="##local"/>
                         </xs:extension>
                     </xs:simpleContent>
                 </xs:complexType>
@@ -97,7 +97,7 @@
                                 <xs:simpleContent>
                                     <xs:extension base="xs:string">
                                         <xs:anyAttribute processContents="lax"
-                                            namespace="https://www.w3.org/ns/rdfa#"/>
+                                            namespace="##local"/>
                                     </xs:extension>
                                 </xs:simpleContent>
                             </xs:complexType>
@@ -107,14 +107,14 @@
                                 <xs:simpleContent>
                                     <xs:extension base="xs:string">
                                         <xs:anyAttribute processContents="lax"
-                                            namespace="https://www.w3.org/ns/rdfa#"/>
+                                            namespace="##local"/>
                                     </xs:extension>
                                 </xs:simpleContent>
                             </xs:complexType>
                         </xs:element>
                     </xs:sequence>
                     <xs:anyAttribute processContents="lax"
-                        namespace="https://www.w3.org/ns/rdfa#"/>
+                        namespace="##local"/>
                 </xs:complexType>
             </xs:element>
         </xs:sequence>

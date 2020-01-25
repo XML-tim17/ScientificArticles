@@ -1,0 +1,33 @@
+<div class="container">
+    <mat-card>
+        <mat-card-title>Register</mat-card-title>
+        <mat-card-content>
+            <mat-form-field>
+                <input matInput type="text" placeholder="Email" [(ngModel)]="email">
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput type="password" placeholder="Password" [(ngModel)]="password">
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput type="password" placeholder="Confirm Password" [(ngModel)]="confirmPassword">
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput type="text" placeholder="Name" [(ngModel)]="name">
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput type="text" placeholder="Institution" [(ngModel)]="Institution">
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput type="text" placeholder="City" [(ngModel)]="city">
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput type="text" placeholder="Country" [(ngModel)]="country">
+            </mat-form-field>
+        </mat-card-content>
+        <mat-card-actions>
+            <div class="center">
+                <button mat-button (click)="register()">Register</button>
+            </div>
+        </mat-card-actions>
+    </mat-card>
+</div>

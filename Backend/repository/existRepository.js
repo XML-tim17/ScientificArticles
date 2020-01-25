@@ -3,7 +3,7 @@ const config = require('./config')
 const collectionsURI = '/db/scientificArticles';
 
 module.exports.createCollections = () => {
-    const db = exist.connect(config.options);
+    const db = exist.connect(config);
 
     db.collections.create(`${collectionsURI}/users`)
         .catch(e => console.error('fail', e));

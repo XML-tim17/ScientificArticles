@@ -1,0 +1,48 @@
+.container {
+  width: 40vw;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+input {
+    display: block;
+    width: 100%;
+}
+
+.mat-card-content {
+  justify-content: center;
+}
+
+.mat-card-actions {
+  justify-content: center;
+}
+
+.mat-card-title {
+  margin: 20px;
+}
+
+.mat-card {
+  width: 100%;
+  text-align: center;
+  margin-top: 20px;
+}
+
+button {
+  margin: 10px auto;
+  min-width: 100px;
+}
+
+.mat-form-field {
+  display: block;
+  margin: 10px auto;
+  width: 80%;
+  min-width: 500px;
+}
+
+.center{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
