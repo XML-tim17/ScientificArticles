@@ -14,6 +14,6 @@ export class ArticlesService {
   }
 
   getArticle(articleId: string) {
-    return this.httpClient.get(environment.apiEndpoint + 'articles/' + articleId).toPromise();
+    return this.httpClient.get(environment.apiEndpoint + 'articles/html/' + articleId).toPromise();
   }
 }

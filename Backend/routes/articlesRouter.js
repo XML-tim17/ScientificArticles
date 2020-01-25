@@ -109,7 +109,7 @@ router.post('/search', async (req, res) => {
 
 // get article by id (last version)
 // AUTHOR
-router.get('/:documentId', async (req, res) => {
+router.get('/html/:documentId', async (req, res) => {
     try {
         if(!authorizationService.checkAuthorization(req, authorizationService.roles.author)) {
             res.send("Unauthorized");
@@ -124,6 +124,26 @@ router.get('/:documentId', async (req, res) => {
         let xsltString = fs.readFileSync('./xsl/article-detail-html.xsl', 'utf8');
         let articleHtml = await xsltService.transform(document, xsltString);
         res.send({data: articleHtml});
+    } catch (e) {
+        res.send(e.message);
+    }
+});
+
+
+// get article by id (last version)
+// AUTHOR
+router.get('/:documentId', async (req, res) => {
+    try {
+        if(!authorizationService.checkAuthorization(req, authorizationService.roles.author)) {
+            res.send("Unauthorized");
+            return;
+        }
+        // check if user has access to article
+        var lastVersion = await articlesService.getLastVersion(+req.params.documentId);
+        var dom = await articlesService.readXML(+req.params.documentId, lastVersion);
+        var document = new XMLSerializer().serializeToString(dom)
+
+        res.send({data: document});
     } catch (e) {
         res.send(e.message);
     }
