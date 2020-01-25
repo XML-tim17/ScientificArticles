@@ -212,6 +212,7 @@
             <xs:enumeration value="rejected"/>
             <xs:enumeration value="revisionRequired"/>
             <xs:enumeration value="revisionRecieved"/>
+            <xs:enumeration value="outdated"/>
         </xs:restriction>
     </xs:simpleType>
     <xs:element name="referencedAuthor">

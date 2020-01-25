@@ -164,11 +164,13 @@ module.exports.postRevision = async (articleId, article, author) => {
 
     await articlesRepository.addNewArticle(articleXML, articleId, version + 1);
 
+    await articlesRepository.updateArticleId(articleId, version + 1);
+
     await this.setStatus(articleId, 'revisionRecieved');
 
     await articlesRepository.incrementVersionCount(articleId, 1);
 
-    await articlesRepository.setStatus(articleId, version, 'rejected');
+    await articlesRepository.setStatus(articleId, version, 'outdated');
 
     return "success";
 }
@@ -239,7 +241,8 @@ isNextStateValid = (currentState, nextState) => {
         'rejected': [],
         'accepted': [],
         'revisionRequired': ['revisionRecieved'],
-        'revisionRecieved': ['inReviewProcess', 'rejected', 'accepted']
+        'revisionRecieved': ['inReviewProcess', 'rejected', 'accepted'],
+        'outdated': []
     }
 
     return stateMachine[currentState].indexOf(nextState) !== -1;
