@@ -2,11 +2,11 @@
     <role>AUTHOR</role>
     <name>Nenad Mišić</name>
     <institution>Fakultet Tehničkih Nauka</institution>
-    <phone-number>0652772886</phone-number>
+    <phoneNumber>0652772886</phoneNumber>
     <email>nenad.misic@gmail.com</email>
     <address>
         <city>Novi Sad</city>
         <country>Srbija</country>
     </address>
-    <to-review></to-review>
+    <toReview></toReview>
 </user>

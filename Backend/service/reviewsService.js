@@ -10,7 +10,7 @@ var xpath = require('xpath');
 
 var ns = "https://github.com/XML-tim17/ScientificArticles";
 
-module.exports.postReview = async (reviewXML) => {
+module.exports.postReview = async (reviewXML, reviewer) => {
     // get article id
     let reviewDOM = new DOMParser().parseFromString(reviewXML, 'text/xml');
     let select = xpath.useNamespaces({'ns': ns})
@@ -25,10 +25,10 @@ module.exports.postReview = async (reviewXML) => {
     }
     
 
-    // TODO check  if user can review this article
-
-    // TODO validate review xml by schema
-
+    // TODO check if user can review this article
+    if(!reviewer.toReview.includes(articleId.split('/')[0])) {
+        throw new Error('Article is not assigned to this reviewer');
+    }
 
     // get aricle by id
     let articleDOM = await articleRepository.getById(articleId);
@@ -43,11 +43,19 @@ module.exports.postReview = async (reviewXML) => {
         }
     }
 
-    // TODO set article state to Reviewed if all reviews done
-
     // save review in exist
     let reviewCount = await reviewsRepository.incrementReviewCount(1);
     reviewsRepository.addNewReview(reviewXML, reviewCount);
+
+    // get count of reviews for article
+    let articleReviewCount = await reviewsRepository.getArticleReviewCount(articleId);
+
+    // get count of needed reviews for article
+    let toReviewCount = await reviewsRepository.getToReviewByArticleId(articleId.split('/')[0])
+
+    if (articleReviewCount >= toReviewCount) {
+        articleRepository.setStatusByURI(articleId, 'reviewed');
+    }
 }
 
 module.exports.assignReviewers = async (articleId, version, reviewers) => {
@@ -63,7 +71,7 @@ module.exports.assignReviewers = async (articleId, version, reviewers) => {
         if (!exists) {
             throw new Error(`Reviewer with email ${email} does not exists.`)
         }
-        await reviewsRepository.addArticleToReviewer(email, articleURI);
+        await reviewsRepository.addArticleToReviewer(email, `article${articleId}`);
 
         // TODO get role of reviewer and change if needed
         let role = await userRepository.getUserRole(email);

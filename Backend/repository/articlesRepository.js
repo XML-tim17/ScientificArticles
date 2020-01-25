@@ -14,6 +14,8 @@ const getArticleStatusByURI = require('../xquery/getArticleStatusByURI');
 const updateArticleStatus = require('../xquery/updateArticleStatus');
 const updateArticleId = require('../xquery/updateArticleId');
 
+const setArticleStatusByURI = require('../xquery/setArticleStatusByURI');
+
 module.exports.addNewArticle = async (xmlString, articleId, version) => {
     const db = exist.connect(options);
     fileHandle = await db.documents.upload(Buffer.from(xmlString));
@@ -124,6 +126,11 @@ module.exports.getStatusOfByURI = async (articleURI) => {
 module.exports.setStatus = async (articleId, version, status) => {
     const db = exist.connect(options);
     await db.queries.execute(updateArticleStatus.query(articleId, version, status), {});
+}
+
+module.exports.setStatusByURI = async (articleURI, status) => {
+    const db = exist.connect(options);
+    await db.queries.execute(setArticleStatusByURI.query(articleURI, status), {});
 }
 
 module.exports.updateArticleId = async (articleId, version) => {

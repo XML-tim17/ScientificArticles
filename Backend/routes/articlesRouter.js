@@ -158,6 +158,25 @@ router.get('/:articleId/status/:status', async (req, res) => {
     }
 })
 
+// request revision of article
+// EDITOR
+router.get('/:articleId/requestRevision', async (req, res, next) => {
+    try {
+        if(!authorizationService.checkAuthorization(req, authorizationService.roles.editor)) {
+            let error = new Error('Unauthorized')
+            error.status = 403;
+            next(error);
+            return;
+        }
+        await articlesService.requestRevision(req.params.articleId);
+        res.send("success");
+
+
+    } catch (e) {
+        next(e);
+    }
+})
+
 module.exports = router;
 
 

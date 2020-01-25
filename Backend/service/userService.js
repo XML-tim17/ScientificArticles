@@ -69,7 +69,7 @@ userDomToObject = (userDOM) => {
     let role = xpath.select('//role', userDOM)[0].textContent;
     let toReview;
     try {
-        toReview = xpath.select('//articleId')
+        toReview = xpath.select('//toReview/articleId', userDOM)
             .map(node => node.textContent);
     } catch (e) {
         toReview = [];

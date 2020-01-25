@@ -30,7 +30,7 @@ router.post('', async (req, res) => {
         if (!valid) {
             throw new Error('Invalid review, document does not match required scheme.')
         }
-        await reviewsService.postReview(req.body.data);
+        await reviewsService.postReview(req.body.data, req.user);
         res.send('created')
     } catch (e) {
         console.log(e);

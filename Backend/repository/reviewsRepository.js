@@ -5,6 +5,8 @@ const exist = require('@existdb/node-exist');
 const options = require('./config');
 const reviewsURI = '/db/scientificArticles/reviews';
 const addArticleToReviewer = require('../xquery/addArticleToReviewer');
+const getReviewsByArticleURIXQ = require('../xquery/gerReviewsByArticleURI');
+const getToReviewCountByArticleIdXQ = require('../xquery/getToReviewCountByArticleId');
 
 module.exports.saveXML = async (dom) => {
     var XMLstring = new XMLSerializer().serializeToString(dom);
@@ -52,4 +54,17 @@ module.exports.incrementReviewCount = async (incrementBy) => {
 module.exports.addArticleToReviewer = async (email, articleURI) => {
     const db = exist.connect(options);
     await db.queries.execute(addArticleToReviewer.query(email, articleURI), {});
+}
+
+module.exports.getArticleReviewCount = async (articleURI) => {
+    const db = exist.connect(options);
+    let result = await db.queries.readAll(getReviewsByArticleURIXQ.query(articleURI), {});
+    return Buffer.concat(result.pages).toString();
+    
+}
+
+module.exports.getToReviewByArticleId = async (articleId) => {
+    const db = exist.connect(options);
+    let result = await db.queries.readAll(getToReviewCountByArticleIdXQ.query(articleId), {});
+    return Buffer.concat(result.pages).toString();
 }

@@ -151,6 +151,18 @@ module.exports.setStatus = async (articleId, status) => {
     }
 
     return false;
+}
+
+module.exports.requestRevision = async (articleId) => {
+    const version = await articlesRepository.getLastVersion(articleId);
+    let status = await articlesRepository.getStatusOf(articleId, version);
+
+    if (status !== 'reviewed') {
+        let error = new Error('Article is not reviewed');
+        error.status = 400;
+        throw error;
+    }
+    await articlesRepository.setStatus(articleId, version, 'revisionRequired');
 
 }
 
