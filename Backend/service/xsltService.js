@@ -18,6 +18,8 @@ module.exports.transform = async (xmlString, xsltString) => {
 
     } catch (e) {
         console.log(e);
-        throw new Error('xsl transformation error');
+        let error = new Error('xsl transformation error');
+        error.status = 400;
+        throw error;
     }
 }

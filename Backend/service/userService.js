@@ -23,7 +23,9 @@ module.exports.register = async (userObject) => {
     // check if email exists
     let exists = await userRepository.existsByEmail(userObject.email);
     if (exists === 'true') {
-        throw new Error(`User with email ${userObject.email} already exists.`)
+        let error = new Error(`User with email ${userObject.email} already exists.`)
+        error.status = 400;
+        throw error;
     }
     userObject.toReview = [];
     // create xml from object
@@ -31,7 +33,9 @@ module.exports.register = async (userObject) => {
     try {
          userXML = userObjectToXml(userObject);
     } catch (e) {
-        throw new Error(`Invalid user data: ${e.message}`);
+        let error = new Error(`Invalid user data: ${e.message}`);
+        error.status = 400;
+        throw error;
     }
     
     // write to database
@@ -93,14 +97,18 @@ module.exports.login = async (email, password) => {
     // check username and password
     let exists = await userRepository.existsByEmail(email);
     if (!exists) {
-        throw new Error("Username or passwrod incorrect.")
+        let error = new Error("Username or passwrod incorrect.")
+        error.status = 400;
+        throw error;
     }
     let userXML = await userRepository.getUserByEmail(email);
     let userDOM = new DOMParser().parseFromString(userXML, 'text/xml');
     
     let userPassword = xpath.select('//password', userDOM)[0].textContent;
     if (userPassword !== password) {
-        throw new Error("Username or password incorrect.");
+        let error = new Error("Username or password incorrect.");
+        error.status = 400;
+        throw error;
     }
 
     const userObject = userDomToObject(userDOM);
@@ -113,7 +121,9 @@ module.exports.getUserForAuthorizaiton = async (userAutorization) => {
     // check username and password
     let exists = await userRepository.existsByEmail(userAutorization.email);
     if (!exists) {
-        throw new Error("Bad authorization")
+        let error = new Error("Bad authorization");
+        error.status = 400;
+        throw error;
     }
     let userXML = await userRepository.getUserByEmail(userAutorization.email);
     let userDOM = new DOMParser().parseFromString(userXML, 'text/xml');

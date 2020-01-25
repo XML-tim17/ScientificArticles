@@ -10,7 +10,7 @@ router.post('', async (req, res) => {
         await coverLetterService.saveXML(req.body.data);
         res.send('created')
     } catch (e) {
-        res.send(e.message);
+        next(e);
     }
 });
 
@@ -20,7 +20,7 @@ router.get('/:coverLetterId', async (req, res) => {
         var document = new XMLSerializer().serializeToString(dom)
         res.send(document);
     } catch (e) {
-        res.send(e.message);
+        next(e);
     }
 });
 

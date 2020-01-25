@@ -46,7 +46,11 @@ checkAndGenerateIds = (articleDOM) => {
     let nodes = select('//@ns1:id', articleDOM)
     let ids = nodes.map(node => node.value)
 
-    if (_.uniq(ids).length !== ids.length) throw new Error('Invalid article, duplicate ids found.')
+    if (_.uniq(ids).length !== ids.length) {
+        const error = new Error('Invalid article, duplicate ids found.')
+        error.status = 400;
+        throw error;
+    } 
 
     //generate ids
     let prefix = '';
@@ -114,9 +118,28 @@ module.exports.postRevision = async (articleId, article) => {
 
     let version = await articlesRepository.getLastVersion(articleId);
 
-    await articlesRepository.addNewArticle(article, articleId, version + 1);
+    const status = await articlesRepository.getStatusOf(articleId, version);
+    if (status !== 'revisionRequired') {
+        let error = new Error('Article does not require revision');
+        error.status = 400;
+        throw error;
+    }
 
-    articlesRepository.incrementVersionCount(articleId, 1);
+    let articleDOM = new DOMParser().parseFromString(article, 'text/xml');
+
+    articleDOM = checkAndGenerateIds(articleDOM);
+
+    let articleXML = new XMLSerializer().serializeToString(articleDOM);
+
+    await articlesRepository.addNewArticle(articleXML, articleId, version + 1);
+
+    await this.setStatus(articleId, 'revisionRecieved');
+
+    await articlesRepository.incrementVersionCount(articleId, 1);
+
+    await articlesRepository.setStatus(articleId, version, 'rejected');
+
+    return "success";
 }
 
 module.exports.basicSearch = async (queryString) => {

@@ -15,6 +15,7 @@ import { LoginComponent } from './login/login.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { RegisterComponent } from './register/register.component';
 import { ToReviewComponent } from './to-review/to-review.component';
+import { PostRevisionComponent } from './post-revision/post-revision.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { ToReviewComponent } from './to-review/to-review.component';
     LoginComponent,
     NavbarComponent,
     RegisterComponent,
-    ToReviewComponent
+    ToReviewComponent,
+    PostRevisionComponent
   ],
   imports: [
     BrowserModule,

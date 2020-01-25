@@ -23,7 +23,7 @@ router.get('', async (req, res) => {
         var documents = await articlesService.getAll();
         res.send(documents);
     } catch (e) {
-        res.send(e.message);
+        next(e);
     }
 });
 
@@ -46,7 +46,7 @@ router.post('', async (req, res) => {
             throw Error('Document is not valid according to schema.');
         }
     } catch (e) {
-        res.send(e.message);
+        next(e);
     }
 });
 
@@ -63,7 +63,7 @@ router.get('/toBeReviewed', async (req, res) => {
         var articles = await articlesService.toBeReviewed();
         res.send(articles);
     } catch (e) {
-        res.send(e.message);
+        next(e);
     }
 });
 
@@ -75,7 +75,7 @@ router.get('/search', async (req, res) => {
         let result = await articlesService.basicSearch(req.param('q'))
         res.send(result);
     } catch (e) {
-        res.send(e.message);
+        next(e);
     }
 })
 
@@ -87,7 +87,7 @@ router.post('/search', async (req, res) => {
         let result = await articlesService.advancedSearch(req.body.data);
         res.send(result);
     } catch (e) {
-        res.send(e.message);
+        next(e);
     }
 })
 
@@ -107,7 +107,7 @@ router.get('/:documentId', async (req, res) => {
         var document = new XMLSerializer().serializeToString(dom)
         res.send(document);
     } catch (e) {
-        res.send(e.message);
+        next(e);
     }
 });
 
@@ -129,7 +129,7 @@ router.post('/:articleId', async (req, res) => {
             throw Error('Document is not valid according to schema.');
         }
     } catch (e) {
-        res.send(e.message);
+        next(e);
     }
 });
 
@@ -166,7 +166,7 @@ router.get('/:articleId/status/:status', async (req, res) => {
         await articlesService.setStatus(+req.params.articleId, req.params.status);
         res.send("success")
     } catch (e) {
-        res.send(e.message);
+        next(e);
     }
 })
 

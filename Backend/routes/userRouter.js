@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
         var user = await userService.getUserByEmail(req.param('email'));
         res.send(user);
     } catch (e) {
-        res.send(e.message);
+        next(e);
     }
 });
 
@@ -18,7 +18,7 @@ router.get('/password', async (req, res) => {
         var password = await userService.getPaswordOf(req.body.email);
         res.send(password);
     } catch (e) {
-        res.send(e.message);
+        next(e);
     }
 });
 
@@ -38,7 +38,7 @@ router.post('/register', async (req, res) => {
         await userService.register(req.body);
         res.send("success");
     } catch (e) {
-        res.send(e.message);
+        next(e);
     }   
 });
 
@@ -47,7 +47,7 @@ router.post('/login', async (req, res) => {
         let token = await userService.login(req.body.email, req.body.password);
         res.send(token)
     } catch (e) {
-        res.send(e.message);
+        next(e);
     }
 
 });

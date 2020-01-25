@@ -16,4 +16,8 @@ export class ArticlesService {
   getToReview() {
     return this.httpClient.get(`${environment.apiEndpoint}reviews/toReview`).toPromise();
   }
+
+  postRevision(id, xmlString: string) {
+    return this.httpClient.post(`${environment.apiEndpoint}articles/${id}`, { data: xmlString }).toPromise();
+  }
 }

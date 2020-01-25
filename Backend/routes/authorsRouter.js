@@ -17,7 +17,7 @@ router.get('/:authorId/articles/:status', async (req, res) => {
         let articles = await this.authorsService.getArticles(req.params.authorId, req.params.status);
         res.send(articles);
     } catch (e) {
-        res.send(e.message);
+        next(e);
     }
 })
 
@@ -34,7 +34,7 @@ router.get('/:articleId', async (req, res) => {
         let authors = await this.authorsService.getCorresponcingAuthors(req.params.articleId);
         res.send(authors);
     } catch (e) {
-        res.send(e.message);
+        next(e);
     }
 })
 

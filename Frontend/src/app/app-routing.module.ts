@@ -1,3 +1,4 @@
+import { PostRevisionComponent } from './post-revision/post-revision.component';
 import { ToReviewComponent } from './to-review/to-review.component';
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
@@ -13,6 +14,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent},
   { path: 'register', component: RegisterComponent},
   { path: 'toReview', component: ToReviewComponent},
+  { path: 'postRevision/:id', component: PostRevisionComponent},
 ];
 
 @NgModule({

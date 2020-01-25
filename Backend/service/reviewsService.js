@@ -21,13 +21,17 @@ module.exports.postReview = async (reviewXML, reviewer) => {
     let status = await articleRepository.getStatusOfByURI(articleId);
     console.log('status', status);
     if (status !== 'inReviewProcess') {
-        throw new Error('Invalid review, target article is not in review process.');
+        let error = new Error('Invalid review, target article is not in review process.')
+        error.status = 400;
+        throw error;
     }
     
 
     // TODO check if user can review this article
     if(!reviewer.toReview.includes(articleId.split('/')[0])) {
-        throw new Error('Article is not assigned to this reviewer');
+        let error = new Error('Article is not assigned to this reviewer');
+        error.status = 400;
+        throw error;
     }
 
     // get aricle by id
@@ -39,7 +43,9 @@ module.exports.postReview = async (reviewXML, reviewer) => {
 
     for (let ref_id of ref_ids) {
         if(!ids.includes(ref_id)) {
-            throw new Error('Invalid review, comment references non existing id');
+            let error =  new Error('Invalid review, comment references non existing id');
+            error.status = 400;
+            throw error;
         }
     }
 
@@ -62,14 +68,18 @@ module.exports.assignReviewers = async (articleId, version, reviewers) => {
     // check article status
     let status = await articleRepository.getStatusOf(articleId, version);
     if (status !== 'toBeReviewed') {
-        throw new Error("Article already has reviewers.")
+        let error = new Error("Article already has reviewers.")
+        error.status = 400;
+        throw error;
     }
     let articleURI = `article${articleId}/v${version}`
     // assign article to reviewers
     for(let email of reviewers) {
         let exists = userRepository.existsByEmail(email);
         if (!exists) {
-            throw new Error(`Reviewer with email ${email} does not exists.`)
+            let error = new Error(`Reviewer with email ${email} does not exists.`)
+            error.status = 400;
+            throw error;
         }
         await reviewsRepository.addArticleToReviewer(email, `article${articleId}`);
 

@@ -36,7 +36,7 @@ router.post('', async (req, res) => {
         res.send('created')
     } catch (e) {
         console.log(e);
-        res.send(e.message);
+        next(e);
     }
 });
 
@@ -54,7 +54,7 @@ router.get('/toReview', async (req, res) => {
         let articles = await articlesService.getArticlesToReview(req.user);
         res.send(articles);
     } catch (e) {
-        res.send(e.message);
+        next(e);
     }
 })
 
@@ -75,7 +75,7 @@ router.post('/assign/article/:articleId/version/:versionId', async (req, res) =>
         res.send("success");
         
     } catch (e) {
-        res.send(e.message);
+        next(e);
     }
 })
 
@@ -87,7 +87,7 @@ router.post('/assign/article/:articleId/version/:versionId', async (req, res) =>
 //         var document = new XMLSerializer().serializeToString(dom)
 //         res.send(document);
 //     } catch (e) {
-//         res.send(e.message);
+//         next(e);
 //     }
 // });
 
