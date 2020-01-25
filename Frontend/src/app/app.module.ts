@@ -16,6 +16,10 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { RegisterComponent } from './register/register.component';
 import { ToReviewComponent } from './to-review/to-review.component';
 import { PostRevisionComponent } from './post-revision/post-revision.component';
+import { MyArticlesComponent } from './my-articles/my-articles.component';
+import { ArticleViewComponent } from './article-view/article-view.component';
+import { SafePipe } from './pipes/safe.pipe';
+import { ArticleViewPdfComponent } from './article-view-pdf/article-view-pdf.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +30,11 @@ import { PostRevisionComponent } from './post-revision/post-revision.component';
     NavbarComponent,
     RegisterComponent,
     ToReviewComponent,
-    PostRevisionComponent
+    PostRevisionComponent,
+    MyArticlesComponent,
+    ArticleViewComponent,
+    SafePipe,
+    ArticleViewPdfComponent,
   ],
   imports: [
     BrowserModule,

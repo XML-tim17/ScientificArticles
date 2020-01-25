@@ -3,3 +3,72 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-color: #333333; }
+
+.list-item-article {
+  max-width: 100%;
+  margin: auto;
+  background: white;
+  padding: 10px;
+}
+
+.list-item-content {
+  width: 100%;
+}
+
+.list-item-margin {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.list-item-margin-big {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.list-item-card {
+  background: #fff;
+  box-shadow: 0 15px 30px rgba(255,255,255,0.12), 0 5px 5px rgba(255,255,255,0.24);
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+
+/*.list-item-card:hover {*/
+  /*box-shadow: 0 14px 28px rgba(255,255,255,0.25), 0 10px 10px rgba(255,255,255,0.22);*/
+/*}*/
+
+.list-item-authorColumn {
+  width: 1%;
+}
+
+
+.article-detail-article {
+  max-width: 75%;
+  margin: auto;
+  background: white;
+  padding: 10px;
+}
+
+.article-detail-content {
+  width: 100%;
+}
+
+.article-detail-h1 {
+  margin-bottom: 40px;
+}
+
+.article-detail-authors {
+  width: 100%;
+}
+
+.article-detail-margin {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.article-detail-margin-big {
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+.article-detail-child-padding5 * {
+  padding: 5px;
+}
