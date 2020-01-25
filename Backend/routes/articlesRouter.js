@@ -33,7 +33,9 @@ router.get('', async (req, res) => {
 router.post('', async (req, res) => {
     try {
         if(!authorizationService.checkAuthorization(req, authorizationService.roles.author)) {
-            res.send("Unauthorized");
+            let error = new Error('Unauthorized')
+            error.status = 403;
+            next(error);
             return;
         }
         let valid = await validateDocument(req.body.data);
@@ -53,7 +55,9 @@ router.post('', async (req, res) => {
 router.get('/toBeReviewed', async (req, res) => {
     try {
         if(!authorizationService.checkAuthorization(req, authorizationService.roles.editor)) {
-            res.send("Unauthorized");
+            let error = new Error('Unauthorized')
+            error.status = 403;
+            next(error);
             return;
         }
         var articles = await articlesService.toBeReviewed();
@@ -92,7 +96,9 @@ router.post('/search', async (req, res) => {
 router.get('/:documentId', async (req, res) => {
     try {
         if(!authorizationService.checkAuthorization(req, authorizationService.roles.author)) {
-            res.send("Unauthorized");
+            let error = new Error('Unauthorized')
+            error.status = 403;
+            next(error);
             return;
         }
         // check if user has access to article
@@ -110,7 +116,9 @@ router.get('/:documentId', async (req, res) => {
 router.post('/:articleId', async (req, res) => {
     try {
         if(!authorizationService.checkAuthorization(req, authorizationService.roles.author)) {
-            res.send("Unauthorized");
+            let error = new Error('Unauthorized')
+            error.status = 403;
+            next(error);
             return;
         }
         let valid = await validateDocument(req.body.data);
@@ -132,14 +140,16 @@ router.post('/:articleId', async (req, res) => {
 router.get('/:articleId/reviews', async (req, res) => {
     try {
         if(!authorizationService.checkAuthorization(req, authorizationService.roles.author)) {
-            res.send("Unauthorized");
+            let error = new Error('Unauthorized')
+            error.status = 403;
+            next(error);
             return;
         }
         // check if user has access to this article
         var reviews = await articlesService.getReviews(+req.params.articleId);
         res.send(reviews);
     } catch(e) {
-        res.send(e.message);
+        next(e);
     }
 })
 
@@ -148,7 +158,9 @@ router.get('/:articleId/reviews', async (req, res) => {
 router.get('/:articleId/status/:status', async (req, res) => {
     try {
         if(!authorizationService.checkAuthorization(req, authorizationService.roles.editor)) {
-            res.send("Unauthorized");
+            let error = new Error('Unauthorized')
+            error.status = 403;
+            next(error);
             return;
         }
         await articlesService.setStatus(+req.params.articleId, req.params.status);

@@ -8,7 +8,9 @@ const authorizationService = require('../service/authorizationService')
 router.get('/:authorId/articles/:status', async (req, res) => {
     try {
         if(!authorizationService.checkAuthorization(req, authorizationService.roles.author)) {
-            res.send("Unauthorized");
+            let error = new Error('Unauthorized')
+            error.status = 403;
+            next(error);
             return;
         }
         // check if user has access
@@ -24,7 +26,9 @@ router.get('/:authorId/articles/:status', async (req, res) => {
 router.get('/:articleId', async (req, res) => {
     try {
         if(!authorizationService.checkAuthorization(req, authorizationService.roles.editor)) {
-            res.send("Unauthorized");
+            let error = new Error('Unauthorized')
+            error.status = 403;
+            next(error);
             return;
         }
         let authors = await this.authorsService.getCorresponcingAuthors(req.params.articleId);

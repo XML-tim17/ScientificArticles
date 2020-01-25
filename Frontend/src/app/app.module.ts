@@ -14,6 +14,7 @@ import { JwtInterceptor } from './interceptors/jwt-interceptor';
 import { LoginComponent } from './login/login.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { RegisterComponent } from './register/register.component';
+import { ToReviewComponent } from './to-review/to-review.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { RegisterComponent } from './register/register.component';
     AddReviewComponent,
     LoginComponent,
     NavbarComponent,
-    RegisterComponent
+    RegisterComponent,
+    ToReviewComponent
   ],
   imports: [
     BrowserModule,

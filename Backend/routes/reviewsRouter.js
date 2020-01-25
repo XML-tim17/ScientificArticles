@@ -23,7 +23,9 @@ const validateDocument = (xml) => {
 router.post('', async (req, res) => {
     try {
         if(!authorizationService.checkAuthorization(req, authorizationService.roles.reviewer)) {
-            res.send("Unauthorized");
+            let error = new Error('Unauthorized')
+            error.status = 403;
+            next(error);
             return;
         }
         let valid = validateDocument(req.body.data);
@@ -39,15 +41,17 @@ router.post('', async (req, res) => {
 });
 
 
-// get article to review
+// get articles to review
 // REVIEWER
-router.get('/:reviewerId/articles', async (req, res) => {
+router.get('/toReview', async (req, res) => {
     try {
         if(!authorizationService.checkAuthorization(req, authorizationService.roles.reviewer)) {
-            res.send("Unauthorized");
+            let error = new Error('Unauthorized')
+            error.status = 403;
+            next(error);
             return;
         }
-        let articles = await this.articlesService.getArticlesToReview(reviewerId);
+        let articles = await articlesService.getArticlesToReview(req.user);
         res.send(articles);
     } catch (e) {
         res.send(e.message);
@@ -61,7 +65,9 @@ router.post('/assign/article/:articleId/version/:versionId', async (req, res) =>
     try {
         
         if(!authorizationService.checkAuthorization(req, authorizationService.roles.editor)) {
-            res.send("Unauthorized");
+            let error = new Error('Unauthorized')
+            error.status = 403;
+            next(error);
             return;
         }
 

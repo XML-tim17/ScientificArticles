@@ -133,11 +133,22 @@ module.exports.advancedSearch = async (searchData) => {
 }
 
 
-module.exports.getArticlesToReview = async (reviewerId) => {
+module.exports.getArticlesToReview = async (reviewer) => {
     result = [];
     // get articles that reviewer should review
+    let articleList = [];
+    for(let articleId of reviewer.toReview) {
+        articleId = +articleId.substring(7)
+        const version = await articlesRepository.getLastVersion(articleId);
+        const status = await articlesRepository.getStatusOf(articleId, version);
+        if (status === "inReviewProcess") {
+            let articleXML = await articlesRepository.readXML(articleId, version);
+            articleList.push(new XMLSerializer().serializeToString(articleXML))
+        }
+    }
     // extract simple data
-    return result;
+
+    return articleList;
 }
 
 module.exports.setStatus = async (articleId, status) => {
