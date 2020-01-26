@@ -3,6 +3,9 @@ const FormData = require('form-data');
 const baseUrl = require('./rdfConfig');
 const querystring = require('querystring');
 const memfs = require('memfs');
+const setArticleStatus = require('../sparql/setArticleStatus');
+const updateArticleId = require('../sparql/updateArticleId');
+const advancedArticleSearch = require('../sparql/advancedArticleSearch');
 const datasetName = 'articlesDS';
 const rdfSubjectBase = 'https://github.com/XML-tim17/ScientificArticles';
 
@@ -34,32 +37,23 @@ module.exports.saveRDFxml = async (rdfXML) => {
 
 module.exports.setStatus = async (articleId, version, status) => {
     const rdfSubject = `<${rdfSubjectBase}/${articleId}/${version}>`;
-    let updateSPARQL = `PREFIX rdfa: <http://www.w3.org/ns/rdfa#> 
-
-        DELETE { ${rdfSubject} rdfa:creativeWorkStatus ?current_status }
-        INSERT { ${rdfSubject} rdfa:creativeWorkStatus "${status}" }
-        WHERE
-        { 
-            ${rdfSubject} rdfa:creativeWorkStatus ?current_status
-        }`;
     await axios.post(`${baseUrl}/${datasetName}/update`, querystring.stringify({
-        update: updateSPARQL
+        update: setArticleStatus(rdfSubject, status)
     }))
         .catch(e => { console.log(e) });
 }
 
 module.exports.updateArticleId = async (articleId, version) => {
     const rdfSubject = `<${rdfSubjectBase}/${articleId}/${version}>`;
-    let updateSPARQL = `PREFIX rdfa: <http://www.w3.org/ns/rdfa#> 
-
-        DELETE { ${rdfSubject} rdfa:identifier ?current_identifier }
-        INSERT { ${rdfSubject} rdfa:identifier "${articleId}" }
-        WHERE
-        { 
-          ${rdfSubject} rdfa:identifier ?current_identifier
-        }`;
     await axios.post(`${baseUrl}/${datasetName}/update`, querystring.stringify({
-        update: updateSPARQL
+        update: updateArticleId(rdfSubject, articleId)
+    }))
+        .catch(e => { console.log(e) });
+}
+
+module.exports.advancedSearch = async (searchParams) => {
+    return await axios.post(`${baseUrl}/${datasetName}/query`, querystring.stringify({
+        query: advancedArticleSearch(searchParams)
     }))
         .catch(e => { console.log(e) });
 }

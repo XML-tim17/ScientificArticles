@@ -32,7 +32,7 @@ module.exports.addNewArticle = async (xml, author) => {
     let articleXML = new XMLSerializer().serializeToString(articleDOM);
 
     articleRDFa = await xsltService.transform(articleXML, fs.readFileSync('./xsl/article-to-rdfa.xsl', 'utf8'));
-    let articleRDFxml = await xsltService.transform(articleRDFa, fs.readFileSync('./xsl/grddl.xsl', 'utf8'));
+    let articleRDFxml = await xsltService.transform(articleRDFa, fs.readFileSync(grddlPath, 'utf8'));
 
     // save to rdf
     await rdfRepository.saveRDFxml(articleRDFxml);
@@ -208,7 +208,7 @@ module.exports.postRevision = async (articleId, article, author) => {
     let articleXML = new XMLSerializer().serializeToString(articleDOM);
 
     const articleRDFa = await xsltService.transform(articleXML, fs.readFileSync('./xsl/article-to-rdfa.xsl', 'utf8'));
-    let articleRDFxml = await xsltService.transform(articleRDFa, fs.readFileSync('./xsl/grddl.xsl', 'utf8'));
+    let articleRDFxml = await xsltService.transform(articleRDFa, fs.readFileSync(grddlPath, 'utf8'));
 
     // save to rdf
     await rdfRepository.saveRDFxml(articleRDFxml);
