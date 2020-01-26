@@ -264,7 +264,6 @@ module.exports.basicSearch = async (queryString) => {
 
     return articleListHtml;
     // get simple data of all published articles
-    return documents;
 }
 
 module.exports.advancedSearch = async (searchData) => {

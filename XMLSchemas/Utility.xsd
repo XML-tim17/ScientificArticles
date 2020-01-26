@@ -28,6 +28,13 @@
                     </xs:simpleContent>
                 </xs:complexType>
             </xs:element>
+            <xs:element name="internal-ref">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:anyURI"> </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
             <xs:choice maxOccurs="unbounded" minOccurs="0">
                 <xs:element maxOccurs="unbounded" minOccurs="0" name="bold" type="TDecorator"/>
                 <xs:element maxOccurs="unbounded" minOccurs="0" name="italic" type="TDecorator"/>
@@ -53,8 +60,7 @@
                 <xs:complexType>
                     <xs:simpleContent>
                         <xs:extension base="xs:string">
-                            <xs:anyAttribute processContents="lax"
-                                namespace="##local"/>
+                            <xs:anyAttribute processContents="lax" namespace="##local"/>
                         </xs:extension>
                     </xs:simpleContent>
                 </xs:complexType>
@@ -63,8 +69,7 @@
                 <xs:complexType>
                     <xs:simpleContent>
                         <xs:extension base="xs:string">
-                            <xs:anyAttribute processContents="lax"
-                                namespace="##local"/>
+                            <xs:anyAttribute processContents="lax" namespace="##local"/>
                         </xs:extension>
                     </xs:simpleContent>
                 </xs:complexType>
@@ -73,8 +78,7 @@
                 <xs:complexType>
                     <xs:simpleContent>
                         <xs:extension base="TPhoneNumber">
-                            <xs:anyAttribute processContents="lax"
-                                namespace="##local"/>
+                            <xs:anyAttribute processContents="lax" namespace="##local"/>
                         </xs:extension>
                     </xs:simpleContent>
                 </xs:complexType>
@@ -83,8 +87,7 @@
                 <xs:complexType>
                     <xs:simpleContent>
                         <xs:extension base="TEmail">
-                            <xs:anyAttribute processContents="lax"
-                                namespace="##local"/>
+                            <xs:anyAttribute processContents="lax" namespace="##local"/>
                         </xs:extension>
                     </xs:simpleContent>
                 </xs:complexType>
@@ -96,8 +99,7 @@
                             <xs:complexType>
                                 <xs:simpleContent>
                                     <xs:extension base="xs:string">
-                                        <xs:anyAttribute processContents="lax"
-                                            namespace="##local"/>
+                                        <xs:anyAttribute processContents="lax" namespace="##local"/>
                                     </xs:extension>
                                 </xs:simpleContent>
                             </xs:complexType>
@@ -106,15 +108,13 @@
                             <xs:complexType>
                                 <xs:simpleContent>
                                     <xs:extension base="xs:string">
-                                        <xs:anyAttribute processContents="lax"
-                                            namespace="##local"/>
+                                        <xs:anyAttribute processContents="lax" namespace="##local"/>
                                     </xs:extension>
                                 </xs:simpleContent>
                             </xs:complexType>
                         </xs:element>
                     </xs:sequence>
-                    <xs:anyAttribute processContents="lax"
-                        namespace="##local"/>
+                    <xs:anyAttribute processContents="lax" namespace="##local"/>
                 </xs:complexType>
             </xs:element>
         </xs:sequence>

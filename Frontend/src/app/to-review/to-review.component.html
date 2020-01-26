@@ -10,8 +10,15 @@
           </tr>
           <tr style="background-color: #696969">
             <td align="center">
-              <button mat-raised-button [routerLink]="['/article', ht.id.substring(7)]">View article</button>
-              <button mat-raised-button [routerLink]="['/articlePdf', ht.id.substring(7)]">View article (PDF)</button>
+              <button mat-raised-button class="menuitem" [matMenuTriggerFor]="matMenuArticle">
+                <span>View reviews</span>
+                <mat-icon>more_horiz</mat-icon>
+              </button>
+              <mat-menu #matMenuArticle="matMenu">
+                <button mat-raised-button color="primary" class="minimenuitem" [routerLink]="['/review', ht.id.substring(7)]">View reviews</button>
+                <button mat-raised-button color="primary" class="minimenuitem" [routerLink]="['/reviewPdf', ht.id.substring(7)]">View reviews (PDF)</button>
+              </mat-menu>
+
               <button mat-raised-button [routerLink]="['/addReview', ht.id.substring(7)]">Create a review (Waiting for Nedimovic)</button>
             </td>
           </tr>

@@ -11,8 +11,14 @@
                 </tr>
                 <tr style="background-color: #696969">
                   <td align="center">
-                    <button mat-raised-button [routerLink]="['/article', article.id.substring(7)]">View article</button>
-                    <button mat-raised-button [routerLink]="['/articlePdf', article.id.substring(7)]">View article (PDF)</button>
+                    <button mat-raised-button class="menuitem" [matMenuTriggerFor]="matMenuArticle">
+                      <span>View reviews</span>
+                      <mat-icon>more_horiz</mat-icon>
+                    </button>
+                    <mat-menu #matMenuArticle="matMenu">
+                      <button mat-raised-button color="primary" class="minimenuitem" [routerLink]="['/review', article.id.substring(7)]">View reviews</button>
+                      <button mat-raised-button color="primary" class="minimenuitem" [routerLink]="['/reviewPdf', article.id.substring(7)]">View reviews (PDF)</button>
+                    </mat-menu>
                     <button mat-raised-button [routerLink]="['/assignReviewers', article.id.substring(7)]">Assign Reviewers</button>
                   </td>
                 </tr>

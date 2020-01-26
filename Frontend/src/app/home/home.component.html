@@ -15,7 +15,7 @@
               <button mat-button [disabled]="!searched" (click)="clearSearch()">Clear search</button>
             </td>
             <td align="right">
-              <button mat-raised-button  color="primary" (click)="doSearch()">Search</button>
+              <button mat-raised-button class="menuitem" color="primary" (click)="doSearch()">Search</button>
             </td>
           </tr>
         </table>
@@ -32,8 +32,14 @@
             </tr>
             <tr style="background-color: #696969">
               <td align="center">
-                <button mat-raised-button [routerLink]="['/article', article.id.substring(7)]">View article</button>
-                <button mat-raised-button [routerLink]="['/articlePdf', article.id.substring(7)]">View article (PDF)</button>
+                <button mat-raised-button class="menuitem" [matMenuTriggerFor]="matMenuArticle">
+                  <span>View article</span>
+                  <mat-icon>more_horiz</mat-icon>
+                </button>
+                <mat-menu #matMenuArticle="matMenu">
+                  <button mat-raised-button color="primary" class="minimenuitem" [routerLink]="['/article', article.id.substring(7)]">View article</button>
+                  <button mat-raised-button color="primary" class="minimenuitem" [routerLink]="['/articlePdf', article.id.substring(7)]">View article (PDF)</button>
+                </mat-menu>
                 <button mat-raised-button (click)="copyMessage(article)">Copy reference to clipboard</button>
               </td>
             </tr>

@@ -13,6 +13,17 @@
   color: #FFFFFF;
 }
 
-.mat-raised-button {
+
+
+.menuitem {
   margin: 20px;
+}
+
+.minimenuitem {
+  width: 90%;
+  margin: 5px 5%;
+}
+
+.mat-icon {
+  margin-left: 10px;
 }

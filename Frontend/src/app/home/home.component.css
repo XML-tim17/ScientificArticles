@@ -18,10 +18,6 @@
   color: #FFFFFF;
 }
 
-.mat-raised-button {
-  margin: 20px;
-}
-
 .mat-button {
   color: white;
 }
@@ -31,3 +27,18 @@
   color: white;
 }
 
+
+
+
+.menuitem {
+  margin: 20px;
+}
+
+.minimenuitem {
+  width: 90%;
+  margin: 5px 5%;
+}
+
+.mat-icon {
+  margin-left: 10px;
+}

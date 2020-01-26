@@ -9,7 +9,7 @@ import { LoginComponent } from './login/login.component';
 import { AddReviewComponent } from './add-review/add-review.component';
 import { AddArticleComponentComponent } from './add-article-component/add-article-component.component';
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import {Routes, RouterModule, ExtraOptions} from '@angular/router';
 import {MyArticlesComponent} from './my-articles/my-articles.component';
 import {ArticleViewComponent} from './article-view/article-view.component';
 import {ArticleViewPdfComponent} from './article-view-pdf/article-view-pdf.component';
@@ -20,7 +20,11 @@ import {HomeComponent} from './home/home.component';
 import {CoverLetterViewComponent} from './cover-letter-view/cover-letter-view.component';
 import {CoverLetterViewPdfComponent} from './cover-letter-view-pdf/cover-letter-view-pdf.component';
 
-
+const routerOptions: ExtraOptions = {
+  useHash: false,
+  anchorScrolling: 'enabled',
+  onSameUrlNavigation: 'reload',
+};
 const routes: Routes = [
   { path: 'addArticle', component: AddArticleComponentComponent},
   { path: 'addReview/:articleId', component: AddReviewComponent},
@@ -44,7 +48,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, routerOptions)],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

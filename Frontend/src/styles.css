@@ -176,3 +176,15 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-
 .mat-snack-bar-container:hover {
   box-shadow: 0 0 16px #c2185b;
 }
+
+
+.my-hyperlink {
+  transition: box-shadow 1s;
+  border-radius: 10px;
+  width: fit-content;
+}
+
+.my-hyperlink.active {
+  box-shadow: 0 0 16px #c2185b;
+}
+
