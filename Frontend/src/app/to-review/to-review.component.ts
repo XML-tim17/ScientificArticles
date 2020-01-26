@@ -12,10 +12,11 @@ export class ToReviewComponent implements OnInit {
 
   constructor(private articlesService: ArticlesService) { }
 
-  ngOnInit() {
-    this.articlesService.getToReview().then(data => {
-      this.articles = data;
-    })
+  async ngOnInit() {
+    const result: any = await this.articlesService.getToReview();
+    for (const htmlid of result.htmls) {
+      this.articles.push({id: htmlid.id, html: htmlid.html});
+    }
   }
 
 }

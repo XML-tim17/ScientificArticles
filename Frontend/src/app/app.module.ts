@@ -22,6 +22,7 @@ import { SafePipe } from './pipes/safe.pipe';
 import { ArticleViewPdfComponent } from './article-view-pdf/article-view-pdf.component';
 import { ReviewsViewPdfComponent } from './reviews-view-pdf/reviews-view-pdf.component';
 import { ReviewsViewComponent } from './reviews-view/reviews-view.component';
+import { ForNedimovicComponent } from './for-nedimovic/for-nedimovic.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { ReviewsViewComponent } from './reviews-view/reviews-view.component';
     ArticleViewPdfComponent,
     ReviewsViewPdfComponent,
     ReviewsViewComponent,
+    ForNedimovicComponent,
   ],
   imports: [
     BrowserModule,

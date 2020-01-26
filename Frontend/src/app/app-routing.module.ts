@@ -11,6 +11,7 @@ import {ArticleViewComponent} from './article-view/article-view.component';
 import {ArticleViewPdfComponent} from './article-view-pdf/article-view-pdf.component';
 import {ReviewsViewPdfComponent} from './reviews-view-pdf/reviews-view-pdf.component';
 import {ReviewsViewComponent} from './reviews-view/reviews-view.component';
+import {ForNedimovicComponent} from './for-nedimovic/for-nedimovic.component';
 
 
 const routes: Routes = [
@@ -25,6 +26,7 @@ const routes: Routes = [
   { path: 'articlePdf/:articleId', component: ArticleViewPdfComponent},
   { path: 'reviewPdf/:articleId', component: ReviewsViewPdfComponent},
   { path: 'review/:articleId', component: ReviewsViewComponent},
+  { path: 'waitingForNedimovic', component: ForNedimovicComponent},
 ];
 
 @NgModule({

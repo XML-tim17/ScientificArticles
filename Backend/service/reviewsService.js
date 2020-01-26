@@ -6,7 +6,8 @@ var XMLSerializer = xmldom.XMLSerializer;
 var DOMParser = xmldom.DOMParser;
 var xpath = require('xpath');
 
-
+const xsltService = require('./xsltService');
+const fs = require('fs');
 
 var ns = "https://github.com/XML-tim17/ScientificArticles";
 
@@ -122,4 +123,19 @@ module.exports.readXML = async (reviewId) => {
 module.exports.getReviewsForArticle = async(articleId) => {
     let version = await articleRepository.getLastVersion(articleId);
     return await reviewsRepository.getReviewsForArticle(articleId, version);
+}
+
+module.exports.articlesToListItemHtml = async (articles) => {
+    let xsltString = fs.readFileSync('./xsl/article-list-item-no-authors.xsl', 'utf8');
+
+    return {
+        htmls: await Promise.all(articles.map(async (articleXmlStringAndId) => {
+            let articleHtmlString = await xsltService.transform(articleXmlStringAndId.xmlString, xsltString);
+            return {
+                html: articleHtmlString,
+                id: articleXmlStringAndId.id
+            };
+
+        }))
+    };
 }

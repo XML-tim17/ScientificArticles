@@ -199,7 +199,10 @@ module.exports.getArticlesToReview = async (reviewer) => {
         const status = await articlesRepository.getStatusOf(articleId, version);
         if (status === "inReviewProcess") {
             let articleXML = await articlesRepository.readXML(articleId, version);
-            articleList.push(new XMLSerializer().serializeToString(articleXML))
+            articleList.push({
+                id: `article${articleId}`,
+                xmlString: new XMLSerializer().serializeToString(articleXML)
+            });
         }
     }
     // extract simple data

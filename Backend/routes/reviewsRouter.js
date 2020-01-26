@@ -54,7 +54,7 @@ router.get('/toReview', async (req, res, next) => {
             return;
         }
         let articles = await articlesService.getArticlesToReview(req.user);
-        res.send(articles);
+        res.send(await reviewsService.articlesToListItemHtml(articles));
     } catch (e) {
         next(e);
     }
