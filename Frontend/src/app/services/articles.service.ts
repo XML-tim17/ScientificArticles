@@ -28,4 +28,8 @@ export class ArticlesService {
   getAllByStatus(status) {
     return this.httpClient.get(`${environment.apiEndpoint}articles/status/${status}`).toPromise();
   }
+
+  setArticleStatus(articleId, status) {
+    return this.httpClient.get(`${environment.apiEndpoint}articles/article${articleId}/status/${status}`).toPromise();
+  }
 }

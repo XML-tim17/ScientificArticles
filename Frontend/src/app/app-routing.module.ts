@@ -1,3 +1,4 @@
+import { ReviewedComponent } from './reviewed/reviewed.component';
 import { ToBeReviewedComponent } from './to-be-reviewed/to-be-reviewed.component';
 import { AssignReviewersComponent } from './assign-reviewers/assign-reviewers.component';
 import { PostRevisionComponent } from './post-revision/post-revision.component';
@@ -25,6 +26,7 @@ const routes: Routes = [
   { path: 'articlePdf/:articleId', component: ArticleViewPdfComponent},
   { path: 'toBeReviewed', component: ToBeReviewedComponent},
   { path: 'assignReviewers/:articleId', component: AssignReviewersComponent},
+  { path: 'reviewed', component: ReviewedComponent},
 ];
 
 @NgModule({

@@ -11,9 +11,13 @@
                 </tr>
                 <tr style="background-color: #696969">
                   <td align="center">
+                    <button mat-raised-button (click)="accept(article)">Accept</button>
+                    <button mat-raised-button (click)="reject(article)">Reject</button>
+                    <button mat-raised-button (click)="requestRevision(article)">Request revision</button>
+                    <button mat-raised-button [routerLink]="['/review', article.id.substring(7)]">View reviews</button>
+                    <button mat-raised-button [routerLink]="['/reviewPdf', article.id.substring(7)]">View reviews (PDF)</button>
                     <button mat-raised-button [routerLink]="['/article', article.id.substring(7)]">View article</button>
                     <button mat-raised-button [routerLink]="['/articlePdf', article.id.substring(7)]">View article (PDF)</button>
-                    <button mat-raised-button [routerLink]="['/assignReviewers', article.id.substring(7)]">Assign Reviewers</button>
                   </td>
                 </tr>
               </table>
