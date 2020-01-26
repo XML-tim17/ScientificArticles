@@ -26,6 +26,7 @@ import { ForNedimovicComponent } from './for-nedimovic/for-nedimovic.component';
 import { AssignReviewersComponent } from './assign-reviewers/assign-reviewers.component';
 import { ToBeReviewedComponent } from './to-be-reviewed/to-be-reviewed.component';
 import { ReviewedComponent } from './reviewed/reviewed.component';
+import { RevisionRecievedComponent } from './revision-recieved/revision-recieved.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { ReviewedComponent } from './reviewed/reviewed.component';
     AssignReviewersComponent,
     ToBeReviewedComponent,
     ReviewedComponent,
+    RevisionRecievedComponent,
   ],
   imports: [
     BrowserModule,

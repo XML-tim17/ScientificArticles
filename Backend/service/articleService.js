@@ -1,6 +1,7 @@
 const fs = require('fs');
 const axios = require('axios');
 var articlesRepository = require('../repository/articlesRepository');
+const reviewsRepository = require('../repository/reviewsRepository')
 const grddlPath = "./xsl/grddl.xsl";
 const xsltService = require('./xsltService')
 var xmldom = require('xmldom');
@@ -46,6 +47,8 @@ module.exports.addNewArticle = async (xml, author) => {
     await articlesRepository.addNewArticle(xml, articleId, version);
 
     await articlesRepository.updateArticleId(articleId, version);
+
+    await articlesRepository.setStatus(articleId, version, 'toBeReviewed');
 }
 
 checkCorrespondingAuthor = (articleDOM, email) => {
@@ -233,6 +236,11 @@ module.exports.getArticlesToReview = async (reviewer) => {
         articleId = +articleId.substring(7)
         const version = await articlesRepository.getLastVersion(articleId);
         const status = await articlesRepository.getStatusOf(articleId, version);
+
+        const reviewed = await reviewsRepository.existsByEmailAndArticleURI(reviewer.email, `article${articleId}/v${version}`);
+        if (reviewed === 'true') {
+            continue;
+        }
         if (status === "inReviewProcess") {
             let articleXML = await articlesRepository.readXML(articleId, version);
             articleList.push({

@@ -30,6 +30,6 @@ export class ArticlesService {
   }
 
   setArticleStatus(articleId, status) {
-    return this.httpClient.get(`${environment.apiEndpoint}articles/article${articleId}/status/${status}`).toPromise();
+    return this.httpClient.get(`${environment.apiEndpoint}articles/${articleId.substring(7)}/status/${status}`).toPromise();
   }
 }

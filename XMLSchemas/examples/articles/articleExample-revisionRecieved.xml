@@ -8,6 +8,16 @@
     <ns1:info>
         <ns1:authors>
             <ns1:corresponding-author>
+                <ns1:name>Dusan Milunovic</ns1:name>
+                <ns1:institution>Fakultet tehničkih nauka</ns1:institution>
+                <ns1:phone-number>0655059590</ns1:phone-number>
+                <ns1:email>dusanko1@gmail.com</ns1:email>
+                <ns1:address>
+                    <ns1:city>Novi Sad</ns1:city>
+                    <ns1:country>Serbia</ns1:country>
+                </ns1:address>
+            </ns1:corresponding-author>
+            <ns1:author>
                 <ns1:name>Aleksandar Nedaković</ns1:name>
                 <ns1:institution>Fakultet Tehničkih Nauka</ns1:institution>
                 <ns1:phone-number>0632772886</ns1:phone-number>
@@ -16,7 +26,7 @@
                     <ns1:city>Novi Sad</ns1:city>
                     <ns1:country>Srbija</ns1:country>
                 </ns1:address>
-            </ns1:corresponding-author>
+            </ns1:author>
             <ns1:author>
                 <ns1:name>Nenad Mišić</ns1:name>
                 <ns1:institution>Fakultet Tehničkih Nauka</ns1:institution>

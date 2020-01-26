@@ -41,7 +41,7 @@ router.get('/pdf/:articleId/:token', async(req,res) => {
 router.get('', async (req, res, next) => {
     try {
         var documents = await articlesService.getAll();
-        res.send(documents);
+        res.send({status: "success"});
     } catch (e) {
         next(e);
     }
@@ -227,7 +227,7 @@ router.get('/:articleId/status/:status', async (req, res, next) => {
             return;
         }
         await articlesService.setStatus(+req.params.articleId, req.params.status);
-        res.send("success")
+        res.send({status: "success"})
     } catch (e) {
         next(e);
     }
@@ -244,7 +244,7 @@ router.get('/:articleId/requestRevision', async (req, res, next) => {
             return;
         }
         await articlesService.requestRevision(req.params.articleId);
-        res.send("success");
+        res.send({status: "success"});
 
 
     } catch (e) {

@@ -1,0 +1,29 @@
+<div class="container">
+    <table class="stretch">
+        <tr>
+          <td align="center">
+            <div class="container" *ngFor="let article of articles">
+              <table class="lowstretch">
+                <tr>
+                  <td align="center">
+                    <div [innerHTML]="article.html"></div>
+                  </td>
+                </tr>
+                <tr style="background-color: #696969">
+                  <td align="center">
+                    <button mat-raised-button (click)="accept(article)">Accept</button>
+                    <button mat-raised-button (click)="reject(article)">Reject</button>
+                    <button mat-raised-button (click)="requestRevision(article)">Request additional reviews</button>
+                    <button mat-raised-button [routerLink]="['/review', article.id.substring(7)]">View reviews</button>
+                    <button mat-raised-button [routerLink]="['/reviewPdf', article.id.substring(7)]">View reviews (PDF)</button>
+                    <button mat-raised-button [routerLink]="['/article', article.id.substring(7)]">View article</button>
+                    <button mat-raised-button [routerLink]="['/articlePdf', article.id.substring(7)]">View article (PDF)</button>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </td>
+        </tr>
+      </table>
+
+</div>

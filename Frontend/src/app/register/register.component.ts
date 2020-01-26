@@ -14,6 +14,7 @@ export class RegisterComponent implements OnInit {
   confirmPassword: string;
   name: string;
   institution: string;
+  phoneNumber: string;
   city: string;
   country: string;
 
@@ -34,6 +35,7 @@ export class RegisterComponent implements OnInit {
       password: this.password,
       name: this.name,
       institution: this.institution,
+      phoneNumber: this.phoneNumber,
       address: {
         city: this.city,
         country: this.country
@@ -41,7 +43,7 @@ export class RegisterComponent implements OnInit {
     }).then(result => {
       this.router.navigate(['/']);
     }, err => {
-      alert(err);
+      alert(err.message);
     })
   }
 

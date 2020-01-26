@@ -1,3 +1,4 @@
+import { RevisionRecievedComponent } from './revision-recieved/revision-recieved.component';
 import { ReviewedComponent } from './reviewed/reviewed.component';
 import { ToBeReviewedComponent } from './to-be-reviewed/to-be-reviewed.component';
 import { AssignReviewersComponent } from './assign-reviewers/assign-reviewers.component';
@@ -19,7 +20,7 @@ import {ForNedimovicComponent} from './for-nedimovic/for-nedimovic.component';
 
 const routes: Routes = [
   { path: 'addArticle', component: AddArticleComponentComponent},
-  { path: 'addReview', component: AddReviewComponent},
+  { path: 'addReview/:articleId', component: AddReviewComponent},
   { path: 'login', component: LoginComponent},
   { path: 'register', component: RegisterComponent},
   { path: 'toReview', component: ToReviewComponent},
@@ -33,6 +34,8 @@ const routes: Routes = [
   { path: 'toBeReviewed', component: ToBeReviewedComponent},
   { path: 'assignReviewers/:articleId', component: AssignReviewersComponent},
   { path: 'reviewed', component: ReviewedComponent},
+  { path: 'revisionRecieved', component: RevisionRecievedComponent},
+  { path: '', component: ForNedimovicComponent},
 ];
 
 @NgModule({

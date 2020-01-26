@@ -37,7 +37,7 @@ router.get('/password', async (req, res, next) => {
 router.post('/register', async (req, res, next) => {
     try {
         await userService.register(req.body);
-        res.send("success");
+        res.send({ status: "success" });
     } catch (e) {
         next(e);
     }   

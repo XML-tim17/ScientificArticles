@@ -74,7 +74,7 @@ router.post('/assign/article/:articleId', async (req, res, next) => {
         }
 
         await reviewsService.assignReviewers(req.params.articleId, req.body.reviewers)
-        res.send("success");
+        res.send({status: "success"});
         
     } catch (e) {
         next(e);
