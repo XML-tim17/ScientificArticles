@@ -7,7 +7,7 @@ const articlesURI = '/db/scientificArticles/articles';
 
 const getAllAcceptedArticles = require('../xquery/getAllAcceptedArticles');
 const getAllToBeReviewedArticles = require('../xquery/getAllToBeReviewedArticles');
-const getAllByTitle = require('../xquery/getAllByTitle');
+const getAllByText = require('../xquery/getAllByText');
 const getArticleStatus = require('../xquery/getArticleStatus');
 const getArticleStatusByURI = require('../xquery/getArticleStatusByURI');
 
@@ -16,6 +16,8 @@ const updateArticleId = require('../xquery/updateArticleId');
 
 const setArticleStatusByURI = require('../xquery/setArticleStatusByURI');
 const getArticlesByStatus = require('../xquery/getArticlesByStatus')
+
+const getCorrespondingAuthorXQ = require('../xquery/getCorrespondingAuthor')
 
 module.exports.addNewArticle = async (xmlString, articleId, version) => {
     const db = exist.connect(options);
@@ -97,7 +99,7 @@ module.exports.getById = async (articleURI) => {
 module.exports.getAll = async () => {
     const db = exist.connect(options);
     let result = await db.queries.readAll(getAllAcceptedArticles.query, {});
-    return Buffer.concat(result.pages).toString();
+    return result.pages.map(page => Buffer(page).toString());
 }
 
 module.exports.toBeReviewed = async () => {
@@ -106,10 +108,10 @@ module.exports.toBeReviewed = async () => {
     return result.pages.map(page => Buffer(page).toString());
 }
 
-module.exports.getAllByTitle = async (title) => {
+module.exports.getAllByText = async (title) => {
     const db = exist.connect(options);
-    let result = await db.queries.readAll(getAllByTitle.query(title), {});
-    return Buffer.concat(result.pages).toString();
+    let result = await db.queries.readAll(getAllByText.query(title), {});
+    return result.pages.map(page => Buffer(page).toString());
 }
 
 module.exports.getStatusOf = async (articleId, version) => {
@@ -143,5 +145,10 @@ module.exports.getAllByStatus = async (status) => {
     const db = exist.connect(options);
     let result = await db.queries.readAll(getArticlesByStatus.query(status), {});
     return result.pages.map(page => Buffer(page).toString());
+}
 
+module.exports.getCorrespondingAuthor = async (articleId, version) => {
+    const db = exist.connect(options);
+    let result = await db.queries.readAll(getCorrespondingAuthorXQ.query(articleId, version), {});
+    return Buffer.concat(result.pages).toString();
 }

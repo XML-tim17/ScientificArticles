@@ -35,7 +35,7 @@
                             keep-with-next="always"
                             space-after="22pt"
                             >
-                            Zivot iz ugla gospode inReviewProcess
+                            <xsl:apply-templates/>
                 </fo:block>
             </fo:block>
             </fo:table-cell>
@@ -263,9 +263,10 @@
                     </fo:block>
 
                     <xsl:for-each select="./ns1:reference">
-                        <xsl:variable name="count" select="position()"/>
+                    <fo:block>
                         <fo:block font-size="12pt" line-height="15pt" space-after="12pt">
-                           <fo:inline font-weight="bold"><xsl:value-of select="count"></xsl:value-of>. </fo:inline>
+                            <xsl:attribute name="id"><xsl:value-of select="./@ns1:id"></xsl:value-of></xsl:attribute>
+                           <fo:inline font-weight="bold"><xsl:value-of select="./@ns1:id"></xsl:value-of>. </fo:inline>
                            <xsl:for-each select="./ns1:referencedAuthors/ns1:referencedAuthor">
                                 <xsl:value-of select="./ns1:name"></xsl:value-of>, 
                             </xsl:for-each>
@@ -274,6 +275,25 @@
                             <xsl:value-of select="./ns1:publisher/ns1:institution"></xsl:value-of>,
                             <xsl:value-of select="/ns1:publisher/ns1:city"></xsl:value-of>
                         </fo:block>
+                        <fo:block>
+                            <xsl:if test="count(./ns1:website-id)>0">
+                                <fo:basic-link color="blue">
+                                    <xsl:attribute name="external-destination">http://localhost:4200/article/<xsl:value-of select="./ns1:website-id"></xsl:value-of></xsl:attribute>
+                                    Click to navigate to article
+                                </fo:basic-link>
+                            </xsl:if>
+                            <xsl:if test="count(./ns1:website-id)=0">
+                                    Article is not on our website
+                            </xsl:if>
+                        </fo:block>
+                    </fo:block>
+                    
+                    <fo:block>
+                        <fo:leader leader-pattern="rule"
+                                leader-length.maximum="100%"
+                                leader-length.optimum="100%"/>
+                    </fo:block>
+
                     </xsl:for-each>
                 </fo:block>
             </fo:table-cell>
@@ -342,6 +362,13 @@
     <xsl:template match="ns1:ref">
         <fo:basic-link color="blue">
             <xsl:attribute name="external-destination"><xsl:apply-templates/></xsl:attribute>
+            <xsl:apply-templates/>
+        </fo:basic-link>
+    </xsl:template>
+
+    <xsl:template match="ns1:internal-ref">
+        <fo:basic-link color="blue">
+            <xsl:attribute name="internal-destination"><xsl:apply-templates/></xsl:attribute>
             <xsl:apply-templates/>
         </fo:basic-link>
     </xsl:template>

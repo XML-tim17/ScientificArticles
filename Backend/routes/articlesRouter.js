@@ -20,19 +20,19 @@ const validateDocument = (xml) => {
       });
 }
 
-router.get('/pdf/:articleId/:token', async(req,res) => {
+// get pdf of article
+// GUEST
+router.get('/pdf/:articleId/:token', async(req,res, next) => {
     try {
+        if (req.user.role === authorizationService.roles.guest) {
+            req = await authorizationService.getUserFromTokenParam(req);
+        }
 
-        var lastVersion = await articlesService.getLastVersion(+req.params.articleId);
-        var dom = await articlesService.readXML(+req.params.articleId, lastVersion);
-        var xmlString = new XMLSerializer().serializeToString(dom)
-        let xslfoString = fs.readFileSync('./xsl-fo/article-detail-xslfo.xsl', 'utf8');
-
-        let bindata = await pdfService.transform(xmlString, xslfoString)
+        let bindata = await articlesService.getArticlePDF(+req.params.articleId, req.user)
         res.contentType("application/pdf");
         res.send(bindata);
     } catch (e) {
-        res.send(e.message);
+        next(e);
     }
 });
 
@@ -41,7 +41,7 @@ router.get('/pdf/:articleId/:token', async(req,res) => {
 router.get('', async (req, res, next) => {
     try {
         var documents = await articlesService.getAll();
-        res.send({status: "success"});
+        res.send(documents);
     } catch (e) {
         next(e);
     }
@@ -138,15 +138,9 @@ router.get('/html/:documentId', async (req, res, next) => {
             next(error);
             return;
         }
-        // check if user has access to article
-        var lastVersion = await articlesService.getLastVersion(+req.params.documentId);
-        var dom = await articlesService.readXML(+req.params.documentId, lastVersion);
-        var document = new XMLSerializer().serializeToString(dom)
 
-        
-        let xsltString = fs.readFileSync('./xsl/article-detail-html.xsl', 'utf8');
-        let articleHtml = await xsltService.transform(document, xsltString);
-        res.send({data: articleHtml});
+        let articleHTML = await articlesService.getArticleHTML(req.params.documentId, req.user);
+        res.send({data: articleHTML});
     } catch (e) {
         next(e);
     }
@@ -246,6 +240,25 @@ router.get('/:articleId/requestRevision', async (req, res, next) => {
         await articlesService.requestRevision(req.params.articleId);
         res.send({status: "success"});
 
+
+    } catch (e) {
+        next(e);
+    }
+})
+
+// give up on article
+// AUTHOR
+router.get('/:articleId/giveUp', async (req, res, next) => {
+    try {
+        if(!authorizationService.checkAuthorization(req, authorizationService.roles.author)) {
+            let error = new Error('Unauthorized')
+            error.status = 403;
+            next(error);
+            return;
+        }
+
+        let status = await articlesService.giveUp(req.params.articleId, req.user);
+        res.send( { status })
 
     } catch (e) {
         next(e);

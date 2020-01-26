@@ -1,3 +1,7 @@
+const jwt = require('jsonwebtoken');
+const userService = require('./userService')
+const jwtConfig = require('../authorization/authorizationConfig');
+
 const roles = {
     guest: 'GUEST',
     author: 'AUTHOR',
@@ -22,6 +26,21 @@ module.exports.checkAuthorization = (req, role) => {
         default: 
             return false;
     }
+}
+
+module.exports.getUserFromTokenParam = async (req) => {
+    const token = req.params.token;
+    if (!token) {
+        req.user = guestUser;
+        return req;
+    }
+
+    const user = jwt.verify(token, jwtConfig.jwtSecret) 
+
+    let userObject = await userService.getUserForAuthorizaiton(user);
+
+    req.user = userObject;
+    return req;
 }
 
 module.exports.roles = roles;

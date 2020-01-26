@@ -1,19 +1,29 @@
 .container {
     margin: 40px auto;
   }
-  
+
   .stretch {
     width: 100%;
   }
-  
+
   .lowstretch {
     width: 75%;
   }
   .white {
     color: #FFFFFF;
   }
-  
-  .mat-raised-button {
-    margin: 20px;
-  }
-  
+
+
+
+.menuitem {
+  margin: 20px;
+}
+
+.minimenuitem {
+  width: 90%;
+  margin: 5px 5%;
+}
+
+.mat-icon {
+  margin-left: 10px;
+}

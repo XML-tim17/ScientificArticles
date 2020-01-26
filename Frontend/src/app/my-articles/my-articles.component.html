@@ -13,11 +13,33 @@
                 </tr>
                 <tr style="background-color: #696969">
                   <td align="center">
-                    <button mat-raised-button [routerLink]="['/article', ht.id.substring(7)]">View article</button>
-                    <button mat-raised-button [routerLink]="['/articlePdf', ht.id.substring(7)]">View article (PDF)</button>
-                    <button mat-raised-button [routerLink]="['/review', ht.id.substring(7)]" [disabled]="['inReviewProcess', 'toBeReviewed', 'reviewed', 'revisionRecieved'].indexOf(magija.status) !== -1">View review</button>
-                    <button mat-raised-button [routerLink]="['/reviewPdf', ht.id.substring(7)]" [disabled]="['inReviewProcess', 'toBeReviewed', 'reviewed', 'revisionRecieved'].indexOf(magija.status) !== -1">View review (PDF)</button>
-                    <button mat-raised-button [routerLink]="['/postRevision', ht.id.substring(7)]" [disabled]="magija.status !== 'revisionRequired'">Add revision</button>
+                    <button mat-raised-button class="menuitem" [matMenuTriggerFor]="matMenuCoverLetter">
+                      <span>Cover letter</span>
+                      <mat-icon>more_horiz</mat-icon>
+                    </button>
+                    <mat-menu #matMenuCoverLetter="matMenu">
+                      <button mat-raised-button color="primary" class="minimenuitem" [routerLink]="['/coverLetter', ht.id.substring(7)]">View cover letter</button>
+                      <button mat-raised-button color="primary" class="minimenuitem" [routerLink]="['/coverLetterPdf', ht.id.substring(7)]">View cover letter (PDF)</button>
+                    </mat-menu>
+                    <button mat-raised-button class="menuitem" [matMenuTriggerFor]="matMenuArticle">
+                      <span>Article</span>
+                      <mat-icon>more_horiz</mat-icon>
+                    </button>
+                    <mat-menu #matMenuArticle="matMenu">
+                      <button mat-raised-button color="primary" class="minimenuitem" [routerLink]="['/article', ht.id.substring(7)]">View article</button>
+                      <button mat-raised-button color="primary" class="minimenuitem" [routerLink]="['/articlePdf', ht.id.substring(7)]">View article (PDF)</button>
+                    </mat-menu>
+                    <button mat-raised-button class="menuitem" [matMenuTriggerFor]="matMenuReview">
+                      <span>Review</span>
+                      <mat-icon>more_horiz</mat-icon>
+                    </button>
+                    <mat-menu #matMenuReview="matMenu">
+                      <button mat-raised-button color="primary" class="minimenuitem" [routerLink]="['/review', ht.id.substring(7)]" [disabled]="['inReviewProcess', 'toBeReviewed', 'reviewed', 'revisionRecieved'].indexOf(magija.status) !== -1">View review</button>
+                      <button mat-raised-button color="primary" class="minimenuitem" [routerLink]="['/reviewPdf', ht.id.substring(7)]" [disabled]="['inReviewProcess', 'toBeReviewed', 'reviewed', 'revisionRecieved'].indexOf(magija.status) !== -1">View review (PDF)</button>
+                    </mat-menu>
+
+                    <button mat-raised-button class="menuitem" [routerLink]="['/postRevision', ht.id.substring(7)]" [disabled]="magija.status !== 'revisionRequired'">Add revision</button>
+                    <button mat-raised-button class="menuitem" (click)="withdraw(ht)" [disabled]="magija.status === 'accepted'">Withdraw</button>
                   </td>
                 </tr>
               </table>
@@ -30,6 +52,10 @@
 
 
 </mat-tab-group>
+
+
+
+
 
 
 

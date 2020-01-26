@@ -1,5 +1,10 @@
+.search {
+  width: 20%;
+  margin: 0 40%;
+}
+
 .container {
-  margin: 40px auto;
+  margin: 20px auto;
 }
 
 .stretch {
@@ -12,6 +17,16 @@
 .white {
   color: #FFFFFF;
 }
+
+.mat-button {
+  color: white;
+}
+
+.mat-form-field {
+  width: 100%;
+  color: white;
+}
+
 
 
 

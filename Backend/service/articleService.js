@@ -4,7 +4,9 @@ var articlesRepository = require('../repository/articlesRepository');
 const reviewsRepository = require('../repository/reviewsRepository');
 const rdfRepository = require('../repository/rdfRepository');
 const grddlPath = "./xsl/grddl.xsl";
-const xsltService = require('./xsltService')
+var pdfService = require('../service/pdfService');
+const xsltService = require('./xsltService');
+const authorizationService = require('./authorizationService');
 var xmldom = require('xmldom');
 var XMLSerializer = xmldom.XMLSerializer;
 var DOMParser = xmldom.DOMParser;
@@ -116,10 +118,96 @@ module.exports.readXML = async (articleId, version) => {
 }
 
 module.exports.getAll = async () => {
-    let documents = await articlesRepository.getAll();
+    let articleListXml = await articlesRepository.getAll();
+    let xsltString = fs.readFileSync('./xsl/article-list-item.xsl', 'utf8');
+    let select = xpath.useNamespaces({ "ns1": ns1 });
+
+
+    articleListHtml = await Promise.all(articleListXml.map(async (articleXML) => {
+        let articleDOM = new DOMParser().parseFromString(articleXML);
+        let id = `article${select('//ns1:id//text()', articleDOM)[0].textContent}`
+        let html = await xsltService.transform(articleXML, xsltString)
+
+        return {
+            id,
+            html
+        }
+    }))
+
+
+    return articleListHtml;
     // get simple data of all published articles
     return documents;
 
+}
+
+module.exports.getArticleHTML = async (articleId, user) => {
+    var lastVersion =   await this.getLastVersion(+articleId);
+    // check users level of access to this documnet
+    let articleStatus = await articlesRepository.getStatusOf(articleId, lastVersion);
+    
+    const correspondingAuthorEmail = await articlesRepository.getCorrespondingAuthor(articleId, lastVersion);
+    let xsltString;
+    
+    let access = checkArticleAccess(articleId, user, articleStatus, correspondingAuthorEmail);
+    if (access === 'full') xsltString = fs.readFileSync('./xsl/article-detail-html.xsl', 'utf8');
+    else if (access === 'no-authors') xsltString = fs.readFileSync('./xsl/article-detail-html-no-authors.xsl', 'utf8');
+    else {
+        let error = new Error("User does not have access to this article.");
+        error.status = 403;
+        throw error;
+    }
+    
+    var dom = await this.readXML(+articleId, lastVersion);
+    var document = new XMLSerializer().serializeToString(dom)
+
+    
+    let articleHTML = await xsltService.transform(document, xsltString);
+    return articleHTML;
+}
+
+module.exports.getArticlePDF = async (articleId, user) => {
+    var lastVersion =   await this.getLastVersion(+articleId);
+    // check users level of access to this documnet
+    let articleStatus = await articlesRepository.getStatusOf(articleId, lastVersion);
+    
+    const correspondingAuthorEmail = await articlesRepository.getCorrespondingAuthor(articleId, lastVersion);
+    let xslfoString;
+    
+    let access = checkArticleAccess(articleId, user, articleStatus, correspondingAuthorEmail);
+    if (access === 'full') xslfoString = fs.readFileSync('./xsl-fo/article-detail-xslfo.xsl', 'utf8');
+    else if (access === 'no-authors') xslfoString = fs.readFileSync('./xsl-fo/article-detail-xslfo-no-authors.xsl', 'utf8');
+    else {
+        let error = new Error("User does not have access to this article.");
+        error.status = 403;
+        throw error;
+    }
+    
+    var dom = await this.readXML(+articleId, lastVersion);
+    var document = new XMLSerializer().serializeToString(dom)
+
+    
+    let bindata = await pdfService.transform(document, xslfoString)
+    return bindata;
+}
+
+checkArticleAccess = (articleId, user, status, correspondingAuthorEmail) => {
+    if (status === "accepted") {
+        return 'full';
+    } else {
+        if (user.role === authorizationService.roles.editor) {
+            return 'full';
+        }
+        if (correspondingAuthorEmail === user.email) {
+            return 'full';
+        } 
+        if (user.role === authorizationService.roles.reviewer) {
+            if (user.toReview.includes(`article${articleId}`)) {
+                return 'no-authors';
+            }
+        }
+        return 'denied';
+    }
 }
 
 module.exports.getReviews = async (articleId) => {
@@ -229,9 +317,24 @@ module.exports.postRevision = async (articleId, article, author) => {
 }
 
 module.exports.basicSearch = async (queryString) => {
-    let documents = await articlesRepository.getAllByTitle(queryString);
+    let articleListXml = await articlesRepository.getAllByText(queryString);
+    let xsltString = fs.readFileSync('./xsl/article-list-item.xsl', 'utf8');
+    let select = xpath.useNamespaces({ "ns1": ns1 });
+
+    articleListHtml = await Promise.all(articleListXml.map(async (articleXML) => {
+        let articleDOM = new DOMParser().parseFromString(articleXML);
+        let id = `article${select('//ns1:id//text()', articleDOM)[0].textContent}`
+        let html = await xsltService.transform(articleXML, xsltString)
+
+        return {
+            id,
+            html
+        }
+    }))
+
+
+    return articleListHtml;
     // get simple data of all published articles
-    return documents;
 }
 
 module.exports.advancedSearch = async (searchData) => {
@@ -293,6 +396,27 @@ module.exports.requestRevision = async (articleId) => {
     }
     await articlesRepository.setStatus(articleId, version, 'revisionRequired');
     await rdfRepository.setStatus(articleId, version, 'revisionRequired');
+}
+
+module.exports.giveUp = async (articleId, user) => {
+    const version = await articlesRepository.getLastVersion(articleId);
+    const correspondingAuthorEmail = await articlesRepository.getCorrespondingAuthor(articleId, version);
+    const status = await articlesRepository.getStatusOf(articleId, version);
+    if (status === 'accepted') {
+        let error = new Error("Cannot withdraw accepted article.");
+        error.status = 400;
+        throw error;
+    }
+    // const select = xpath.useNamespaces({ "ns1": ns1 });
+    // const correspondingAuthorEmail = select('//ns1:email', correspondingAuthorDOM)[0];
+    if (correspondingAuthorEmail !== user.email) {
+        let error = new Error("Only corresponding author can give up on article.");
+        error.status = 403;
+        throw error;
+    }
+
+    await articlesRepository.setStatus(articleId, version, 'outdated');
+    return 'success';
 }
 
 isNextStateValid = (currentState, nextState) => {
