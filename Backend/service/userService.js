@@ -19,6 +19,11 @@ module.exports.getUserByEmail = async (email) => {
     return await userRepository.getUserByEmail(email);
 }
 
+module.exports.getAll = async () => {
+    let users = await userRepository.getAll();
+    return users.map(user => userDomToObject(new DOMParser().parseFromString(user, 'text/xml')));
+}
+
 module.exports.register = async (userObject) => {
     // check if email exists
     let exists = await userRepository.existsByEmail(userObject.email);

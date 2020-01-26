@@ -1,0 +1,19 @@
+.container {
+    margin: 40px auto;
+  }
+  
+  .stretch {
+    width: 100%;
+  }
+  
+  .lowstretch {
+    width: 75%;
+  }
+  .white {
+    color: #FFFFFF;
+  }
+  
+  .mat-raised-button {
+    margin: 20px;
+  }
+  

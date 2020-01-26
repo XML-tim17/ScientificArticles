@@ -1,0 +1,54 @@
+<div class="container">
+    <mat-card  class="mat-elevation-z8">
+        <mat-card-title>
+            <div class="center">
+                Assign Reviewers
+
+            </div>
+        </mat-card-title>
+        <mat-card-content>
+            <div class="tableContainer">
+                <table mat-table [dataSource]="dataSource">
+
+                    <!-- Checkbox Column -->
+                    <ng-container matColumnDef="select">
+                      <th class="selectHeader" mat-header-cell *matHeaderCellDef>
+                        <div></div>
+                      </th>
+                      <td class="selectCell" mat-cell *matCellDef="let row">
+                        <mat-checkbox (click)="$event.stopPropagation()"
+                                      (change)="$event ? selection.toggle(row) : null"
+                                      [checked]="selection.isSelected(row)">
+                        </mat-checkbox>
+                      </td>
+                    </ng-container>
+                  
+                    <!-- Position Column -->
+                    <ng-container matColumnDef="email">
+                      <th class="header" mat-header-cell *matHeaderCellDef> No. </th>
+                      <td class="cell" mat-cell *matCellDef="let element"> {{element.email}} </td>
+                    </ng-container>
+                  
+                    <!-- Name Column -->
+                    <ng-container matColumnDef="name">
+                      <th class="header" mat-header-cell *matHeaderCellDef> Name </th>
+                      <td class="cell" mat-cell *matCellDef="let element"> {{element.name}} </td>
+                    </ng-container>
+                  
+                  
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+                        (click)="selection.toggle(row)">
+                    </tr>
+                </table>
+            </div>
+            
+        </mat-card-content>
+        <mat-card-actions>
+            <div class="center">
+                <button mat-button (click)="onSubmit()">Submit</button>
+            </div>
+        </mat-card-actions>
+    </mat-card>
+</div>
+

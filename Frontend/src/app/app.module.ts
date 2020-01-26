@@ -20,6 +20,9 @@ import { MyArticlesComponent } from './my-articles/my-articles.component';
 import { ArticleViewComponent } from './article-view/article-view.component';
 import { SafePipe } from './pipes/safe.pipe';
 import { ArticleViewPdfComponent } from './article-view-pdf/article-view-pdf.component';
+import { AssignReviewersComponent } from './assign-reviewers/assign-reviewers.component';
+import { ToBeReviewedComponent } from './to-be-reviewed/to-be-reviewed.component';
+import { ReviewedComponent } from './reviewed/reviewed.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +38,9 @@ import { ArticleViewPdfComponent } from './article-view-pdf/article-view-pdf.com
     ArticleViewComponent,
     SafePipe,
     ArticleViewPdfComponent,
+    AssignReviewersComponent,
+    ToBeReviewedComponent,
+    ReviewedComponent,
   ],
   imports: [
     BrowserModule,

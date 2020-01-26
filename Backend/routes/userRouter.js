@@ -2,16 +2,17 @@
 var userService = require('../service/userService');
 var express = require('express');
 var router = express.Router();
+const authorizationService = require('../service/authorizationService')
 
 
-router.get('/', async (req, res, next) => {
-    try {
-        var user = await userService.getUserByEmail(req.param('email'));
-        res.send(user);
-    } catch (e) {
-        next(e);
-    }
-});
+// router.get('/', async (req, res, next) => {
+//     try {
+//         var user = await userService.getUserByEmail(req.param('email'));
+//         res.send(user);
+//     } catch (e) {
+//         next(e);
+//     }
+// });
 
 router.get('/password', async (req, res, next) => {
     try {
@@ -51,6 +52,23 @@ router.post('/login', async (req, res, next) => {
     }
 
 });
+
+// get all users
+// EDITOR
+router.get('/', async (req, res, next) => {
+    if(!authorizationService.checkAuthorization(req, authorizationService.roles.editor)) {
+        let error = new Error('Unauthorized')
+        error.status = 403;
+        next(error);
+        return;
+    }
+    try {
+        let users = await userService.getAll()
+        res.send({ users })
+    } catch (e) {
+        next(e);
+    }
+})
 
 
 module.exports = router;

@@ -1,1 +1,20 @@
-<p>{{articles}}</p>
+<table class="stretch">
+    <tr>
+      <td align="center">
+        <div class="container" *ngFor="let article of articles">
+          <table class="lowstretch">
+            <tr>
+              <td align="center">
+                <div [innerHTML]="article.html"></div>
+              </td>
+            </tr>
+            <tr style="background-color: #696969">
+              <td align="center">
+                <button mat-raised-button [routerLink]="['/assignReviews', article.id.substring(7)]">View article</button>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </td>
+    </tr>
+  </table>

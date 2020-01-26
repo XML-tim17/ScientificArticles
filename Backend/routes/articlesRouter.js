@@ -72,7 +72,24 @@ router.post('', async (req, res, next) => {
 
 // get all articles in toBeReviewed state
 // EDITOR
-router.get('/toBeReviewed', async (req, res, next) => {
+// router.get('/toBeReviewed', async (req, res, next) => {
+//     try {
+//         if(!authorizationService.checkAuthorization(req, authorizationService.roles.editor)) {
+//             let error = new Error('Unauthorized')
+//             error.status = 403;
+//             next(error);
+//             return;
+//         }
+//         var articles = await articlesService.toBeReviewed();
+//         res.send(articles);
+//     } catch (e) {
+//         next(e);
+//     }
+// });
+
+// get all articles by status
+// EDITOR
+router.get('/status/:status', async (req, res, next) => {
     try {
         if(!authorizationService.checkAuthorization(req, authorizationService.roles.editor)) {
             let error = new Error('Unauthorized')
@@ -80,7 +97,7 @@ router.get('/toBeReviewed', async (req, res, next) => {
             next(error);
             return;
         }
-        var articles = await articlesService.toBeReviewed();
+        var articles = await articlesService.getAllByStatus(req.params.status);
         res.send(articles);
     } catch (e) {
         next(e);

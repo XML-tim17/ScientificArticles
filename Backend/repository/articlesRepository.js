@@ -15,6 +15,7 @@ const updateArticleStatus = require('../xquery/updateArticleStatus');
 const updateArticleId = require('../xquery/updateArticleId');
 
 const setArticleStatusByURI = require('../xquery/setArticleStatusByURI');
+const getArticlesByStatus = require('../xquery/getArticlesByStatus')
 
 module.exports.addNewArticle = async (xmlString, articleId, version) => {
     const db = exist.connect(options);
@@ -102,7 +103,7 @@ module.exports.getAll = async () => {
 module.exports.toBeReviewed = async () => {
     const db = exist.connect(options);
     let result = await db.queries.readAll(getAllToBeReviewedArticles.query, {});
-    return Buffer.concat(result.pages).toString();
+    return result.pages.map(page => Buffer(page).toString());
 }
 
 module.exports.getAllByTitle = async (title) => {
@@ -136,4 +137,11 @@ module.exports.setStatusByURI = async (articleURI, status) => {
 module.exports.updateArticleId = async (articleId, version) => {
     const db = exist.connect(options);
     await db.queries.execute(updateArticleId.query(articleId, version), {});
+}
+
+module.exports.getAllByStatus = async (status) => {
+    const db = exist.connect(options);
+    let result = await db.queries.readAll(getArticlesByStatus.query(status), {});
+    return result.pages.map(page => Buffer(page).toString());
+
 }
