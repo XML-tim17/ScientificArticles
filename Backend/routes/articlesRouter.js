@@ -252,6 +252,25 @@ router.get('/:articleId/requestRevision', async (req, res, next) => {
     }
 })
 
+// give up on article
+// AUTHOR
+router.get('/:articleId/giveUp', async (req, res, next) => {
+    try {
+        if(!authorizationService.checkAuthorization(req, authorizationService.roles.author)) {
+            let error = new Error('Unauthorized')
+            error.status = 403;
+            next(error);
+            return;
+        }
+
+        let status = await articlesService.giveUp(req.params.articleId, req.user);
+        res.send( { status })
+
+    } catch (e) {
+        next(e);
+    }
+})
+
 module.exports = router;
 
 

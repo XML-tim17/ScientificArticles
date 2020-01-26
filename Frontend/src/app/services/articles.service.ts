@@ -41,4 +41,8 @@ export class ArticlesService {
     const params = new HttpParams().set('q', queryParam);
     return this.httpClient.get(`${environment.apiEndpoint}articles/search`, { params }).toPromise();
   }
+  
+  withdrawArticle(articleId) {
+    return this.httpClient.get(`${environment.apiEndpoint}articles/${articleId}/giveUp`).toPromise();
+  }
 }

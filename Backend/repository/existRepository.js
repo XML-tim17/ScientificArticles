@@ -1,5 +1,5 @@
 const exist = require('@existdb/node-exist')
-const config = require('./config')
+const config = require('./existConfig')
 const collectionsURI = '/db/scientificArticles';
 
 module.exports.createCollections = () => {

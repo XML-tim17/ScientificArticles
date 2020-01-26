@@ -8,7 +8,7 @@ const getUserRoleXQ = require('../xquery/getUserRole');
 const getAllUsersXQ = require('../xquery/getAllUsers');
 
 const exist = require('@existdb/node-exist');
-const options = require('./config');
+const options = require('./existConfig');
 
 const existsByEmailQuery = require('../xquery/existsByEmail');
 
@@ -59,7 +59,7 @@ module.exports.incrementUserCount = async (incrementBy) => {
     userCountDOM.getElementsByTagName('count')[0].textContent = userCount + incrementBy;
     userCountXML = new XMLSerializer().serializeToString(userCountDOM);
 
-    let fileHandle =  await db.documents.upload(Buffer.from(userCountXML));
+    let fileHandle = await db.documents.upload(Buffer.from(userCountXML));
     await db.documents.parseLocal(fileHandle, `${usersURI}/user-sequencer.xml`, {});
 
     return userCount + incrementBy;
