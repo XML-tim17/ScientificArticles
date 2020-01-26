@@ -35,7 +35,7 @@
                             keep-with-next="always"
                             space-after="22pt"
                             >
-                            Zivot iz ugla gospode inReviewProcess
+                            <xsl:apply-templates/>
                 </fo:block>
             </fo:block>
             </fo:table-cell>

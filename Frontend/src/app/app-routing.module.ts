@@ -16,6 +16,9 @@ import {ArticleViewPdfComponent} from './article-view-pdf/article-view-pdf.compo
 import {ReviewsViewPdfComponent} from './reviews-view-pdf/reviews-view-pdf.component';
 import {ReviewsViewComponent} from './reviews-view/reviews-view.component';
 import {ForNedimovicComponent} from './for-nedimovic/for-nedimovic.component';
+import {HomeComponent} from './home/home.component';
+import {CoverLetterViewComponent} from './cover-letter-view/cover-letter-view.component';
+import {CoverLetterViewPdfComponent} from './cover-letter-view-pdf/cover-letter-view-pdf.component';
 
 
 const routes: Routes = [
@@ -28,6 +31,8 @@ const routes: Routes = [
   { path: 'myArticles', component: MyArticlesComponent},
   { path: 'article/:articleId', component: ArticleViewComponent},
   { path: 'articlePdf/:articleId', component: ArticleViewPdfComponent},
+  { path: 'coverLetter/:articleId', component: CoverLetterViewComponent},
+  { path: 'coverLetterPdf/:articleId', component: CoverLetterViewPdfComponent},
   { path: 'reviewPdf/:articleId', component: ReviewsViewPdfComponent},
   { path: 'review/:articleId', component: ReviewsViewComponent},
   { path: 'waitingForNedimovic', component: ForNedimovicComponent},
@@ -35,7 +40,7 @@ const routes: Routes = [
   { path: 'assignReviewers/:articleId', component: AssignReviewersComponent},
   { path: 'reviewed', component: ReviewedComponent},
   { path: 'revisionRecieved', component: RevisionRecievedComponent},
-  { path: '', component: ForNedimovicComponent},
+  { path: '', component: HomeComponent},
 ];
 
 @NgModule({

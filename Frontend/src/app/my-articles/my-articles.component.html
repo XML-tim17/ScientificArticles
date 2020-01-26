@@ -13,6 +13,8 @@
                 </tr>
                 <tr style="background-color: #696969">
                   <td align="center">
+                    <button mat-raised-button [routerLink]="['/coverLetter', ht.id.substring(7)]">View cover letter</button>
+                    <button mat-raised-button [routerLink]="['/coverLetterPdf', ht.id.substring(7)]">View cover letter (PDF)</button>
                     <button mat-raised-button [routerLink]="['/article', ht.id.substring(7)]">View article</button>
                     <button mat-raised-button [routerLink]="['/articlePdf', ht.id.substring(7)]">View article (PDF)</button>
                     <button mat-raised-button [routerLink]="['/review', ht.id.substring(7)]" [disabled]="['inReviewProcess', 'toBeReviewed', 'reviewed', 'revisionRecieved'].indexOf(magija.status) !== -1">View review</button>

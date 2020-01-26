@@ -14,6 +14,9 @@ module.exports.createCollections = () => {
     db.collections.create(`${collectionsURI}/coverLetters`)
         .catch(e => console.error('fail', e));
 
+    db.collections.create(`${collectionsURI}/coverLetters/coverLetter2`)
+            .catch(e => console.error('fail', e));
+
     db.collections.create(`${collectionsURI}/questionaires`)
         .catch(e => console.error('fail', e));
 

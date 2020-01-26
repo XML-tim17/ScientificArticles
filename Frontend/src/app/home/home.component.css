@@ -1,0 +1,33 @@
+.search {
+  width: 20%;
+  margin: 0 40%;
+}
+
+.container {
+  margin: 20px auto;
+}
+
+.stretch {
+  width: 100%;
+}
+
+.lowstretch {
+  width: 75%;
+}
+.white {
+  color: #FFFFFF;
+}
+
+.mat-raised-button {
+  margin: 20px;
+}
+
+.mat-button {
+  color: white;
+}
+
+.mat-form-field {
+  width: 100%;
+  color: white;
+}
+

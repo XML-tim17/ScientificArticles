@@ -7,7 +7,7 @@ const articlesURI = '/db/scientificArticles/articles';
 
 const getAllAcceptedArticles = require('../xquery/getAllAcceptedArticles');
 const getAllToBeReviewedArticles = require('../xquery/getAllToBeReviewedArticles');
-const getAllByTitle = require('../xquery/getAllByTitle');
+const getAllByText = require('../xquery/getAllByText');
 const getArticleStatus = require('../xquery/getArticleStatus');
 const getArticleStatusByURI = require('../xquery/getArticleStatusByURI');
 
@@ -99,7 +99,7 @@ module.exports.getById = async (articleURI) => {
 module.exports.getAll = async () => {
     const db = exist.connect(options);
     let result = await db.queries.readAll(getAllAcceptedArticles.query, {});
-    return Buffer.concat(result.pages).toString();
+    return result.pages.map(page => Buffer(page).toString());
 }
 
 module.exports.toBeReviewed = async () => {
@@ -108,10 +108,10 @@ module.exports.toBeReviewed = async () => {
     return result.pages.map(page => Buffer(page).toString());
 }
 
-module.exports.getAllByTitle = async (title) => {
+module.exports.getAllByText = async (title) => {
     const db = exist.connect(options);
-    let result = await db.queries.readAll(getAllByTitle.query(title), {});
-    return Buffer.concat(result.pages).toString();
+    let result = await db.queries.readAll(getAllByText.query(title), {});
+    return result.pages.map(page => Buffer(page).toString());
 }
 
 module.exports.getStatusOf = async (articleId, version) => {

@@ -4,6 +4,11 @@ var XMLSerializer = xmldom.XMLSerializer;
 var DOMParser = xmldom.DOMParser;
 var router = express.Router();
 var coverLetterService = require('../service/coverLetterService');
+const authorizationService = require('../service/authorizationService')
+const fs = require('fs');
+const xsltService = require('../service/xsltService');
+var articlesService = require('../service/articleService');
+var pdfService = require('../service/pdfService');
 
 router.post('', async (req, res, next) => {
     try {
@@ -14,13 +19,38 @@ router.post('', async (req, res, next) => {
     }
 });
 
-router.get('/:coverLetterId', async (req, res, next) => {
+router.get('/html/:articleId', async (req, res, next) => {
     try {
-        var dom = await coverLetterService.readXML(req.params.coverLetterId);
+        if(!authorizationService.checkAuthorization(req, authorizationService.roles.author)) {
+            let error = new Error('Unauthorized')
+            error.status = 403;
+            next(error);
+            return;
+        }
+        var lastVersion = await articlesService.getLastVersion(+req.params.articleId);
+        var dom = await coverLetterService.readXML(+req.params.articleId, lastVersion);
         var document = new XMLSerializer().serializeToString(dom)
-        res.send(document);
+        let xsltString = fs.readFileSync('./xsl/cover-letter-html.xsl', 'utf8');
+        let coverLetterHtml = await xsltService.transform(document, xsltString);
+        res.send({data: coverLetterHtml});
     } catch (e) {
         next(e);
+    }
+});
+
+router.get('/pdf/:articleId/:token', async (req, res, next) => {
+    try {
+
+        var lastVersion = await articlesService.getLastVersion(+req.params.articleId);
+        var dom = await coverLetterService.readXML(+req.params.articleId, lastVersion);
+        var xmlString = new XMLSerializer().serializeToString(dom)
+        let xslfoString = fs.readFileSync('./xsl-fo/cover-letter-xslfo.xsl', 'utf8');
+
+        let bindata = await pdfService.transform(xmlString, xslfoString)
+        res.contentType("application/pdf");
+        res.send(bindata);
+    } catch (e) {
+        res.send(e.message);
     }
 });
 

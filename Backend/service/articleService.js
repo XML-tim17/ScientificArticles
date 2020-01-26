@@ -118,7 +118,24 @@ module.exports.readXML = async (articleId, version) => {
 }
 
 module.exports.getAll = async () => {
-    let documents = await articlesRepository.getAll();
+    let articleListXml = await articlesRepository.getAll();
+    let xsltString = fs.readFileSync('./xsl/article-list-item.xsl', 'utf8');
+    let select = xpath.useNamespaces({ "ns1": ns1 });
+
+
+    articleListHtml = await Promise.all(articleListXml.map(async (articleXML) => {
+        let articleDOM = new DOMParser().parseFromString(articleXML);
+        let id = `article${select('//ns1:id//text()', articleDOM)[0].textContent}`
+        let html = await xsltService.transform(articleXML, xsltString)
+
+        return {
+            id,
+            html
+        }
+    }))
+
+
+    return articleListHtml;
     // get simple data of all published articles
     return documents;
 
@@ -300,7 +317,23 @@ module.exports.postRevision = async (articleId, article, author) => {
 }
 
 module.exports.basicSearch = async (queryString) => {
-    let documents = await articlesRepository.getAllByTitle(queryString);
+    let articleListXml = await articlesRepository.getAllByText(queryString);
+    let xsltString = fs.readFileSync('./xsl/article-list-item.xsl', 'utf8');
+    let select = xpath.useNamespaces({ "ns1": ns1 });
+
+    articleListHtml = await Promise.all(articleListXml.map(async (articleXML) => {
+        let articleDOM = new DOMParser().parseFromString(articleXML);
+        let id = `article${select('//ns1:id//text()', articleDOM)[0].textContent}`
+        let html = await xsltService.transform(articleXML, xsltString)
+
+        return {
+            id,
+            html
+        }
+    }))
+
+
+    return articleListHtml;
     // get simple data of all published articles
     return documents;
 }
