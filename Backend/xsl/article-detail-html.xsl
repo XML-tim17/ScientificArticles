@@ -160,8 +160,10 @@
                     References: 
                 </h3>
                     <xsl:for-each select="./ns1:reference">
+                    <div>
+                        <xsl:attribute name="id"><xsl:value-of select="./@ns1:id"></xsl:value-of></xsl:attribute>
+                        
                         <p class="article-detail-margin">
-                            <xsl:attribute name="id"><xsl:value-of select="./@ns1:id"></xsl:value-of></xsl:attribute>
                             <b><xsl:value-of select="./@ns1:id"></xsl:value-of>: </b>
                             <xsl:for-each select="./ns1:referencedAuthors/ns1:referencedAuthor">
                                 <xsl:value-of select="./ns1:name"></xsl:value-of>, 
@@ -184,6 +186,7 @@
                                     Article is not on our website
                             </xsl:if>
                         </p>
+                    </div>
                         <hr></hr>
                     </xsl:for-each>
             </td>

@@ -130,6 +130,8 @@
         </ul>
     </xsl:template>
         
+    
+        
     <xsl:template match="ns1:references">
         <tr>
             <td>
@@ -137,11 +139,11 @@
                     References: 
                 </h3>
                     <xsl:for-each select="./ns1:reference">
-                    
-                        <xsl:variable name="count" select="position()"/>
+                    <div>
+                        <xsl:attribute name="id"><xsl:value-of select="./@ns1:id"></xsl:value-of></xsl:attribute>
+                        
                         <p class="article-detail-margin">
-                            
-                            <b><xsl:value-of select="count"></xsl:value-of>. </b>
+                            <b><xsl:value-of select="./@ns1:id"></xsl:value-of>: </b>
                             <xsl:for-each select="./ns1:referencedAuthors/ns1:referencedAuthor">
                                 <xsl:value-of select="./ns1:name"></xsl:value-of>, 
                             </xsl:for-each>
@@ -150,8 +152,21 @@
                             <xsl:value-of select="./ns1:title"></xsl:value-of>,
                             <xsl:value-of select="./ns1:publisher/ns1:institution"></xsl:value-of>,
                             <xsl:value-of select="/ns1:publisher/ns1:city"></xsl:value-of>,
-        
+                            
                         </p>
+                        <p>
+                            <xsl:if test="count(./ns1:website-id)>0">
+                                <a>
+                                    <xsl:attribute name="href">/article/<xsl:value-of select="./ns1:website-id"></xsl:value-of></xsl:attribute>
+                                    Click to navigate to article
+                                </a>
+                            </xsl:if>
+                            <xsl:if test="count(./ns1:website-id)=0">
+                                    Article is not on our website
+                            </xsl:if>
+                        </p>
+                    </div>
+                        <hr></hr>
                     </xsl:for-each>
             </td>
         </tr>
@@ -205,6 +220,16 @@
     <xsl:template match="ns1:ref">
         <a>
             <xsl:attribute name="href"><xsl:apply-templates/></xsl:attribute>
+            <xsl:apply-templates/>
+        </a>
+    </xsl:template>
+
+    
+
+    <xsl:template match="ns1:internal-ref">
+        <a>
+            <xsl:attribute name="href">./#<xsl:apply-templates/></xsl:attribute>
+            <xsl:attribute name="onclick">event.preventDefault(); location.hash='<xsl:apply-templates/>'; location.hash=''; document.getElementById('<xsl:apply-templates/>').classList.add('active');document.getElementById('<xsl:apply-templates/>').classList.add('my-hyperlink'); setTimeout(function(){ document.getElementById('<xsl:apply-templates/>').classList.remove('active'); }, 1000);</xsl:attribute>
             <xsl:apply-templates/>
         </a>
     </xsl:template>
