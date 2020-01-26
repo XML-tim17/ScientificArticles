@@ -1,7 +1,8 @@
 const fs = require('fs');
 const axios = require('axios');
 var articlesRepository = require('../repository/articlesRepository');
-const reviewsRepository = require('../repository/reviewsRepository')
+const reviewsRepository = require('../repository/reviewsRepository');
+const rdfRepository = require('../repository/rdfRepository');
 const grddlPath = "./xsl/grddl.xsl";
 const xsltService = require('./xsltService')
 var xmldom = require('xmldom');
@@ -20,7 +21,7 @@ module.exports.addNewArticle = async (xml, author) => {
 
     // check corresponding author === author
     const authorValid = checkCorrespondingAuthor(articleDOM, author.email);
-    if(!authorValid) {
+    if (!authorValid) {
         let error = new Error('Article must be submitted by its corresponding author');
         error.status = 400;
         throw error;
@@ -32,7 +33,9 @@ module.exports.addNewArticle = async (xml, author) => {
 
     articleRDFa = await xsltService.transform(articleXML, fs.readFileSync('./xsl/article-to-rdfa.xsl', 'utf8'));
     let articleRDFxml = await xsltService.transform(articleRDFa, fs.readFileSync('./xsl/grddl.xsl', 'utf8'));
+
     // save to rdf
+    await rdfRepository.saveRDFxml(articleRDFxml);
 
     //update articleSequencer
     let articleId = await articlesRepository.incrementArticleCount(1);
@@ -47,8 +50,11 @@ module.exports.addNewArticle = async (xml, author) => {
     await articlesRepository.addNewArticle(xml, articleId, version);
 
     await articlesRepository.updateArticleId(articleId, version);
+    await rdfRepository.updateArticleId(articleId, version);
 
     await articlesRepository.setStatus(articleId, version, 'toBeReviewed');
+    await rdfRepository.setStatus(articleId, version, 'toBeReviewed');
+
 }
 
 checkCorrespondingAuthor = (articleDOM, email) => {
@@ -67,7 +73,7 @@ checkAndGenerateIds = (articleDOM) => {
         const error = new Error('Invalid article, duplicate ids found.')
         error.status = 400;
         throw error;
-    } 
+    }
 
     //generate ids
     let prefix = '';
@@ -168,7 +174,7 @@ module.exports.getAllByStatus = async (status) => {
 }
 
 module.exports.postRevision = async (articleId, article, author) => {
-    
+
     let version = await articlesRepository.getLastVersion(articleId);
 
     const status = await articlesRepository.getStatusOf(articleId, version);
@@ -182,7 +188,7 @@ module.exports.postRevision = async (articleId, article, author) => {
 
     // validate corresponding author
     const authorValid = checkCorrespondingAuthor(articleDOM, author.email);
-    if(!authorValid) {
+    if (!authorValid) {
         let error = new Error('Article revision must be submitted by its corresponding author');
         error.status = 400;
         throw error;
@@ -191,7 +197,7 @@ module.exports.postRevision = async (articleId, article, author) => {
     const oldArticleDOM = await articlesRepository.readXML(articleId, version);
 
     const previousAuthorValid = checkCorrespondingAuthor(oldArticleDOM, author.email);
-    if(!previousAuthorValid) {
+    if (!previousAuthorValid) {
         let error = new Error('Article revision must have the same corresponding author as original article');
         error.status = 400;
         throw error;
@@ -201,15 +207,23 @@ module.exports.postRevision = async (articleId, article, author) => {
 
     let articleXML = new XMLSerializer().serializeToString(articleDOM);
 
+    const articleRDFa = await xsltService.transform(articleXML, fs.readFileSync('./xsl/article-to-rdfa.xsl', 'utf8'));
+    let articleRDFxml = await xsltService.transform(articleRDFa, fs.readFileSync('./xsl/grddl.xsl', 'utf8'));
+
+    // save to rdf
+    await rdfRepository.saveRDFxml(articleRDFxml);
+
     await articlesRepository.addNewArticle(articleXML, articleId, version + 1);
 
     await articlesRepository.updateArticleId(articleId, version + 1);
+    await rdfRepository.updateArticleId(articleId, version + 1);
 
     await this.setStatus(articleId, 'revisionRecieved');
 
     await articlesRepository.incrementVersionCount(articleId, 1);
 
     await articlesRepository.setStatus(articleId, version, 'outdated');
+    await rdfRepository.setStatus(articleId, version, 'outdated');
 
     return "success";
 }
@@ -232,7 +246,7 @@ module.exports.getArticlesToReview = async (reviewer) => {
     result = [];
     // get articles that reviewer should review
     let articleList = [];
-    for(let articleId of reviewer.toReview) {
+    for (let articleId of reviewer.toReview) {
         articleId = +articleId.substring(7)
         const version = await articlesRepository.getLastVersion(articleId);
         const status = await articlesRepository.getStatusOf(articleId, version);
@@ -260,7 +274,8 @@ module.exports.setStatus = async (articleId, status) => {
     let version = await articlesRepository.getLastVersion(articleId);
     let currentStatus = await articlesRepository.getStatusOf(articleId, version);
     if (isNextStateValid(currentStatus, status)) {
-        articlesRepository.setStatus(articleId, version, status);
+        await articlesRepository.setStatus(articleId, version, status);
+        await rdfRepository.setStatus(articleId, version, status);
         return true;
     }
 
@@ -277,7 +292,7 @@ module.exports.requestRevision = async (articleId) => {
         throw error;
     }
     await articlesRepository.setStatus(articleId, version, 'revisionRequired');
-
+    await rdfRepository.setStatus(articleId, version, 'revisionRequired');
 }
 
 module.exports.giveUp = async (articleId, user) => {

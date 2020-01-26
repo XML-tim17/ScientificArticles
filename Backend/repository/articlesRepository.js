@@ -2,7 +2,7 @@ var xmldom = require('xmldom');
 var XMLSerializer = xmldom.XMLSerializer;
 var DOMParser = xmldom.DOMParser;
 const exist = require('@existdb/node-exist');
-const options = require('./config');
+const options = require('./existConfig');
 const articlesURI = '/db/scientificArticles/articles';
 
 const getAllAcceptedArticles = require('../xquery/getAllAcceptedArticles');
@@ -42,7 +42,7 @@ module.exports.incrementArticleCount = async (incrementBy) => {
     articleCountDom.getElementsByTagName('count')[0].textContent = articlesCount + incrementBy;
     articlesCountXml = new XMLSerializer().serializeToString(articleCountDom);
 
-    let fileHandle =  await db.documents.upload(Buffer.from(articlesCountXml));
+    let fileHandle = await db.documents.upload(Buffer.from(articlesCountXml));
     await db.documents.parseLocal(fileHandle, `${articlesURI}/article-sequencer.xml`, {});
 
     return articlesCount + incrementBy;
@@ -56,7 +56,7 @@ module.exports.incrementVersionCount = async (articleId, incrementBy) => {
     versionDom.getElementsByTagName('count')[0].textContent = version + incrementBy;
     versionXml = new XMLSerializer().serializeToString(versionDom);
 
-    let fileHandle =  await db.documents.upload(Buffer.from(versionXml));
+    let fileHandle = await db.documents.upload(Buffer.from(versionXml));
     await db.documents.parseLocal(fileHandle, `${articlesURI}/article${articleId}/version-sequencer.xml`, {});
 
     return version + incrementBy;
@@ -72,13 +72,13 @@ module.exports.getLastVersion = async (articleId) => {
     let versionCountXml = await db.documents.read(`${articlesURI}/article${articleId}/version-sequencer.xml`, {});
     let versionCountDom = (new DOMParser()).parseFromString(versionCountXml.toString(), 'text/xml');
     let articlesCount = +versionCountDom.getElementsByTagName('count')[0].textContent;
-    
+
     return articlesCount
 }
 
 module.exports.createVersionSequencer = async (articleId) => {
     const db = exist.connect(options);
-    fileHandle =  await db.documents.upload(Buffer.from("<count>1</count>"));
+    fileHandle = await db.documents.upload(Buffer.from("<count>1</count>"));
     await db.documents.parseLocal(fileHandle, `${articlesURI}/article${articleId}/version-sequencer.xml`, {});
 
     return 1;

@@ -2,7 +2,7 @@ var xmldom = require('xmldom');
 var XMLSerializer = xmldom.XMLSerializer;
 var DOMParser = xmldom.DOMParser;
 const exist = require('@existdb/node-exist');
-const options = require('./config');
+const options = require('./existConfig');
 const coverLettersURI = '/db/scientificArticles/coverLetters';
 
 module.exports.saveXML = async (dom) => {
