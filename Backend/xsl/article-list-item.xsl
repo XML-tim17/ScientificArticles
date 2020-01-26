@@ -50,6 +50,7 @@
             <body> -->
                 <div class="list-item-article list-item-card">
                     <table class="list-item-content">
+                        <xsl:value-of select="./ns1:id/text()"></xsl:value-of>. <xsl:value-of select="//ns1:status/text()"></xsl:value-of>
                         <xsl:apply-templates/>
                     </table>
                 </div>
@@ -123,6 +124,8 @@
     <xsl:template match="ns1:section[not(@level='0' or @level='1' or @level='2' or @level='3')]"/>
 
     <xsl:template match="ns1:table"/>
+
+    <xsl:template match="ns1:id"/>
 
 
     <xsl:template match="ns1:references"/>

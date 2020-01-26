@@ -27,6 +27,9 @@ import { AssignReviewersComponent } from './assign-reviewers/assign-reviewers.co
 import { ToBeReviewedComponent } from './to-be-reviewed/to-be-reviewed.component';
 import { ReviewedComponent } from './reviewed/reviewed.component';
 import { RevisionRecievedComponent } from './revision-recieved/revision-recieved.component';
+import { HomeComponent } from './home/home.component';
+import { CoverLetterViewComponent } from './cover-letter-view/cover-letter-view.component';
+import { CoverLetterViewPdfComponent } from './cover-letter-view-pdf/cover-letter-view-pdf.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +52,9 @@ import { RevisionRecievedComponent } from './revision-recieved/revision-recieved
     ToBeReviewedComponent,
     ReviewedComponent,
     RevisionRecievedComponent,
+    HomeComponent,
+    CoverLetterViewComponent,
+    CoverLetterViewPdfComponent,
   ],
   imports: [
     BrowserModule,

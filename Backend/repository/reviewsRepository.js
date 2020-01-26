@@ -23,7 +23,7 @@ module.exports.readXML = async (reviewId) => {
     const db = exist.connect(options);
     let result = await db.documents.read(`${reviewsURI}/${reviewId}.xml`, {})
         .catch(e => console.error('fail', e))
-    return DOMParser.parseFromString(result.toString(), 'text/xml');
+    return new DOMParser().parseFromString(result.toString(), 'text/xml');
 }
 
 module.exports.addNewReview = async (reviewXML, reviewId) => {

@@ -14,9 +14,9 @@ module.exports.saveXML = async (dom) => {
         .catch(e => console.error('fail', e))
 }
 
-module.exports.readXML = async (coverLetterId) => {
+module.exports.readXML = async (articleId, version) => {
     const db = exist.connect(options);
-    let result = await db.documents.read(`${coverLettersURI}/${coverLetterId}.xml`, {})
+    let result = await db.documents.read(`${coverLettersURI}/coverLetter${articleId}/v${version}.xml`, {})
         .catch(e => console.error('fail', e))
-    return DOMParser.parseFromString(result.toString(), 'text/xml');
+    return new DOMParser().parseFromString(result.toString(), 'text/xml');
 }

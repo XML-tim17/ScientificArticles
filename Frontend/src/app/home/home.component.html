@@ -1,0 +1,46 @@
+<div class="container">
+  <table class="stretch">
+    <tr>
+      <td align="center">
+        <table class="search">
+          <tr>
+            <td colspan="2">
+              <mat-form-field>
+                <input matInput [(ngModel)]="searchTerm" placeholder="Search">
+              </mat-form-field>
+            </td>
+          </tr>
+          <tr>
+            <td align="left">
+              <button mat-button [disabled]="!searched" (click)="clearSearch()">Clear search</button>
+            </td>
+            <td align="right">
+              <button mat-raised-button  color="primary" (click)="doSearch()">Search</button>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <div class="container" *ngFor="let article of articles">
+          <table class="lowstretch">
+            <tr>
+              <td align="center">
+                <div [innerHTML]="article.html"></div>
+              </td>
+            </tr>
+            <tr style="background-color: #696969">
+              <td align="center">
+                <button mat-raised-button [routerLink]="['/article', article.id.substring(7)]">View article</button>
+                <button mat-raised-button [routerLink]="['/articlePdf', article.id.substring(7)]">View article (PDF)</button>
+                <button mat-raised-button (click)="copyMessage(article)">Copy reference to clipboard</button>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </td>
+    </tr>
+  </table>
+
+</div>

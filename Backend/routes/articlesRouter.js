@@ -41,7 +41,7 @@ router.get('/pdf/:articleId/:token', async(req,res) => {
 router.get('', async (req, res, next) => {
     try {
         var documents = await articlesService.getAll();
-        res.send({status: "success"});
+        res.send(documents);
     } catch (e) {
         next(e);
     }
