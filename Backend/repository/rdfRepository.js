@@ -33,16 +33,15 @@ module.exports.saveRDFxml = async (rdfXML) => {
 }
 
 module.exports.setStatus = async (articleId, version, status) => {
-    const rdfSubject = `${rdfSubjectBase}/${articleId}/${version}`;
+    const rdfSubject = `<${rdfSubjectBase}/${articleId}/${version}>`;
     let updateSPARQL = `PREFIX rdfa: <http://www.w3.org/ns/rdfa#> 
-        PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
 
         DELETE { ${rdfSubject} rdfa:creativeWorkStatus ?current_status }
-        INSERT { ${rdfSubject} rdfa:creativeWorkStatus ${status} }
+        INSERT { ${rdfSubject} rdfa:creativeWorkStatus "${status}" }
         WHERE
         { 
             ${rdfSubject} rdfa:creativeWorkStatus ?current_status
-        } `;
+        }`;
     await axios.post(`${baseUrl}/${datasetName}/update`, querystring.stringify({
         update: updateSPARQL
     }))
@@ -50,12 +49,11 @@ module.exports.setStatus = async (articleId, version, status) => {
 }
 
 module.exports.updateArticleId = async (articleId, version) => {
-    const rdfSubject = `${rdfSubjectBase}/${articleId}/${version}`;
+    const rdfSubject = `<${rdfSubjectBase}/${articleId}/${version}>`;
     let updateSPARQL = `PREFIX rdfa: <http://www.w3.org/ns/rdfa#> 
-        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
 
         DELETE { ${rdfSubject} rdfa:identifier ?current_identifier }
-        INSERT { ${rdfSubject} rdfa:identifier ${articleId} }
+        INSERT { ${rdfSubject} rdfa:identifier "${articleId}" }
         WHERE
         { 
           ${rdfSubject} rdfa:identifier ?current_identifier
