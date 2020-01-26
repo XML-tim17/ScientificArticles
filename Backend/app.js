@@ -12,6 +12,7 @@ var coverLettersRouter = require('./routes/coverLettersRouter');
 var authorsRouter = require('./routes/authorsRouter');
 
 var existRepository = require('./repository/existRepository');
+var rdfRepository = require('./repository/rdfRepository');
 
 const authorizationInterceptor = require('./authorization/authorizationInterceptor')
 
@@ -35,7 +36,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // jwt authorization intercepter
-app.use(async function(req, res, next) {
+app.use(async function (req, res, next) {
   try {
     req = await authorizationInterceptor.autorize(req);
   } catch (e) {
@@ -63,13 +64,14 @@ app.use(function (err, req, res, next) {
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
-  res.status(err.status || 500).send({message: err.message});
+  res.status(err.status || 500).send({ message: err.message });
 });
 
 app.get('/test', (req, res) => res.send('Test works'))
 
 
 existRepository.createCollections();
+rdfRepository.createDataset();
 
 module.exports = app;
 

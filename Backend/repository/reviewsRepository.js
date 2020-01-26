@@ -2,7 +2,7 @@ var xmldom = require('xmldom');
 var XMLSerializer = xmldom.XMLSerializer;
 var DOMParser = xmldom.DOMParser;
 const exist = require('@existdb/node-exist');
-const options = require('./config');
+const options = require('./existConfig');
 const reviewsURI = '/db/scientificArticles/reviews';
 const addArticleToReviewer = require('../xquery/addArticleToReviewer');
 const getReviewsByArticleURIXQ = require('../xquery/gerReviewsByArticleURI');
@@ -47,7 +47,7 @@ module.exports.incrementReviewCount = async (incrementBy) => {
     reviewCountDOM.getElementsByTagName('count')[0].textContent = reviewCount + incrementBy;
     reviewCountXML = new XMLSerializer().serializeToString(reviewCountDOM);
 
-    let fileHandle =  await db.documents.upload(Buffer.from(reviewCountXML));
+    let fileHandle = await db.documents.upload(Buffer.from(reviewCountXML));
     await db.documents.parseLocal(fileHandle, `${reviewsURI}/review-sequencer.xml`, {});
 
     return reviewCount + incrementBy;
@@ -62,7 +62,7 @@ module.exports.getArticleReviewCount = async (articleURI) => {
     const db = exist.connect(options);
     let result = await db.queries.readAll(getReviewsByArticleURIXQ.query(articleURI), {});
     return Buffer.concat(result.pages).toString();
-    
+
 }
 
 module.exports.getToReviewByArticleId = async (articleId) => {
