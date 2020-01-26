@@ -15,6 +15,12 @@ module.exports.getArticles = async (authorEmail, status) => {
     // if status === '' return all
     // extract simple data
     let result = await authorsRepository.getUsersArticlesInStatus(authorEmail, status);
+    if (!result){
+        return {
+            status: status,
+            htmls: []
+        }
+    }
     //dom od ovoga
     //listu pojedinacnih stvari
     let result_dom = new DOMParser().parseFromString(result, 'text/xml');

@@ -8,6 +8,7 @@ const addArticleToReviewer = require('../xquery/addArticleToReviewer');
 const getReviewsByArticleURIXQ = require('../xquery/gerReviewsByArticleURI');
 const getToReviewCountByArticleIdXQ = require('../xquery/getToReviewCountByArticleId');
 const existsByEmailAndArticleIdXQ = require('../xquery/reviewExistsByReviewerEmailAndArticleId')
+const getMergedReviews = require('../xquery/getReviewsForArticle')
 
 module.exports.saveXML = async (dom) => {
     var XMLstring = new XMLSerializer().serializeToString(dom);
@@ -74,4 +75,11 @@ module.exports.existsByEmailAndArticleURI = async (email, articleURI) => {
     const db = exist.connect(options);
     let result = await db.queries.readAll(existsByEmailAndArticleIdXQ.query(articleURI, email), {});
     return Buffer.concat(result.pages).toString();
+}
+
+module.exports.getReviewsForArticle = async (articleId, version) => {
+    const db = exist.connect(options);
+    let result = await db.queries.readAll(getMergedReviews.query(articleId, version), {});
+    return Buffer.concat(result.pages).toString();
+
 }

@@ -60,33 +60,12 @@
     <xsl:template match="ns1:article/ns1:title">
         <tr class="list-item-heading">
             <td align="center">
-                <h2><xsl:apply-templates/></h2>
+                <h3><xsl:apply-templates/></h3>
             </td>
         </tr>
     </xsl:template>
 
-    <xsl:template match="ns1:article/ns1:info">
-        <tr>
-            <td align="center">
-                <table class="list-item-authors">
-                    <tr>
-                        <td align="center" class="list-item-authorColumn">
-                                <h4><xsl:value-of select="./ns1:authors/ns1:corresponding-author/ns1:name"></xsl:value-of></h4>
-                                <p><xsl:value-of select="./ns1:authors/ns1:corresponding-author/ns1:institution"></xsl:value-of>, <xsl:value-of select="./ns1:authors/ns1:corresponding-author/ns1:address/ns1:city"></xsl:value-of>, <xsl:value-of select="./ns1:authors/ns1:corresponding-author/ns1:address/ns1:country"></xsl:value-of></p>
-                                
-                        </td>
-                        <xsl:for-each select="./ns1:authors/ns1:author">
-                            <td align="center" class="list-item-authorColumn">
-                                <h4><xsl:value-of select="ns1:name"></xsl:value-of></h4>
-                                <p><xsl:value-of select="ns1:institution"></xsl:value-of>, <xsl:value-of select="ns1:address/ns1:city"></xsl:value-of>, <xsl:value-of select="ns1:address/ns1:country"></xsl:value-of></p>
-                            </td>
-                        </xsl:for-each>
-                    </tr>
-                </table>
-                <hr/>
-            </td>
-        </tr>
-    </xsl:template>
+    <xsl:template match="ns1:article/ns1:info"/>
 
     <xsl:template match="ns1:abstract">
         <tr>

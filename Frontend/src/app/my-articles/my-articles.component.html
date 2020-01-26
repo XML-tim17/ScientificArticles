@@ -14,8 +14,9 @@
                 <tr style="background-color: #696969">
                   <td align="center">
                     <button mat-raised-button [routerLink]="['/article', ht.id.substring(7)]">View article</button>
-                    <button mat-raised-button [routerLink]="['/articlePdf', ht.id.substring(7)]">View article (pdf)</button>
-                    <button mat-raised-button [disabled]="['inReviewProcess', 'toBeReviewed', 'reviewed', 'revisionRecieved'].indexOf(magija.status) !== -1">View review (pdf)</button>
+                    <button mat-raised-button [routerLink]="['/articlePdf', ht.id.substring(7)]">View article (PDF)</button>
+                    <button mat-raised-button [routerLink]="['/review', ht.id.substring(7)]" [disabled]="['inReviewProcess', 'toBeReviewed', 'reviewed', 'revisionRecieved'].indexOf(magija.status) !== -1">View review</button>
+                    <button mat-raised-button [routerLink]="['/reviewPdf', ht.id.substring(7)]" [disabled]="['inReviewProcess', 'toBeReviewed', 'reviewed', 'revisionRecieved'].indexOf(magija.status) !== -1">View review (PDF)</button>
                     <button mat-raised-button [disabled]="magija.status !== 'revisionRequired'">Add revision</button>
                   </td>
                 </tr>

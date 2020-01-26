@@ -4,13 +4,10 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     version="2.0">
     <xsl:template match="ns1:merged-reviews">
-        <html>
+        <!-- <html>
             <head>
                 <style>
 
-                    body {
-                        background: #e0e0e0;
-                    }
 
                     .article {
                         max-width: 75%;
@@ -70,9 +67,37 @@
                 </style>
             </head>
 
-            <body>
-                <div class="article">
-                    <table class="content">
+            <body> -->
+                <div class="review-view-article">
+                    <table class="review-view-content">
+                        <tr>
+                            <td>
+                                <table class="review-view-content">
+                                    <tr>
+                                        <td>
+                                            <h2>Grades: </h2>
+                                            <xsl:for-each select="./ns1:grades/ns1:grade">
+                                                    <span font-size="18pt"
+                                                            line-height="21pt"
+                                                            font-family="serif"><xsl:value-of select="./text()"></xsl:value-of>&#160;&#160;
+                                                    </span>
+                                            </xsl:for-each>           
+                                        </td>
+                                           
+                                        <td align="right">
+                                            
+                                            <h2>Judgments: </h2>
+                                            <xsl:for-each select="./ns1:judgments/ns1:judgment">
+                                                    <span font-size="18pt"
+                                                            line-height="21pt"
+                                                            font-family="serif"><xsl:value-of select="./text()"></xsl:value-of>&#160;&#160;
+                                                    </span>
+                                            </xsl:for-each> 
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
                         <xsl:apply-templates/>
 
                         <tr>
@@ -81,16 +106,16 @@
                                 <hr/>
                                 <hr/>
                                 <h2>Questionaire:</h2>
-                                <div class="questionaire">
+                                <div class="review-view-questionaire">
                                     <xsl:for-each select="./ns1:questionaires/ns1:questionaire">
                                         <xsl:for-each select="./ns1:questions/ns1:yes-no-question">
                                             <h3><xsl:value-of select="./ns1:question-text/text()"></xsl:value-of></h3>
-                                            <p class="margin block lp30"><xsl:apply-templates/></p>
+                                            <p class="review-view-margin review-view-block review-view-lp30"><xsl:apply-templates/></p>
                                         </xsl:for-each>
                                         
                                         <xsl:for-each select="./ns1:questions/ns1:question">
                                             <h3><xsl:value-of select="./ns1:question-text/text()"></xsl:value-of></h3>
-                                            <p class="margin block lp30"><xsl:apply-templates/></p>
+                                            <p class="review-view-margin review-view-block review-view-lp30"><xsl:apply-templates/></p>
                                         </xsl:for-each>
                                         <hr/>
                                     </xsl:for-each>
@@ -100,8 +125,8 @@
                         
                     </table>
                 </div>
-            </body>
-        </html>
+            <!-- </body>
+        </html> -->
     </xsl:template>
 
     <xsl:template match="ns1:article">
@@ -109,7 +134,7 @@
     </xsl:template>
 
     <xsl:template match="ns1:article/ns1:title">
-        <tr class="heading">
+        <tr class="review-view-heading">
             <td align="center">
                 <h1><xsl:apply-templates/></h1>
             </td>
@@ -119,7 +144,7 @@
     <xsl:template match="ns1:article/ns1:info">
         <tr>
             <td align="center">
-                <table class="authors">
+                <table class="review-view-authors">
                     <tr>
                         <td align="center" width="33%">
                                 <h4><xsl:value-of select="./ns1:authors/ns1:corresponding-author/ns1:name"></xsl:value-of></h4>
@@ -145,7 +170,7 @@
     <xsl:template match="ns1:abstract">
         <tr>
             <td align="left">
-                <div class="margin-big">
+                <div class="review-view-margin-big">
                     <p><b>Abstract: </b> <xsl:apply-templates/></p>
                 </div>
             </td>
@@ -155,7 +180,7 @@
     <xsl:template match="ns1:content">
         <tr>
             <td align="left">
-                <div class="margin-big">
+                <div class="review-view-margin-big">
                     <xsl:apply-templates/>
                 </div>
             </td>
@@ -168,7 +193,7 @@
         <xsl:variable name="id" select="@ns1:id"/>
         <xsl:if test="count(//ns1:comment[@reference-id=$id])>0">
             <xsl:for-each select="//ns1:comment[@reference-id=$id]">
-                <div class="comment">
+                <div class="review-view-comment">
                     <xsl:value-of select="./text()"></xsl:value-of>
                 </div>
             </xsl:for-each>
@@ -180,7 +205,7 @@
         <xsl:variable name="id" select="@ns1:id"/>
         <xsl:if test="count(//ns1:comment[@reference-id=$id])>0">
             <xsl:for-each select="//ns1:comment[@reference-id=$id]">
-                <div class="comment">
+                <div class="review-view-comment">
                     <xsl:value-of select="./text()"></xsl:value-of>
                 </div>
             </xsl:for-each>
@@ -192,7 +217,7 @@
         <xsl:variable name="id" select="@ns1:id"/>
         <xsl:if test="count(//ns1:comment[@reference-id=$id])>0">
             <xsl:for-each select="//ns1:comment[@reference-id=$id]">
-                <div class="comment">
+                <div class="review-view-comment">
                     <xsl:value-of select="./text()"></xsl:value-of>
                 </div>
             </xsl:for-each>
@@ -204,7 +229,7 @@
         <xsl:variable name="id" select="@ns1:id"/>
         <xsl:if test="count(//ns1:comment[@reference-id=$id])>0">
             <xsl:for-each select="//ns1:comment[@reference-id=$id]">
-                <div class="comment">
+                <div class="review-view-comment">
                     <xsl:value-of select="./text()"></xsl:value-of>
                 </div>
             </xsl:for-each>
@@ -216,7 +241,7 @@
         <xsl:variable name="id" select="@ns1:id"/>
         <xsl:if test="count(//ns1:comment[@reference-id=$id])>0">
             <xsl:for-each select="//ns1:comment[@reference-id=$id]">
-                <div class="comment">
+                <div class="review-view-comment">
                     <xsl:value-of select="./text()"></xsl:value-of>
                 </div>
             </xsl:for-each>
@@ -229,13 +254,13 @@
         <xsl:variable name="id" select="@ns1:id"/>
         <xsl:if test="count(//ns1:comment[@reference-id=$id])>0">
             <xsl:for-each select="//ns1:comment[@reference-id=$id]">
-                <div class="comment">
+                <div class="review-view-comment">
                     <xsl:value-of select="./text()"></xsl:value-of>
                 </div>
             </xsl:for-each>
         </xsl:if>
 
-        <table border="1px" class="margin-big child-padding5">
+        <table border="1px" class="review-view-margin-big child-padding5">
             <xsl:for-each select="./ns1:tr">
                 <tr>
                     <xsl:for-each select="./ns1:td">
@@ -248,6 +273,24 @@
         </table>
     </xsl:template>
 
+    <xsl:template match="ns1:list">
+        <xsl:variable name="id" select="@ns1:id"/>
+        <xsl:if test="count(//ns1:comment[@reference-id=$id])>0">
+            <xsl:for-each select="//ns1:comment[@reference-id=$id]">
+                <div class="review-view-comment">
+                    <xsl:value-of select="./text()"></xsl:value-of>
+                </div>
+            </xsl:for-each>
+        </xsl:if>
+        <ul class="review-view-margin-big">
+            <xsl:for-each select="./ns1:item">
+                <li>
+                    <xsl:apply-templates/>
+                </li>
+            </xsl:for-each>
+        </ul>
+    </xsl:template>
+
 
     <xsl:template match="ns1:references">
         <tr>
@@ -258,7 +301,7 @@
                     <xsl:for-each select="./ns1:reference">
                     
                         <xsl:variable name="count" select="position()"/>
-                        <p class="margin">
+                        <p class="review-view-margin">
                             
                             <b><xsl:value-of select="$count"></xsl:value-of>. </b>
                             <xsl:for-each select="./ns1:referencedAuthors/ns1:referencedAuthor">
@@ -282,13 +325,13 @@
         <xsl:variable name="id" select="@ns1:id"/>
         <xsl:if test="count(//ns1:comment[@reference-id=$id])>0">
             <xsl:for-each select="//ns1:comment[@reference-id=$id]">
-                <div class="comment">
+                <div class="review-view-comment">
                     <xsl:value-of select="./text()"></xsl:value-of>
                 </div>
             </xsl:for-each>
         </xsl:if>
 
-        <table border="1px" class="margin child-padding5">
+        <table border="1px" class="review-view-margin child-padding5">
             <tr>
                 <td align="center">
                     <img>
@@ -312,14 +355,14 @@
     </xsl:template>
 
     <xsl:template match="ns1:paragraph">
-        <p class="margin"><xsl:apply-templates/></p>
+        <p class="review-view-margin"><xsl:apply-templates/></p>
     </xsl:template>
 
     <xsl:template match="ns1:quote">
         <xsl:variable name="id" select="@ns1:id"/>
         <xsl:if test="count(//ns1:comment[@reference-id=$id])>0">
             <xsl:for-each select="//ns1:comment[@reference-id=$id]">
-                <span class="comment">
+                <span class="review-view-comment">
                     <xsl:value-of select="./text()"></xsl:value-of>
                 </span>
             </xsl:for-each>
@@ -361,6 +404,12 @@
     <xsl:template match="ns1:question-text"/>
 
     <xsl:template match="ns1:questionaires"/>
+
+    <xsl:template match="ns1:grades"/>
+
+    <xsl:template match="ns1:judgments"/>
+    
+    <xsl:template match="ns1:article/ns1:id"/>
         
 
     <xsl:output method="xml" omit-xml-declaration="yes"/>

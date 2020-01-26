@@ -15,12 +15,54 @@
                 <fo:flow flow-name="xsl-region-body">
                     <fo:table table-layout="fixed" inline-progression-dimension="100%">
                         <fo:table-body>
+                            <fo:table-row background-color="#e0e0e0">
+                                <fo:table-cell padding-start="3pt"
+                                                padding-end="3pt"
+                                                padding-before="3pt"
+                                                padding-after="3pt">
+                                    <fo:block font-size="21pt"
+                                                    line-height="24pt"
+                                                    keep-with-next="always"
+                                                    space-after="14pt"
+                                                    font-family="serif">Grades: </fo:block>
+                                                    <fo:block>
+                                    <xsl:for-each select="./ns1:grades/ns1:grade">
+                                                    <fo:inline font-size="18pt"
+                                                            line-height="21pt"
+                                                            font-family="serif"><xsl:value-of select="./text()"></xsl:value-of><xsl:text></xsl:text>&#160;&#160;</fo:inline>
+                                    </xsl:for-each>           </fo:block>    
+                                         
+                                </fo:table-cell>     
+                                <fo:table-cell text-align="right">
+                                    <fo:block font-size="21pt"
+                                                    line-height="24pt"
+                                                    keep-with-next="always"
+                                                    space-after="14pt"
+                                                    font-family="serif">Judgments: </fo:block>
+                                                    <fo:block>
+                                    <xsl:for-each select="./ns1:judgments/ns1:judgment">
+                                                    <fo:inline font-size="18pt"
+                                                            line-height="21pt"
+                                                            font-family="serif">&#160;&#160;<xsl:value-of select="./text()"></xsl:value-of></fo:inline>
+                                    </xsl:for-each>          </fo:block>             
+                                </fo:table-cell>
+                            </fo:table-row>
+                            <fo:table-row>
+                                <fo:table-cell number-columns-spanned="2">
+                                    <fo:block space-after="80pt"
+                                                line-height="21pt">
+                                        <fo:leader leader-pattern="rule"
+                                                    leader-length.maximum="100%"
+                                                    leader-length.optimum="100%"/></fo:block>   
+                                </fo:table-cell>
+                            </fo:table-row>
                             <xsl:apply-templates/>
                             <fo:table-row break-before="page">
                                 <fo:table-cell padding-start="3pt"
                                                 padding-end="3pt"
                                                 padding-before="3pt"
-                                                padding-after="3pt">
+                                                padding-after="3pt"
+                                                number-columns-spanned="2">
                             <fo:block font-size="21pt"
                                                     line-height="24pt"
                                                     keep-with-next="always"
@@ -83,7 +125,8 @@
             <fo:table-cell padding-start="3pt"
                         padding-end="3pt"
                         padding-before="3pt"
-                        padding-after="3pt">
+                        padding-after="3pt"
+                        number-columns-spanned="2">
             <fo:block text-align="center">
                 <fo:block font-size="28pt"
                             line-height="32pt"
@@ -103,7 +146,8 @@
         <fo:table-cell padding-start="3pt"
                        padding-end="3pt"
                        padding-before="3pt"
-                       padding-after="3pt">
+                       padding-after="3pt"
+                       number-columns-spanned="2">
            <fo:block text-align="center">
                
               <fo:block>
@@ -182,7 +226,8 @@
             <fo:table-cell padding-start="3pt"
                                  padding-end="3pt"
                                  padding-before="3pt"
-                                 padding-after="3pt">
+                                 padding-after="3pt"
+                                 number-columns-spanned="2">
                 <fo:block text-align="start">
                     <fo:block font-size="12pt" line-height="15pt" space-after="12pt">
                            <fo:inline font-weight="bold">Abstract: </fo:inline>
@@ -205,7 +250,8 @@
             <fo:table-cell padding-start="3pt"
                                  padding-end="3pt"
                                  padding-before="3pt"
-                                 padding-after="3pt">
+                                 padding-after="3pt"
+                                 number-columns-spanned="2">
                 <fo:block text-align="start">
                     <xsl:apply-templates/>
                 </fo:block>
@@ -350,13 +396,45 @@
         </fo:table>
     </xsl:template>
 
+    <xsl:template match="ns1:list">
+        <fo:block margin-top="40px">
+            <xsl:variable name="id" select="@ns1:id"/>
+            <xsl:if test="count(//ns1:comment[@reference-id=$id])>0">
+                <xsl:for-each select="//ns1:comment[@reference-id=$id]">
+                    <fo:block background-color="#FFFF99"
+                            padding="5pt"
+                            border="0.1mm solid black"
+                            margin="10pt">
+                        <xsl:value-of select="./text()"></xsl:value-of>
+                    </fo:block>
+                </xsl:for-each>
+            </xsl:if>
+    
+            <fo:list-block>
+                    <xsl:for-each select="./ns1:item">
+                        <fo:list-item>
+                            <fo:list-item-label>
+                                <fo:block>*</fo:block>
+                            </fo:list-item-label>
+                            <fo:list-item-body>
+                                <fo:block>
+                                    &#160;&#160;&#160;&#160;<xsl:apply-templates/>
+                                </fo:block>
+                            </fo:list-item-body>
+                        </fo:list-item>
+                    </xsl:for-each>
+            </fo:list-block>
+        </fo:block>
+        
+    </xsl:template>
 
     <xsl:template match="ns1:references">
         <fo:table-row>
             <fo:table-cell padding-start="3pt"
                                  padding-end="3pt"
                                  padding-before="3pt"
-                                 padding-after="3pt">
+                                 padding-after="3pt"
+                                 number-columns-spanned="2">
                 <fo:block text-align="start">
                     <fo:block font-size="21pt"
                                 line-height="24pt"

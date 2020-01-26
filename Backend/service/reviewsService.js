@@ -119,3 +119,7 @@ module.exports.readXML = async (reviewId) => {
     return reviewsRepository.readXML(reviewId);
 }
 
+module.exports.getReviewsForArticle = async(articleId) => {
+    let version = await articleRepository.getLastVersion(articleId);
+    return await reviewsRepository.getReviewsForArticle(articleId, version);
+}

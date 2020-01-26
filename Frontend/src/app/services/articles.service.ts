@@ -20,7 +20,7 @@ export class ArticlesService {
   postRevision(id, xmlString: string) {
     return this.httpClient.post(`${environment.apiEndpoint}articles/${id}`, { data: xmlString }).toPromise();
   }
-  
+
   getArticle(articleId: string) {
     return this.httpClient.get(environment.apiEndpoint + 'articles/html/' + articleId).toPromise();
   }

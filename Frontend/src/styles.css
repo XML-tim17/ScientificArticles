@@ -72,3 +72,59 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-
 .article-detail-child-padding5 * {
   padding: 5px;
 }
+
+.review-view-article {
+  max-width: 75%;
+  margin: auto;
+  background: white;
+  padding: 10px;
+}
+
+.review-view-content {
+  width: 100%;
+}
+
+.review-view-h1 {
+  margin-bottom: 40px;
+}
+
+.review-view-authors {
+  width: 100%;
+}
+
+.review-view-margin {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.review-view-margin-big {
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+.review-view-child-padding5 * {
+  padding: 5px;
+}
+
+.review-view-comment {
+  background-color: #FFFF99AA;
+  padding: 5px;
+  border: 1px solid gray;
+  border-radius: 5px;
+  margin: 5px;
+  width: fit-content;
+}
+
+.review-view-block {
+  display: block;
+}
+
+.review-view-questionaire {
+  background-color: #FFFFFF;
+  border: 1px solid #E0E0E0;
+  padding: 10px;
+}
+
+.review-view-lp30 {
+  padding-left: 30px;
+}

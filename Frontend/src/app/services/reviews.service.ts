@@ -12,4 +12,8 @@ export class ReviewsService {
   addReview(xmlString: string) {
     return this.httpClient.post(environment.apiEndpoint + 'reviews', { data: xmlString }).toPromise();
   }
+
+  getReview(articleId: string) {
+    return this.httpClient.get(environment.apiEndpoint + 'reviews/html/' + articleId).toPromise();
+  }
 }

@@ -6,9 +6,11 @@ var router = express.Router();
 var reviewsService = require('../service/reviewsService');
 var articlesService = require('../service/articleService');
 var validator = require('xsd-schema-validator');
+var fs = require('fs');
 const reviewSchemaLocation = 'resources/XMLSchemas/Review.xsd';
 const authorizationService = require('../service/authorizationService')
-
+const pdfService = require('../service/pdfService');
+const xsltService = require('../service/xsltService');
 const validateDocument = (xml) => {
     return new Promise((resolve, reject) => {
         validator.validateXML(xml, reviewSchemaLocation, (err, data) => {
@@ -73,6 +75,34 @@ router.post('/assign/article/:articleId/version/:versionId', async (req, res, ne
 
         await reviewsService.assignReviewers(req.params.articleId, req.params.versionId, req.body.reviewers)
         res.send("success");
+        
+    } catch (e) {
+        next(e);
+    }
+})
+
+
+router.get('/pdf/:articleId/:token', async (req, res, next) => {
+    try {
+        const mergedXml = await reviewsService.getReviewsForArticle(req.params.articleId);
+        let xslfoString = fs.readFileSync('./xsl-fo/article-reviews-merged-xslfo.xsl', 'utf8');
+        
+        let bindata = await pdfService.transform(mergedXml, xslfoString)
+        res.contentType("application/pdf");
+        res.send(bindata);
+        
+    } catch (e) {
+        next(e);
+    }
+})
+
+router.get('/html/:articleId/', async (req, res, next) => {
+    try {
+        const mergedXml = await reviewsService.getReviewsForArticle(req.params.articleId);
+        let xslfoString = fs.readFileSync('./xsl/article-reviews-merged.xsl', 'utf8');
+        
+        let htmlString = await xsltService.transform(mergedXml, xslfoString)
+        res.send({data: htmlString});
         
     } catch (e) {
         next(e);
