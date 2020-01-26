@@ -16,4 +16,8 @@ export class ReviewsService {
   getReview(articleId: string) {
     return this.httpClient.get(environment.apiEndpoint + 'reviews/html/' + articleId).toPromise();
   }
+  
+  assignReviewers(articleId, reviewers) {
+    return this.httpClient.post(`${environment.apiEndpoint}reviews/assign/article/${articleId}`, { reviewers }).toPromise();
+  }
 }

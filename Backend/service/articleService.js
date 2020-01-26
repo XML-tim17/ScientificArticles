@@ -122,10 +122,46 @@ module.exports.getReviews = async (articleId) => {
     return mergedReview;
 }
 
-module.exports.toBeReviewed = async () => {
-    let documents = await articlesRepository.toBeReviewed();
+// module.exports.toBeReviewed = async () => {
+//     let articleListXml = await articlesRepository.toBeReviewed();
+//     let xsltString = fs.readFileSync('./xsl/article-list-item.xsl', 'utf8');
+//     let select = xpath.useNamespaces({ "ns1": ns1 });
+//     // get simple data of all published articles
+
+//     articleListHtml = articleListXml.map(async (articleXML) => {
+//         let articleDOM = new DOMParser().parseFromString(articleXML);
+//         let id = `article${select(select('./ns1:id//text()', articleDOM)[0].textContent)}`
+//         let html = await xsltService.transform(articleXML, xsltString)
+
+//         return {
+//             id,
+//             html
+//         }
+//     })
+
+
+//     return articleListHtml;
+// }
+
+module.exports.getAllByStatus = async (status) => {
+    let articleListXml = await articlesRepository.getAllByStatus(status);
+    let xsltString = fs.readFileSync('./xsl/article-list-item.xsl', 'utf8');
+    let select = xpath.useNamespaces({ "ns1": ns1 });
     // get simple data of all published articles
-    return documents;
+
+    articleListHtml = await Promise.all(articleListXml.map(async (articleXML) => {
+        let articleDOM = new DOMParser().parseFromString(articleXML);
+        let id = `article${select('//ns1:id//text()', articleDOM)[0].textContent}`
+        let html = await xsltService.transform(articleXML, xsltString)
+
+        return {
+            id,
+            html
+        }
+    }))
+
+
+    return articleListHtml;
 }
 
 module.exports.postRevision = async (articleId, article, author) => {

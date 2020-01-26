@@ -63,7 +63,7 @@ router.get('/toReview', async (req, res, next) => {
 // assign reviewers to article
 // EDITOR
 // expected json body { reviewers: [] }
-router.post('/assign/article/:articleId/version/:versionId', async (req, res, next) => {
+router.post('/assign/article/:articleId', async (req, res, next) => {
     try {
         
         if(!authorizationService.checkAuthorization(req, authorizationService.roles.editor)) {
@@ -73,7 +73,7 @@ router.post('/assign/article/:articleId/version/:versionId', async (req, res, ne
             return;
         }
 
-        await reviewsService.assignReviewers(req.params.articleId, req.params.versionId, req.body.reviewers)
+        await reviewsService.assignReviewers(req.params.articleId, req.body.reviewers)
         res.send("success");
         
     } catch (e) {

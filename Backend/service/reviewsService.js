@@ -81,7 +81,9 @@ module.exports.postReview = async (reviewXML, reviewer) => {
     }
 }
 
-module.exports.assignReviewers = async (articleId, version, reviewers) => {
+module.exports.assignReviewers = async (articleId, reviewers) => {
+    let version = await articleRepository.getLastVersion(articleId);
+
     // check article status
     let status = await articleRepository.getStatusOf(articleId, version);
     if (status !== 'toBeReviewed') {

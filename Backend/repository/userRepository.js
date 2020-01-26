@@ -5,6 +5,7 @@ var XMLSerializer = xmldom.XMLSerializer;
 var DOMParser = xmldom.DOMParser;
 const setUserRoleXQ = require('../xquery/setUserRole');
 const getUserRoleXQ = require('../xquery/getUserRole');
+const getAllUsersXQ = require('../xquery/getAllUsers');
 
 const exist = require('@existdb/node-exist');
 const options = require('./config');
@@ -23,6 +24,12 @@ module.exports.getUserByEmail = async (email) => {
     const db = exist.connect(options);
     let result = await db.queries.readAll(getUserByEmail.query(email), {});
     return Buffer.concat(result.pages).toString();
+}
+
+module.exports.getAll = async () => {
+    const db = exist.connect(options);
+    let result = await db.queries.readAll(getAllUsersXQ.query(), {});
+    return result.pages.map(page => Buffer(page).toString());
 }
 
 module.exports.existsByEmail = async (email) => {

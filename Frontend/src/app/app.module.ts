@@ -23,6 +23,9 @@ import { ArticleViewPdfComponent } from './article-view-pdf/article-view-pdf.com
 import { ReviewsViewPdfComponent } from './reviews-view-pdf/reviews-view-pdf.component';
 import { ReviewsViewComponent } from './reviews-view/reviews-view.component';
 import { ForNedimovicComponent } from './for-nedimovic/for-nedimovic.component';
+import { AssignReviewersComponent } from './assign-reviewers/assign-reviewers.component';
+import { ToBeReviewedComponent } from './to-be-reviewed/to-be-reviewed.component';
+import { ReviewedComponent } from './reviewed/reviewed.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +44,9 @@ import { ForNedimovicComponent } from './for-nedimovic/for-nedimovic.component';
     ReviewsViewPdfComponent,
     ReviewsViewComponent,
     ForNedimovicComponent,
+    AssignReviewersComponent,
+    ToBeReviewedComponent,
+    ReviewedComponent,
   ],
   imports: [
     BrowserModule,

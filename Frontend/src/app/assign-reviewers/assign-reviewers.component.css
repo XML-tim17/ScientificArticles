@@ -1,0 +1,52 @@
+.container {
+    width: 50vw;
+    margin: auto;
+    display: flex;
+    align-items: center;
+  }
+
+.tableContainer {
+    width: 100%;
+    display: flex;
+}
+
+.mat-table {
+    width: 100%;
+}
+
+
+.mat-card {
+    width: 100%;
+    margin-top: 20px;
+}
+
+  
+.mat-card-title {
+    justify-content: center;
+}
+  
+.mat-card-actions {
+    justify-content: center;
+}
+
+.selectHeader {
+    width: 40px;
+}
+
+.selectCell {
+    width: 40px;
+}
+
+header {
+    width: 45%;
+}
+
+.cell {
+    width: 45%;
+}
+
+.center{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
