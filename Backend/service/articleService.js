@@ -4,7 +4,9 @@ var articlesRepository = require('../repository/articlesRepository');
 const reviewsRepository = require('../repository/reviewsRepository');
 const rdfRepository = require('../repository/rdfRepository');
 const grddlPath = "./xsl/grddl.xsl";
-const xsltService = require('./xsltService')
+var pdfService = require('../service/pdfService');
+const xsltService = require('./xsltService');
+const authorizationService = require('./authorizationService');
 var xmldom = require('xmldom');
 var XMLSerializer = xmldom.XMLSerializer;
 var DOMParser = xmldom.DOMParser;
@@ -120,6 +122,75 @@ module.exports.getAll = async () => {
     // get simple data of all published articles
     return documents;
 
+}
+
+module.exports.getArticleHTML = async (articleId, user) => {
+    var lastVersion =   await this.getLastVersion(+articleId);
+    // check users level of access to this documnet
+    let articleStatus = await articlesRepository.getStatusOf(articleId, lastVersion);
+    
+    const correspondingAuthorEmail = await articlesRepository.getCorrespondingAuthor(articleId, lastVersion);
+    let xsltString;
+    
+    let access = checkArticleAccess(articleId, user, articleStatus, correspondingAuthorEmail);
+    if (access === 'full') xsltString = fs.readFileSync('./xsl/article-detail-html.xsl', 'utf8');
+    else if (access === 'no-authors') xsltString = fs.readFileSync('./xsl/article-detail-html-no-authors.xsl', 'utf8');
+    else {
+        let error = new Error("User does not have access to this article.");
+        error.status = 403;
+        throw error;
+    }
+    
+    var dom = await this.readXML(+articleId, lastVersion);
+    var document = new XMLSerializer().serializeToString(dom)
+
+    
+    let articleHTML = await xsltService.transform(document, xsltString);
+    return articleHTML;
+}
+
+module.exports.getArticlePDF = async (articleId, user) => {
+    var lastVersion =   await this.getLastVersion(+articleId);
+    // check users level of access to this documnet
+    let articleStatus = await articlesRepository.getStatusOf(articleId, lastVersion);
+    
+    const correspondingAuthorEmail = await articlesRepository.getCorrespondingAuthor(articleId, lastVersion);
+    let xslfoString;
+    
+    let access = checkArticleAccess(articleId, user, articleStatus, correspondingAuthorEmail);
+    if (access === 'full') xslfoString = fs.readFileSync('./xsl-fo/article-detail-xslfo.xsl', 'utf8');
+    else if (access === 'no-authors') xslfoString = fs.readFileSync('./xsl-fo/article-detail-xslfo-no-authors.xsl', 'utf8');
+    else {
+        let error = new Error("User does not have access to this article.");
+        error.status = 403;
+        throw error;
+    }
+    
+    var dom = await this.readXML(+articleId, lastVersion);
+    var document = new XMLSerializer().serializeToString(dom)
+
+    
+    let bindata = await pdfService.transform(document, xslfoString)
+    return bindata;
+}
+
+checkArticleAccess = (articleId, user, status, correspondingAuthorEmail) => {
+    if (status === "accepted") {
+        return 'full';
+    } else {
+        if (user.role === authorizationService.roles.editor) {
+            return 'full';
+        }
+        if (correspondingAuthorEmail === user.email) {
+            return 'full';
+        } 
+        if (user.role === authorizationService.roles.reviewer) {
+            if (user.toReview.includes(`article${articleId}`)) {
+                return 'no-authors';
+            }
+        }
+        return 'denied';
+    }
 }
 
 module.exports.getReviews = async (articleId) => {
