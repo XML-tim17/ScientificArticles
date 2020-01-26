@@ -17,6 +17,8 @@ const updateArticleId = require('../xquery/updateArticleId');
 const setArticleStatusByURI = require('../xquery/setArticleStatusByURI');
 const getArticlesByStatus = require('../xquery/getArticlesByStatus')
 
+const getCorrespondingAuthorXQ = require('../xquery/getCorrespondingAuthor')
+
 module.exports.addNewArticle = async (xmlString, articleId, version) => {
     const db = exist.connect(options);
     fileHandle = await db.documents.upload(Buffer.from(xmlString));
@@ -143,5 +145,10 @@ module.exports.getAllByStatus = async (status) => {
     const db = exist.connect(options);
     let result = await db.queries.readAll(getArticlesByStatus.query(status), {});
     return result.pages.map(page => Buffer(page).toString());
+}
 
+module.exports.getCorrespondingAuthor = async (articleId, version) => {
+    const db = exist.connect(options);
+    let result = await db.queries.readAll(getCorrespondingAuthorXQ.query(articleId, version), {});
+    return Buffer.concat(result.pages).toString();
 }

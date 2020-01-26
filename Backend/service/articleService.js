@@ -280,6 +280,21 @@ module.exports.requestRevision = async (articleId) => {
 
 }
 
+module.exports.giveUp = async (articleId, user) => {
+    const version = await articlesRepository.getLastVersion(articleId);
+    const correspondingAuthorEmail = await articlesRepository.getCorrespondingAuthor(articleId, version);
+    // const select = xpath.useNamespaces({ "ns1": ns1 });
+    // const correspondingAuthorEmail = select('//ns1:email', correspondingAuthorDOM)[0];
+    if (correspondingAuthorEmail !== user.email) {
+        let error = new Error("Only corresponding author can give up on article.");
+        error.status = 403;
+        throw error;
+    }
+
+    await articlesRepository.setStatus(articleId, version, 'outdated');
+    return 'success';
+}
+
 isNextStateValid = (currentState, nextState) => {
     const stateMachine = {
         'toBeReviewed': ['inReviewProgress'],

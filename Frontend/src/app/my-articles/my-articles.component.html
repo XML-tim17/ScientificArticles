@@ -18,6 +18,7 @@
                     <button mat-raised-button [routerLink]="['/review', ht.id.substring(7)]" [disabled]="['inReviewProcess', 'toBeReviewed', 'reviewed', 'revisionRecieved'].indexOf(magija.status) !== -1">View review</button>
                     <button mat-raised-button [routerLink]="['/reviewPdf', ht.id.substring(7)]" [disabled]="['inReviewProcess', 'toBeReviewed', 'reviewed', 'revisionRecieved'].indexOf(magija.status) !== -1">View review (PDF)</button>
                     <button mat-raised-button [routerLink]="['/postRevision', ht.id.substring(7)]" [disabled]="magija.status !== 'revisionRequired'">Add revision</button>
+                    <button mat-raised-button (click)="withdraw(ht.id.substring(7))">Withdraw</button>
                   </td>
                 </tr>
               </table>

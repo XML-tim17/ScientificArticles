@@ -32,4 +32,8 @@ export class ArticlesService {
   setArticleStatus(articleId, status) {
     return this.httpClient.get(`${environment.apiEndpoint}articles/${articleId.substring(7)}/status/${status}`).toPromise();
   }
+
+  withdrawArticle(articleId) {
+    return this.httpClient.get(`${environment.apiEndpoint}articles/${articleId}/giveUp`).toPromise();
+  }
 }

@@ -1,3 +1,4 @@
+import { ArticlesService } from './../services/articles.service';
 import { Component, OnInit } from '@angular/core';
 import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
 import {AuthorsService} from '../services/authors.service';
@@ -12,7 +13,8 @@ export class MyArticlesComponent implements OnInit {
   magicalObject;
 
   constructor(private sanitizer: DomSanitizer,
-              private authorsService: AuthorsService) {
+              private authorsService: AuthorsService,
+              private articlesService: ArticlesService) {
     this.magicalObject = [];
   }
 
@@ -56,6 +58,14 @@ export class MyArticlesComponent implements OnInit {
       }
       this.magicalObject.push({status: call.status, label: call.label, data: returnedData});
     }
+  }
+
+  withdraw(articleId) {
+    this.articlesService.withdrawArticle(articleId).then(data => {
+      // remove from list
+    }, err => {
+      alert(err.message);
+    })
   }
 
 }
