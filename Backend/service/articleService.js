@@ -283,6 +283,12 @@ module.exports.requestRevision = async (articleId) => {
 module.exports.giveUp = async (articleId, user) => {
     const version = await articlesRepository.getLastVersion(articleId);
     const correspondingAuthorEmail = await articlesRepository.getCorrespondingAuthor(articleId, version);
+    const status = await articlesRepository.getStatusOf(articleId, version);
+    if (status === 'accepted') {
+        let error = new Error("Cannot withdraw accepted article.");
+        error.status = 400;
+        throw error;
+    }
     // const select = xpath.useNamespaces({ "ns1": ns1 });
     // const correspondingAuthorEmail = select('//ns1:email', correspondingAuthorDOM)[0];
     if (correspondingAuthorEmail !== user.email) {

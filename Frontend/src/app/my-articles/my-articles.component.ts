@@ -11,6 +11,36 @@ import {AuthorsService} from '../services/authors.service';
 export class MyArticlesComponent implements OnInit {
 
   magicalObject;
+  mapper =  [
+    {
+      status: 'accepted',
+      label: 'Accepted'
+    },
+    {
+      status: 'rejected',
+      label: 'Rejected'
+    },
+    {
+      status: 'revisionRequired',
+      label: 'Revision required'
+    },
+    {
+      status: 'inReviewProcess',
+      label: 'In review process'
+    },
+    {
+      status: 'toBeReviewed',
+      label: 'Waiting to be passed to reviewers'
+    },
+    {
+      status: 'reviewed',
+      label: 'Waiting for publisher to process the reviews'
+    },
+    {
+      status: 'revisionRecieved',
+      label: 'Waiting for publisher to process the revision'
+    },
+  ];
 
   constructor(private sanitizer: DomSanitizer,
               private authorsService: AuthorsService,
@@ -19,38 +49,7 @@ export class MyArticlesComponent implements OnInit {
   }
 
   async ngOnInit() {
-    const mapper = [
-      {
-        status: 'accepted',
-        label: 'Accepted'
-      },
-      {
-        status: 'rejected',
-        label: 'Rejected'
-      },
-      {
-        status: 'revisionRequired',
-        label: 'Revision required'
-      },
-      {
-        status: 'inReviewProcess',
-        label: 'In review process'
-      },
-      {
-        status: 'toBeReviewed',
-        label: 'Waiting to be passed to reviewers'
-      },
-      {
-        status: 'reviewed',
-        label: 'Waiting for publisher to process the reviews'
-      },
-      {
-        status: 'revisionRecieved',
-        label: 'Waiting for publisher to process the revision'
-      },
-    ];
-
-    for (const call of mapper) {
+    for (const call of this.mapper) {
       const result: any = await this.authorsService.getMyArticles(call.status);
       const returnedData = [];
       for (const htmlid of result.htmls) {
@@ -60,9 +59,24 @@ export class MyArticlesComponent implements OnInit {
     }
   }
 
-  withdraw(articleId) {
+  withdraw(article) {
+    const articleId = article.id.substring(7);
     this.articlesService.withdrawArticle(articleId).then(data => {
-      // remove from list
+      let x, y;
+      for(let i in this.magicalObject) {
+        for (let j in this.magicalObject[i].data) {
+          if (this.magicalObject[i].data[j].id === article.id) {
+            x = i;
+            y = j;
+            break;
+          }
+        }
+        if (x && y) break;
+      }
+      if (x && y) {
+        this.magicalObject[x].data.splice(y, 1);
+      }
+      
     }, err => {
       alert(err.message);
     })
