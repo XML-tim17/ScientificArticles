@@ -30,6 +30,7 @@ import { RevisionRecievedComponent } from './revision-recieved/revision-recieved
 import { HomeComponent } from './home/home.component';
 import { CoverLetterViewComponent } from './cover-letter-view/cover-letter-view.component';
 import { CoverLetterViewPdfComponent } from './cover-letter-view-pdf/cover-letter-view-pdf.component';
+import { AdvancedSearchComponent } from './advanced-search/advanced-search.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { CoverLetterViewPdfComponent } from './cover-letter-view-pdf/cover-lette
     HomeComponent,
     CoverLetterViewComponent,
     CoverLetterViewPdfComponent,
+    AdvancedSearchComponent,
   ],
   imports: [
     BrowserModule,
