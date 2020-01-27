@@ -28,6 +28,13 @@
                     </xs:simpleContent>
                 </xs:complexType>
             </xs:element>
+            <xs:element name="internal-ref">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:anyURI"> </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
             <xs:choice maxOccurs="unbounded" minOccurs="0">
                 <xs:element maxOccurs="unbounded" minOccurs="0" name="bold" type="TDecorator"/>
                 <xs:element maxOccurs="unbounded" minOccurs="0" name="italic" type="TDecorator"/>

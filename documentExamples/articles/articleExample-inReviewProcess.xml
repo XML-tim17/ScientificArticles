@@ -2,9 +2,9 @@
 <ns1:article xmlns:ns1="https://github.com/XML-tim17/ScientificArticles"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xmlns="http://www.w3.org/ns/rdfa#"
- xsi:schemaLocation="https://github.com/XML-tim17/ScientificArticles ./../../Article.xsd">
+ xsi:schemaLocation="https://github.com/XML-tim17/ScientificArticles ./../../Backend/resources/XMLSchemas/Article.xsd">
     <ns1:id>Random vrednost</ns1:id>
-    <ns1:title>Zivot iz ugla gospode rejected</ns1:title>
+    <ns1:title>Zivot iz ugla gospode inReviewProcess</ns1:title>
     <ns1:info>
         <ns1:authors>
             <ns1:corresponding-author>
@@ -40,7 +40,7 @@
         </ns1:authors>
         <ns1:received>2020-01-01</ns1:received>
         <ns1:accepted>2020-01-04</ns1:accepted>
-        <ns1:status>rejected</ns1:status>
+        <ns1:status>inReviewProcess</ns1:status>
     </ns1:info>
     <ns1:abstract>
         <ns1:paragraph>

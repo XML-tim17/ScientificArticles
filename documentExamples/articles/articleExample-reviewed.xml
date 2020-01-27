@@ -2,7 +2,7 @@
 <ns1:article xmlns:ns1="https://github.com/XML-tim17/ScientificArticles"
  xmlns="http://www.w3.org/ns/rdfa#"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:schemaLocation="https://github.com/XML-tim17/ScientificArticles ./../../Article.xsd">
+ xsi:schemaLocation="https://github.com/XML-tim17/ScientificArticles ./../../Backend/resources/XMLSchemas/Article.xsd">
     <ns1:id>Random vrednost</ns1:id>
     <ns1:title>Zivot iz ugla gospode reviewed</ns1:title>
     <ns1:info>
