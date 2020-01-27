@@ -45,7 +45,7 @@
     <xsl:template match="ns1:article/ns1:info/ns1:received">
         <xsl:copy>
             <xsl:attribute name="property">dateCreated</xsl:attribute>
-            <xsl:attribute name="datatype">xsd:date</xsl:attribute>
+            <xsl:attribute name="datatype">xsd:dateTime</xsl:attribute>
             <xsl:apply-templates select="node() | @*"/>
         </xsl:copy>
     </xsl:template>
@@ -53,7 +53,7 @@
     <xsl:template match="ns1:article/ns1:info/ns1:accepted">
         <xsl:copy>
             <xsl:attribute name="property">datePublished</xsl:attribute>
-            <xsl:attribute name="datatype">xsd:date</xsl:attribute>
+            <xsl:attribute name="datatype">xsd:dateTime</xsl:attribute>
             <xsl:apply-templates select="node() | @*"/>
         </xsl:copy>
     </xsl:template>
