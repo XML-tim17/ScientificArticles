@@ -8,6 +8,7 @@ const articlesURI = '/db/scientificArticles/articles';
 const getAllAcceptedArticles = require('../xquery/getAllAcceptedArticles');
 const getAllToBeReviewedArticles = require('../xquery/getAllToBeReviewedArticles');
 const getAllByText = require('../xquery/getAllByText');
+const getAllByIds = require('../xquery/getAllByIds');
 const getArticleStatus = require('../xquery/getArticleStatus');
 const getArticleStatusByURI = require('../xquery/getArticleStatusByURI');
 
@@ -111,6 +112,12 @@ module.exports.toBeReviewed = async () => {
 module.exports.getAllByText = async (title) => {
     const db = exist.connect(options);
     let result = await db.queries.readAll(getAllByText.query(title), {});
+    return result.pages.map(page => Buffer(page).toString());
+}
+
+module.exports.getAllByIds = async (ids) => {
+    const db = exist.connect(options);
+    let result = await db.queries.readAll(getAllByIds.query(ids), {});
     return result.pages.map(page => Buffer(page).toString());
 }
 

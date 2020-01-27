@@ -11,19 +11,19 @@ module.exports = (searchParams) => `PREFIX rdfa: <http://www.w3.org/ns/rdfa#>
     ?article rdfa:datePublished ?datePublished.
     ?article rdfa:headline ?headline.
     ?article rdfa:keywords ?keywords.
+    ?article rdfa:citation ?reference.
     ?article rdfa:identifier ?articleID.
       
     FILTER (
     ${searchParams.abstract ? `CONTAINS(UCASE(str(?abstract)), UCASE("${searchParams.abstract}")) &&` : ''}
     ${searchParams.author ? `CONTAINS(UCASE(str(?author)), UCASE("${searchParams.author}")) &&` : ''}
-    ${searchParams.status ? `?status = "${searchParams.status}" ^^rdf:XMLLiteral &&` : ``}
-    ${searchParams.dateCreatedFrom ? `?dateCreated >= "${searchParams.dateCreatedFrom}" ^^xsd:date &&` : ``}
-    ${searchParams.dateCreatedTo ? `?dateCreated >= "${searchParams.dateCreatedTo}" ^^xsd:date &&` : ``}
-    ${searchParams.datePublishedFrom ? `?datePublished >= "${searchParams.datePublishedFrom}"^^xsd:date &&` : ``}
-    ${searchParams.datePublishedTo ? `?datePublished >= "${searchParams.datePublishedTo}" ^^xsd:date &&` : ``}
+    ${searchParams.dateCreated.startDate ? `?dateCreated >= "${searchParams.dateCreated.startDate}"^^xsd:dateTime &&` : ``}
+    ${searchParams.dateCreated.endDate ? `?dateCreated <= "${searchParams.dateCreated.endDate}"^^xsd:dateTime &&` : ``}
+    ${searchParams.datePublished.startDate ? `?datePublished >= "${searchParams.datePublished.startDate}"^^xsd:dateTime &&` : ``}
+    ${searchParams.datePublished.endDate ? `?datePublished <= "${searchParams.datePublished.endDate}"^^xsd:dateTime &&` : ``}
     ${searchParams.headline ? `CONTAINS(UCASE(str(?headline)), UCASE("${searchParams.headline}")) &&` : ''}
     ${searchParams.keywords ? `CONTAINS(UCASE(str(?keywords)), UCASE("${searchParams.keywords}")) &&` : ''}
-    ?article = ?article
+    ${searchParams.reference ? `?reference = "${searchParams.reference}"^^rdf:XMLLiteral &&` : ``}
+    ?status = "accepted"^^rdf:XMLLiteral
     ).
 }`
-// line "?article = ?article" enables us to put '&&' in every line without need to check if it is the last one

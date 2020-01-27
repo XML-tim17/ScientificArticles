@@ -1,1 +1,109 @@
-<p>advanced-search works!</p>
+<div class="container">
+    <table class="stretch">
+        <tr>
+            <td align="center">
+                <form [formGroup]="searchForm">
+                    <table class="search">
+                        <tr>
+
+                            <td>
+                                <mat-form-field>
+                                    <input matInput class="form-control" placeholder="Abstract content"
+                                        formControlName="abstract">
+                                </mat-form-field>
+                            </td>
+                            <td>
+                                <mat-form-field>
+                                    <input matInput class="form-control" placeholder="Author name"
+                                        formControlName="author">
+                                </mat-form-field>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <mat-form-field>
+                                    <input matInput class="form-control" placeholder="Headline"
+                                        formControlName="headline">
+                                </mat-form-field>
+                            </td>
+                            <td>
+                                <mat-form-field>
+                                    <input matInput class="form-control" placeholder="Keywords"
+                                        formControlName="keywords">
+                                </mat-form-field>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <mat-form-field>
+                                    <input type="text" ngxDaterangepickerMd matInput formControlName="dateCreated"
+                                        [showClearButton]="true" [showDropdowns]="true" class="form-control" readonly
+                                        placeholder="Date published"
+                                        [locale]="{applyLabel: 'ok', format: 'DD.MM.YYYY.'}" />
+                                </mat-form-field>
+                            </td>
+                            <td>
+                                <mat-form-field>
+                                    <input type="text" ngxDaterangepickerMd matInput class="form-control"
+                                        [showClearButton]="true" [showDropdowns]="true" formControlName="datePublished"
+                                        readonly placeholder="Date accepted"
+                                        [locale]="{applyLabel: 'ok', format: 'DD.MM.YYYY.'}" />
+                                </mat-form-field>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <mat-form-field>
+                                    <input matInput class="form-control" placeholder="Referenced document ID"
+                                        formControlName="keywords">
+                                </mat-form-field>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td id="search-buttons-td">
+                                <span class="search-buttons">
+                                    <button mat-button [disabled]="!searchForm.dirty" (click)="clearSearch()">Clear
+                                        search</button>
+                                    <button mat-raised-button class="menuitem" color="primary"
+                                        (click)="doSearch()">Search</button>
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td align="center">
+                <div class="container" *ngFor="let article of articles">
+                    <table class="lowstretch">
+                        <tr>
+                            <td align="center">
+                                <div [innerHTML]="article.html"></div>
+                            </td>
+                        </tr>
+                        <tr style="background-color: #696969">
+                            <td align="center">
+                                <button mat-raised-button class="menuitem" [matMenuTriggerFor]="matMenuArticle">
+                                    <span>View article</span>
+                                    <mat-icon>more_horiz</mat-icon>
+                                </button>
+                                <mat-menu #matMenuArticle="matMenu">
+                                    <button mat-raised-button color="primary" class="minimenuitem"
+                                        [routerLink]="['/article', article.id.substring(7)]">View article</button>
+                                    <button mat-raised-button color="primary" class="minimenuitem"
+                                        [routerLink]="['/articlePdf', article.id.substring(7)]">View article
+                                        (PDF)</button>
+                                </mat-menu>
+                                <button mat-raised-button (click)="copyMessage(article)">Copy reference to
+                                    clipboard</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+</div>

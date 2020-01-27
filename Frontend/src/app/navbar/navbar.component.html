@@ -3,6 +3,7 @@
 
     <ng-container>
         <button mat-button routerLink='/'>Home</button>
+        <button mat-button routerLink="/advancedSearch">Advanced search</button>
     </ng-container>
     <ng-container *ngIf="!currentUser">
         <span class="divider"></span>
@@ -11,7 +12,6 @@
     </ng-container>
     <ng-container *ngIf="currentUser">
         <ng-container *ngIf="currentUser.role === 'AUTHOR'">
-            <button mat-button routerLink="/advancedSearch">Advanced search</button>
             <button mat-button routerLink="/myArticles">My articles</button>
             <button mat-button routerLink="/addArticle">Add article</button>
             <span class="divider"></span>
@@ -19,7 +19,6 @@
         </ng-container>
 
         <ng-container *ngIf="currentUser.role === 'REVIEWER'">
-            <button mat-button routerLink="/advancedSearch">Advanced search</button>
             <button mat-button routerLink="/myArticles">My articles</button>
             <button mat-button routerLink="/addArticle">Add article</button>
             <button mat-button routerLink="/toReview">To review</button>
@@ -28,7 +27,6 @@
         </ng-container>
 
         <ng-container *ngIf="currentUser.role === 'EDITOR'">
-            <button mat-button routerLink="/advancedSearch">Advanced search</button>
             <button mat-button routerLink="/myArticles">My articles</button>
             <button mat-button routerLink="/addArticle">Add article</button>
             <button mat-button routerLink="/toReview">To review</button>

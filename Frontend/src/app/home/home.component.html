@@ -37,8 +37,10 @@
                   <mat-icon>more_horiz</mat-icon>
                 </button>
                 <mat-menu #matMenuArticle="matMenu">
-                  <button mat-raised-button color="primary" class="minimenuitem" [routerLink]="['/article', article.id.substring(7)]">View article</button>
-                  <button mat-raised-button color="primary" class="minimenuitem" [routerLink]="['/articlePdf', article.id.substring(7)]">View article (PDF)</button>
+                  <button mat-raised-button color="primary" class="minimenuitem"
+                    [routerLink]="['/article', article.id.substring(7)]">View article</button>
+                  <button mat-raised-button color="primary" class="minimenuitem"
+                    [routerLink]="['/articlePdf', article.id.substring(7)]">View article (PDF)</button>
                 </mat-menu>
                 <button mat-raised-button (click)="copyMessage(article)">Copy reference to clipboard</button>
               </td>

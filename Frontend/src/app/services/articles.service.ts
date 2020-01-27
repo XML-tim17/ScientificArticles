@@ -1,6 +1,6 @@
 import { environment } from './../../environments/environment';
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpParams} from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -42,7 +42,11 @@ export class ArticlesService {
     const params = new HttpParams().set('q', queryParam);
     return this.httpClient.get(`${environment.apiEndpoint}articles/search`, { params }).toPromise();
   }
-  
+
+  advancedSearch(searchParams) {
+    return this.httpClient.post(`${environment.apiEndpoint}articles/search`, searchParams).toPromise();
+  }
+
   withdrawArticle(articleId) {
     return this.httpClient.get(`${environment.apiEndpoint}articles/${articleId}/giveUp`).toPromise();
   }

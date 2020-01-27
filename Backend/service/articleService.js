@@ -162,13 +162,13 @@ module.exports.getAll = async () => {
 }
 
 module.exports.getArticleHTML = async (articleId, user) => {
-    var lastVersion =   await this.getLastVersion(+articleId);
+    var lastVersion = await this.getLastVersion(+articleId);
     // check users level of access to this documnet
     let articleStatus = await articlesRepository.getStatusOf(articleId, lastVersion);
-    
+
     const correspondingAuthorEmail = await articlesRepository.getCorrespondingAuthor(articleId, lastVersion);
     let xsltString;
-    
+
     let access = checkArticleAccess(articleId, user, articleStatus, correspondingAuthorEmail);
     if (access === 'full') xsltString = fs.readFileSync('./xsl/article-detail-html.xsl', 'utf8');
     else if (access === 'no-authors') xsltString = fs.readFileSync('./xsl/article-detail-html-no-authors.xsl', 'utf8');
@@ -177,23 +177,23 @@ module.exports.getArticleHTML = async (articleId, user) => {
         error.status = 403;
         throw error;
     }
-    
+
     var dom = await this.readXML(+articleId, lastVersion);
     var document = new XMLSerializer().serializeToString(dom)
 
-    
+
     let articleHTML = await xsltService.transform(document, xsltString);
     return articleHTML;
 }
 
 module.exports.getArticlePDF = async (articleId, user) => {
-    var lastVersion =   await this.getLastVersion(+articleId);
+    var lastVersion = await this.getLastVersion(+articleId);
     // check users level of access to this documnet
     let articleStatus = await articlesRepository.getStatusOf(articleId, lastVersion);
-    
+
     const correspondingAuthorEmail = await articlesRepository.getCorrespondingAuthor(articleId, lastVersion);
     let xslfoString;
-    
+
     let access = checkArticleAccess(articleId, user, articleStatus, correspondingAuthorEmail);
     if (access === 'full') xslfoString = fs.readFileSync('./xsl-fo/article-detail-xslfo.xsl', 'utf8');
     else if (access === 'no-authors') xslfoString = fs.readFileSync('./xsl-fo/article-detail-xslfo-no-authors.xsl', 'utf8');
@@ -202,11 +202,11 @@ module.exports.getArticlePDF = async (articleId, user) => {
         error.status = 403;
         throw error;
     }
-    
+
     var dom = await this.readXML(+articleId, lastVersion);
     var document = new XMLSerializer().serializeToString(dom)
 
-    
+
     let bindata = await pdfService.transform(document, xslfoString)
     return bindata;
 }
@@ -220,7 +220,7 @@ checkArticleAccess = (articleId, user, status, correspondingAuthorEmail) => {
         }
         if (correspondingAuthorEmail === user.email) {
             return 'full';
-        } 
+        }
         if (user.role === authorizationService.roles.reviewer) {
             if (user.toReview.includes(`article${articleId}`)) {
                 return 'no-authors';
@@ -367,10 +367,29 @@ module.exports.basicSearch = async (queryString) => {
 }
 
 module.exports.advancedSearch = async (searchData) => {
-    result = [];
     // do advanced search on rdf database
     // extract simple data from articles
-    return result;
+    let rdfResult = await rdfRepository.advancedSearch(searchData);
+    if (!rdfResult.data)
+        return [];
+    let ids = rdfResult.data.results.bindings.map(binding => binding.articleID.value);
+    let articleListXml = await articlesRepository.getAllByIds(ids);
+    let xsltString = fs.readFileSync('./xsl/article-list-item.xsl', 'utf8');
+    let select = xpath.useNamespaces({ "ns1": ns1 });
+
+    articleListHtml = await Promise.all(articleListXml.map(async (articleXML) => {
+        let articleDOM = new DOMParser().parseFromString(articleXML);
+        let id = `article${select('//ns1:id//text()', articleDOM)[0].textContent}`
+        let html = await xsltService.transform(articleXML, xsltString)
+
+        return {
+            id,
+            html
+        }
+    }))
+
+
+    return articleListHtml;
 }
 
 

@@ -24,14 +24,14 @@
                         <xs:element name="received">
                             <xs:complexType>
                                 <xs:simpleContent>
-                                    <xs:extension base="xs:date"> </xs:extension>
+                                    <xs:extension base="xs:dateTime"> </xs:extension>
                                 </xs:simpleContent>
                             </xs:complexType>
                         </xs:element>
                         <xs:element name="accepted">
                             <xs:complexType>
                                 <xs:simpleContent>
-                                    <xs:extension base="xs:date">
+                                    <xs:extension base="xs:dateTime">
                                         <xs:anyAttribute processContents="lax" namespace="##local"/>
                                     </xs:extension>
                                 </xs:simpleContent>
