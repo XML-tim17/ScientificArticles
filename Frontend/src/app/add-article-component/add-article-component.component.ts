@@ -10,26 +10,42 @@ export class AddArticleComponentComponent implements OnInit {
 
   constructor(private articlesService: ArticlesService) { }
 
-  file: File;
+  articleFile: File;
+  coverLetterFile: File;
 
   ngOnInit() {
   }
 
   handleFileInput(event) {
-    this.file = event.target.files[0]
+    this.articleFile = event.target.files[0]
+  }
+  
+  handleFileInput2(event) {
+    this.coverLetterFile = event.target.files[0]
   }
 
   async onSubmit() {
-    console.log(this.file)
-
-    
-    let reader = new FileReader;
-
-    reader.onload = (e) => {
-      this.articlesService.addArticle(reader.result as string);
+    if (!this.articleFile && !this.coverLetterFile) {
+      alert("Select both article and cover letter please.")
+      return;
     }
 
-    reader.readAsText(this.file)
+    
+    let reader = new FileReader();
+    
+    let reader2 = new FileReader();
+
+
+    reader2.onload = (e) => {
+      this.articlesService.addArticle(reader.result as string, reader2.result as string);
+      // add toaster
+    }
+
+    reader.onload = (e) => {
+      reader2.readAsText(this.coverLetterFile);
+    }
+
+    reader.readAsText(this.articleFile)
     
   }
 

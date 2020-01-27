@@ -20,3 +20,15 @@ module.exports.readXML = async (articleId, version) => {
         .catch(e => console.error('fail', e))
     return new DOMParser().parseFromString(result.toString(), 'text/xml');
 }
+
+module.exports.addCoverLetter = async (articleId, version, coverLetterXML) => {
+    const db = exist.connect(options);
+    fileHandle = await db.documents.upload(Buffer.from(coverLetterXML));
+    await db.documents.parseLocal(fileHandle, `${coverLettersURI}/coverLetter${articleId}/v${version}.xml`, {});
+}
+
+
+module.exports.addNewCoverLetterCollection = async (articleId) => {
+    const db = exist.connect(options);
+    await db.collections.create(`${coverLettersURI}/coverLetter${articleId}`);
+}

@@ -92,7 +92,8 @@ module.exports.assignReviewers = async (articleId, reviewers) => {
         throw error;
     }
     let articleURI = `article${articleId}/v${version}`
-    // assign article to reviewers
+    
+    let correspondingEmail = await articleRepository.getCorrespondingAuthor(articleId, version);
     for(let email of reviewers) {
         let exists = userRepository.existsByEmail(email);
         if (!exists) {
@@ -100,9 +101,19 @@ module.exports.assignReviewers = async (articleId, reviewers) => {
             error.status = 400;
             throw error;
         }
+        // check if reviewer is author
+        if (email == correspondingEmail) {
+            let error = new Error("Reviewer cannot be author of article.");
+            error.status = 400;
+            throw error;
+        }
+    }
+
+    // assign article to reviewers
+    for(let email of reviewers) {
         await reviewsRepository.addArticleToReviewer(email, `article${articleId}`);
 
-        // TODO get role of reviewer and change if needed
+        // get role of reviewer and change if needed
         let role = await userRepository.getUserRole(email);
         if (role === "AUTHOR") {
             await userRepository.setUserRole(email, "REVIEWER");

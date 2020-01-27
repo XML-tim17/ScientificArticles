@@ -1,13 +1,15 @@
 
 <div class="container">
     <mat-card>
+        <h2>Choose article</h2>
         <mat-form-field>
             <input matInput type="file" id="file" (change)="handleFileInput($event)">
-
+        </mat-form-field>
+        <br>
+        <h2>Choose cover letter</h2>
+        <mat-form-field>
+            <input matInput type="file" id="file" (change)="handleFileInput2($event)">
         </mat-form-field>
         <button mat-button (click)="onSubmit()">Submit Article</button>
     </mat-card>
 </div>
-
-
-

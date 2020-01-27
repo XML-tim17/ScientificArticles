@@ -7,6 +7,7 @@ var articlesService = require('../service/articleService');
 var pdfService = require('../service/pdfService');
 var validator = require('xsd-schema-validator');
 const articleSchemaLocation = 'resources/XMLSchemas/Article.xsd';
+const coverLetterSchemaLocation = 'resources/XMLSchemas/CoverLetter.xsd';
 const authorizationService = require('../service/authorizationService')
 const fs = require('fs');
 const xsltService = require('../service/xsltService');
@@ -18,6 +19,15 @@ const validateDocument = (xml) => {
           resolve(data.valid)
         });
       });
+}
+
+const validateCoverLetter = (xml) => {
+    return new Promise((resolve, reject) => {
+        validator.validateXML(xml, coverLetterSchemaLocation, (err, data) => {
+            if (err) return reject(err);
+            resolve(data.valid);
+        })
+    })
 }
 
 // get pdf of article
@@ -58,10 +68,11 @@ router.post('', async (req, res, next) => {
             next(error);
             return;
         }
-        let valid = await validateDocument(req.body.data);
-        if (valid) {
-            let result = await articlesService.addNewArticle(req.body.data, req.user);
-            res.send(result)
+        let valid = await validateDocument(req.body.articleXML);
+        let valid2 = await validateCoverLetter(req.body.coverLetterXML);
+        if (valid && valid2) {
+            let status = await articlesService.addNewArticle(req.body.articleXML, req.body.coverLetterXML, req.user);
+            res.send({ status })
         } else {
             throw Error('Document is not valid according to schema.');
         }
@@ -178,10 +189,11 @@ router.post('/:articleId', async (req, res, next) => {
             next(error);
             return;
         }
-        let valid = await validateDocument(req.body.data);
-        if (valid) {
-            let result = await articlesService.postRevision(+req.params.articleId, req.body.data, req.user);
-            res.send(result)
+        let valid = await validateDocument(req.body.articleXML);
+        let valid2 = await validateCoverLetter(req.body.coverLetterXML);
+        if (valid && valid2) {
+            let status = await articlesService.postRevision(+req.params.articleId, req.body.articleXML, req.body.coverLetterXML, req.user);
+            res.send({status})
         } else {
             throw Error('Document is not valid according to schema.');
         }

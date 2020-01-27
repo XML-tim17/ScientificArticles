@@ -9,16 +9,17 @@ export class ArticlesService {
 
   constructor(private httpClient: HttpClient) { }
 
-  addArticle(xmlString: string) {
-    return this.httpClient.post(environment.apiEndpoint + 'articles', { data: xmlString }).toPromise();
+  
+  addArticle(articleXML: string, coverLetterXML: string) {
+    return this.httpClient.post(environment.apiEndpoint + 'articles', { articleXML, coverLetterXML }).toPromise();
   }
 
   getToReview() {
     return this.httpClient.get(`${environment.apiEndpoint}reviews/toReview`).toPromise();
   }
 
-  postRevision(id, xmlString: string) {
-    return this.httpClient.post(`${environment.apiEndpoint}articles/${id}`, { data: xmlString }).toPromise();
+  postRevision(id: any, articleXML: string, coverLetterXML: string) {
+    return this.httpClient.post(`${environment.apiEndpoint}articles/${id}`, { articleXML, coverLetterXML }).toPromise();
   }
 
   getArticle(articleId: string) {

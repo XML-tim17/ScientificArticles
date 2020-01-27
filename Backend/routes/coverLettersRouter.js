@@ -19,6 +19,8 @@ router.post('', async (req, res, next) => {
     }
 });
 
+// get cover letter html
+// AUTHOR
 router.get('/html/:articleId', async (req, res, next) => {
     try {
         if(!authorizationService.checkAuthorization(req, authorizationService.roles.author)) {
@@ -38,8 +40,16 @@ router.get('/html/:articleId', async (req, res, next) => {
     }
 });
 
+// get cover letter pdf
+// AUTHOR
 router.get('/pdf/:articleId/:token', async (req, res, next) => {
     try {
+        if(!authorizationService.checkAuthorization(req, authorizationService.roles.author)) {
+            let error = new Error('Unauthorized')
+            error.status = 403;
+            next(error);
+            return;
+        }
 
         var lastVersion = await articlesService.getLastVersion(+req.params.articleId);
         var dom = await coverLetterService.readXML(+req.params.articleId, lastVersion);

@@ -2,6 +2,7 @@ const fs = require('fs');
 const axios = require('axios');
 var articlesRepository = require('../repository/articlesRepository');
 const reviewsRepository = require('../repository/reviewsRepository');
+const coverLetterRepository = require('../repository/coverLettersRepository');
 const rdfRepository = require('../repository/rdfRepository');
 const grddlPath = "./xsl/grddl.xsl";
 var pdfService = require('../service/pdfService');
@@ -17,9 +18,11 @@ const test = require('./test');
 
 var ns1 = "https://github.com/XML-tim17/ScientificArticles";
 
-module.exports.addNewArticle = async (xml, author) => {
+module.exports.addNewArticle = async (articleXML, coverLetterXML, author) => {
 
-    let articleDOM = (new DOMParser).parseFromString(xml, 'text/xml');
+    let articleDOM = (new DOMParser()).parseFromString(articleXML, 'text/xml');
+    let coverLetterDOM = (new DOMParser()).parseFromString(coverLetterXML, 'text/xml');
+
 
     // check corresponding author === author
     const authorValid = checkCorrespondingAuthor(articleDOM, author.email);
@@ -29,9 +32,16 @@ module.exports.addNewArticle = async (xml, author) => {
         throw error;
     }
 
+    const coverLetterAuthorValid = checkCoverLetterAuthor(coverLetterDOM, author.email);
+    if (!coverLetterAuthorValid) {
+        let error = new Error('Cover letter must be submitted by its author')
+        error.status = 400;
+        throw error;
+    }
+
     articleDOM = checkAndGenerateIds(articleDOM);
 
-    let articleXML = new XMLSerializer().serializeToString(articleDOM);
+    articleXML = new XMLSerializer().serializeToString(articleDOM);
 
     articleRDFa = await xsltService.transform(articleXML, fs.readFileSync('./xsl/article-to-rdfa.xsl', 'utf8'));
     let articleRDFxml = await xsltService.transform(articleRDFa, fs.readFileSync(grddlPath, 'utf8'));
@@ -44,12 +54,13 @@ module.exports.addNewArticle = async (xml, author) => {
 
     // create collection for article
     await articlesRepository.addNewArticleCollection(articleId);
+    await coverLetterRepository.addNewCoverLetterCollection(articleId);
 
     //create version sequencer
     let version = await articlesRepository.createVersionSequencer(articleId);
 
     // create new xml document
-    await articlesRepository.addNewArticle(xml, articleId, version);
+    await articlesRepository.addNewArticle(articleXML, articleId, version);
 
     await articlesRepository.updateArticleId(articleId, version);
     await rdfRepository.updateArticleId(articleId, version);
@@ -57,6 +68,15 @@ module.exports.addNewArticle = async (xml, author) => {
     await articlesRepository.setStatus(articleId, version, 'toBeReviewed');
     await rdfRepository.setStatus(articleId, version, 'toBeReviewed');
 
+    await coverLetterRepository.addCoverLetter(articleId, version, coverLetterXML);
+    return "success";
+
+}
+
+checkCoverLetterAuthor = (coverLetterDOM, email) => {
+    let select = xpath.useNamespaces({ "ns1": ns1 });
+    let coverLetterEmail = select('//ns1:info/ns1:author/ns1:email', coverLetterDOM)[0].textContent;
+    return coverLetterEmail === email;
 }
 
 checkCorrespondingAuthor = (articleDOM, email) => {
@@ -261,7 +281,7 @@ module.exports.getAllByStatus = async (status) => {
     return articleListHtml;
 }
 
-module.exports.postRevision = async (articleId, article, author) => {
+module.exports.postRevision = async (articleId, articleXML, coverLetterXML, author) => {
 
     let version = await articlesRepository.getLastVersion(articleId);
 
@@ -272,12 +292,20 @@ module.exports.postRevision = async (articleId, article, author) => {
         throw error;
     }
 
-    let articleDOM = new DOMParser().parseFromString(article, 'text/xml');
+    let articleDOM = new DOMParser().parseFromString(articleXML, 'text/xml');
+    let coverLetterDOM = (new DOMParser()).parseFromString(coverLetterXML, 'text/xml');
 
     // validate corresponding author
     const authorValid = checkCorrespondingAuthor(articleDOM, author.email);
     if (!authorValid) {
         let error = new Error('Article revision must be submitted by its corresponding author');
+        error.status = 400;
+        throw error;
+    }
+
+    const coverLetterAuthorValid = checkCoverLetterAuthor(coverLetterDOM, author.email);
+    if (!coverLetterAuthorValid) {
+        let error = new Error('Cover letter must be submitted by its author')
         error.status = 400;
         throw error;
     }
@@ -293,7 +321,7 @@ module.exports.postRevision = async (articleId, article, author) => {
 
     articleDOM = checkAndGenerateIds(articleDOM);
 
-    let articleXML = new XMLSerializer().serializeToString(articleDOM);
+    articleXML = new XMLSerializer().serializeToString(articleDOM);
 
     const articleRDFa = await xsltService.transform(articleXML, fs.readFileSync('./xsl/article-to-rdfa.xsl', 'utf8'));
     let articleRDFxml = await xsltService.transform(articleRDFa, fs.readFileSync(grddlPath, 'utf8'));
@@ -313,6 +341,7 @@ module.exports.postRevision = async (articleId, article, author) => {
     await articlesRepository.setStatus(articleId, version, 'outdated');
     await rdfRepository.setStatus(articleId, version, 'outdated');
 
+    await coverLetterRepository.addCoverLetter(articleId, version + 1, coverLetterXML);
     return "success";
 }
 

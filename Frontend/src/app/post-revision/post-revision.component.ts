@@ -11,7 +11,9 @@ export class PostRevisionComponent implements OnInit {
 
   articleId: any;
   
-  file: File;
+  articleFile: File;
+  coverLetterFile: File;
+
 
   constructor(private articlesService: ArticlesService,
     private route: ActivatedRoute) { }
@@ -21,21 +23,34 @@ export class PostRevisionComponent implements OnInit {
   }
 
   handleFileInput(event) {
-    this.file = event.target.files[0]
+    this.articleFile = event.target.files[0]
+  }
+  
+  handleFileInput2(event) {
+    this.coverLetterFile = event.target.files[0]
   }
 
-  onSubmit() {
-    let reader = new FileReader;
 
-    reader.onload = (e) => {
-      this.articlesService.postRevision(this.articleId, reader.result as string).then(data => {
+  onSubmit() {
+    let reader = new FileReader();
+    
+    let reader2 = new FileReader();
+
+
+    reader2.onload = (e) => {
+      this.articlesService.postRevision(this.articleId, reader.result as string, reader2.result as string).then(data => {
         console.log(data);
       }, err => {
-        console.log(err);
+        alert(err);
       })
     }
 
-    reader.readAsText(this.file)
+    
+    reader.onload = (e) => {
+      reader2.readAsText(this.coverLetterFile);
+    }
+
+    reader.readAsText(this.articleFile)
   }
 
 }
