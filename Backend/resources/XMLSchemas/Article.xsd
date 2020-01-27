@@ -113,7 +113,9 @@
                                     </xs:sequence>
                                 </xs:complexType>
                             </xs:element>
+                            <xs:element name="website-id" type="xs:anyURI"/>
                         </xs:sequence>
+                        <xs:attribute ref="id"/>
                     </xs:complexType>
                 </xs:element>
             </xs:sequence>
