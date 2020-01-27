@@ -91,5 +91,13 @@
         </xsl:copy>
     </xsl:template>
     
+    <xsl:template match="ns1:references/ns1:reference/ns1:website-id">
+        <xsl:copy>
+            <xsl:attribute name="property">citation</xsl:attribute>
+            <xsl:apply-templates select="node() | @*"/>
+        </xsl:copy>
+    </xsl:template>
+    
+    
 
 </xsl:stylesheet>

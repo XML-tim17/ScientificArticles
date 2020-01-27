@@ -11,6 +11,7 @@ module.exports = (searchParams) => `PREFIX rdfa: <http://www.w3.org/ns/rdfa#>
     ?article rdfa:datePublished ?datePublished.
     ?article rdfa:headline ?headline.
     ?article rdfa:keywords ?keywords.
+    ?article rdfa:citation ?reference.
     ?article rdfa:identifier ?articleID.
       
     FILTER (
@@ -23,6 +24,7 @@ module.exports = (searchParams) => `PREFIX rdfa: <http://www.w3.org/ns/rdfa#>
     ${searchParams.datePublishedTo ? `?datePublished >= "${searchParams.datePublishedTo}" ^^xsd:date &&` : ``}
     ${searchParams.headline ? `CONTAINS(UCASE(str(?headline)), UCASE("${searchParams.headline}")) &&` : ''}
     ${searchParams.keywords ? `CONTAINS(UCASE(str(?keywords)), UCASE("${searchParams.keywords}")) &&` : ''}
+    ${searchParams.reference ? `?reference = "${searchParams.reference}" ^^rdf:XMLLiteral &&` : ``}
     ?article = ?article
     ).
 }`
