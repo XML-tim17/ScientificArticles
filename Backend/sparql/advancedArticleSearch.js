@@ -1,4 +1,5 @@
-module.exports = (searchParams) => `PREFIX rdfa: <http://www.w3.org/ns/rdfa#> 
+module.exports = (searchParams) => `
+    PREFIX rdfa: <http://www.w3.org/ns/rdfa#> 
     PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
     PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
@@ -15,15 +16,15 @@ module.exports = (searchParams) => `PREFIX rdfa: <http://www.w3.org/ns/rdfa#>
     ?article rdfa:identifier ?articleID.
       
     FILTER (
-    ${searchParams.abstract ? `CONTAINS(UCASE(str(?abstract)), UCASE("${searchParams.abstract}")) &&` : ''}
-    ${searchParams.author ? `CONTAINS(UCASE(str(?author)), UCASE("${searchParams.author}")) &&` : ''}
-    ${searchParams.dateCreated.startDate ? `?dateCreated >= "${searchParams.dateCreated.startDate}"^^xsd:dateTime &&` : ``}
-    ${searchParams.dateCreated.endDate ? `?dateCreated <= "${searchParams.dateCreated.endDate}"^^xsd:dateTime &&` : ``}
-    ${searchParams.datePublished.startDate ? `?datePublished >= "${searchParams.datePublished.startDate}"^^xsd:dateTime &&` : ``}
-    ${searchParams.datePublished.endDate ? `?datePublished <= "${searchParams.datePublished.endDate}"^^xsd:dateTime &&` : ``}
-    ${searchParams.headline ? `CONTAINS(UCASE(str(?headline)), UCASE("${searchParams.headline}")) &&` : ''}
-    ${searchParams.keywords ? `CONTAINS(UCASE(str(?keywords)), UCASE("${searchParams.keywords}")) &&` : ''}
-    ${searchParams.reference ? `?reference = "${searchParams.reference}"^^rdf:XMLLiteral &&` : ``}
+    ${searchParams.abstract ? `CONTAINS(UCASE(str(?abstract)), UCASE("${searchParams.abstract.toString().replace(/"/g, '\\"')}")) &&` : ''}
+    ${searchParams.author ? `CONTAINS(UCASE(str(?author)), UCASE("${searchParams.author.toString().replace(/"/g, '\\"')}")) &&` : ''}
+    ${searchParams.dateCreated.startDate ? `?dateCreated >= "${searchParams.dateCreated.startDate.toString().replace(/"/g, '\\"').substr(0, 10)}"^^xsd:date &&` : ``}
+    ${searchParams.dateCreated.endDate ? `?dateCreated <= "${searchParams.dateCreated.endDate.toString().replace(/"/g, '\\"').substr(0, 10)}"^^xsd:date &&` : ``}
+    ${searchParams.datePublished.startDate ? `?datePublished >= "${searchParams.datePublished.startDate.toString().replace(/"/g, '\\"').substr(0, 10)}"^^xsd:date &&` : ``}
+    ${searchParams.datePublished.endDate ? `?datePublished <= "${searchParams.datePublished.endDate.toString().replace(/"/g, '\\"').substr(0, 10)}"^^xsd:date &&` : ``}
+    ${searchParams.headline ? `CONTAINS(UCASE(str(?headline)), UCASE("${searchParams.headline.toString().replace(/"/g, '\\"')}")) &&` : ''}
+    ${searchParams.keywords ? `CONTAINS(UCASE(str(?keywords)), UCASE("${searchParams.keywords.toString().replace(/"/g, '\\"')}")) &&` : ''}
+    ${searchParams.reference ? `?reference = "${searchParams.reference.toString().replace(/"/g, '\\"')}"^^rdf:XMLLiteral &&` : ``}
     ?status = "accepted"^^rdf:XMLLiteral
     ).
 }`

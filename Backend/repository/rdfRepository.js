@@ -3,9 +3,10 @@ const FormData = require('form-data');
 const baseUrl = require('./rdfConfig');
 const querystring = require('querystring');
 const memfs = require('memfs');
+const deleteArticleById = require('../sparql/deleteArticleById');
 const setArticleStatus = require('../sparql/setArticleStatus');
-const updateArticleId = require('../sparql/updateArticleId');
 const advancedArticleSearch = require('../sparql/advancedArticleSearch');
+const getKeywordsFromArticle = require('../sparql/getKeywordsFromArticle');
 const datasetName = 'articlesDS';
 const rdfSubjectBase = 'https://github.com/XML-tim17/ScientificArticles';
 
@@ -35,18 +36,18 @@ module.exports.saveRDFxml = async (rdfXML) => {
     await axios.post(`${baseUrl}/${datasetName}/data`, formData.getBuffer(), config).catch(e => { console.log(e) });
 }
 
-module.exports.setStatus = async (articleId, version, status) => {
-    const rdfSubject = `<${rdfSubjectBase}/${articleId}/${version}>`;
+module.exports.setStatus = async (articleId, status) => {
+    const rdfSubject = `<${rdfSubjectBase}/${articleId}>`;
     await axios.post(`${baseUrl}/${datasetName}/update`, querystring.stringify({
         update: setArticleStatus(rdfSubject, status)
     }))
         .catch(e => { console.log(e) });
 }
 
-module.exports.updateArticleId = async (articleId, version) => {
-    const rdfSubject = `<${rdfSubjectBase}/${articleId}/${version}>`;
+module.exports.deleteArticleById = async (articleId) => {
+    const rdfSubject = `<${rdfSubjectBase}/${articleId}>`;
     await axios.post(`${baseUrl}/${datasetName}/update`, querystring.stringify({
-        update: updateArticleId(rdfSubject, articleId)
+        update: deleteArticleById(rdfSubject)
     }))
         .catch(e => { console.log(e) });
 }
@@ -54,6 +55,14 @@ module.exports.updateArticleId = async (articleId, version) => {
 module.exports.advancedSearch = async (searchParams) => {
     return await axios.post(`${baseUrl}/${datasetName}/query`, querystring.stringify({
         query: advancedArticleSearch(searchParams)
+    }))
+        .catch(e => { console.log(e) });
+}
+
+module.exports.getKeywordsFromArticle = async (articleId) => {
+    const rdfSubject = `<${rdfSubjectBase}/${articleId}>`;
+    return await axios.post(`${baseUrl}/${datasetName}/query`, querystring.stringify({
+        query: getKeywordsFromArticle(rdfSubject)
     }))
         .catch(e => { console.log(e) });
 }

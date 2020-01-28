@@ -39,7 +39,10 @@ module.exports.addNewArticle = async (articleXML, coverLetterXML, author) => {
         throw error;
     }
 
-    articleDOM = checkAndGenerateIds(articleDOM);
+    //update articleSequencer
+    let articleId = await articlesRepository.incrementArticleCount(1);
+
+    articleDOM = checkAndGenerateIds(articleDOM, articleId);
 
     articleXML = new XMLSerializer().serializeToString(articleDOM);
 
@@ -49,9 +52,6 @@ module.exports.addNewArticle = async (articleXML, coverLetterXML, author) => {
     // save to rdf
     await rdfRepository.saveRDFxml(articleRDFxml);
 
-    //update articleSequencer
-    let articleId = await articlesRepository.incrementArticleCount(1);
-
     // create collection for article
     await articlesRepository.addNewArticleCollection(articleId);
     await coverLetterRepository.addNewCoverLetterCollection(articleId);
@@ -60,13 +60,11 @@ module.exports.addNewArticle = async (articleXML, coverLetterXML, author) => {
     let version = await articlesRepository.createVersionSequencer(articleId);
 
     // create new xml document
-    await articlesRepository.addNewArticle(articleXML, articleId, version);
+    await articlesRepository.addNewArticle(articleRDFa, articleId, version);
 
-    await articlesRepository.updateArticleId(articleId, version);
-    await rdfRepository.updateArticleId(articleId, version);
 
     await articlesRepository.setStatus(articleId, version, 'toBeReviewed');
-    await rdfRepository.setStatus(articleId, version, 'toBeReviewed');
+    await rdfRepository.setStatus(articleId, 'toBeReviewed');
 
     await coverLetterRepository.addCoverLetter(articleId, version, coverLetterXML);
     return "success";
@@ -85,9 +83,16 @@ checkCorrespondingAuthor = (articleDOM, email) => {
     return corrAuthorEmail === email;
 }
 
-checkAndGenerateIds = (articleDOM) => {
-    // validate ids
+checkAndGenerateIds = (articleDOM, articleId) => {
     let select = xpath.useNamespaces({ "ns1": ns1 });
+
+
+    // set article's id value
+    select('//ns1:id', articleDOM).forEach(idNode => idNode.textContent = articleId);
+    // update received date
+    select('//ns1:received', articleDOM).forEach(idNode => idNode.textContent = (new Date()).toISOString().substr(0, 10));
+
+    // validate ids
     let nodes = select('//@ns1:id', articleDOM)
     let ids = nodes.map(node => node.value)
 
@@ -319,27 +324,25 @@ module.exports.postRevision = async (articleId, articleXML, coverLetterXML, auth
         throw error;
     }
 
-    articleDOM = checkAndGenerateIds(articleDOM);
+    articleDOM = checkAndGenerateIds(articleDOM, articleId);
 
     articleXML = new XMLSerializer().serializeToString(articleDOM);
 
     const articleRDFa = await xsltService.transform(articleXML, fs.readFileSync('./xsl/article-to-rdfa.xsl', 'utf8'));
     let articleRDFxml = await xsltService.transform(articleRDFa, fs.readFileSync(grddlPath, 'utf8'));
 
+    // delete current metadata
+    await rdfRepository.deleteArticleById(articleId);
     // save to rdf
     await rdfRepository.saveRDFxml(articleRDFxml);
 
-    await articlesRepository.addNewArticle(articleXML, articleId, version + 1);
-
-    await articlesRepository.updateArticleId(articleId, version + 1);
-    await rdfRepository.updateArticleId(articleId, version + 1);
-
-    await this.setStatus(articleId, 'revisionRecieved');
-
-    await articlesRepository.incrementVersionCount(articleId, 1);
+    await articlesRepository.addNewArticle(articleRDFa, articleId, version + 1);
 
     await articlesRepository.setStatus(articleId, version, 'outdated');
-    await rdfRepository.setStatus(articleId, version, 'outdated');
+    await articlesRepository.setStatus(articleId, version + 1, 'revisionRecieved');
+    await rdfRepository.setStatus(articleId, 'revisionRecieved');
+
+    await articlesRepository.incrementVersionCount(articleId, 1);
 
     await coverLetterRepository.addCoverLetter(articleId, version + 1, coverLetterXML);
     return "success";
@@ -426,7 +429,7 @@ module.exports.setStatus = async (articleId, status) => {
     let currentStatus = await articlesRepository.getStatusOf(articleId, version);
     if (isNextStateValid(currentStatus, status)) {
         await articlesRepository.setStatus(articleId, version, status);
-        await rdfRepository.setStatus(articleId, version, status);
+        await rdfRepository.setStatus(articleId, status);
         return true;
     }
 
@@ -442,8 +445,7 @@ module.exports.requestRevision = async (articleId) => {
         error.status = 400;
         throw error;
     }
-    await articlesRepository.setStatus(articleId, version, 'revisionRequired');
-    await rdfRepository.setStatus(articleId, version, 'revisionRequired');
+    await this.setStatus(articleId, 'revisionRequired');
 }
 
 module.exports.giveUp = async (articleId, user) => {
@@ -463,7 +465,7 @@ module.exports.giveUp = async (articleId, user) => {
         throw error;
     }
 
-    await articlesRepository.setStatus(articleId, version, 'outdated');
+    await this.setStatus(articleId, 'outdated');
     return 'success';
 }
 

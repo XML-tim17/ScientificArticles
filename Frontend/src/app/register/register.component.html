@@ -26,6 +26,18 @@
             <mat-form-field>
                 <input matInput type="text" placeholder="Country" [(ngModel)]="country">
             </mat-form-field>
+            <mat-form-field class="example-chip-list">
+                <mat-chip-list #chipList aria-label="Fruit selection">
+                    <mat-chip *ngFor="let keyword of keywords" [selectable]="true" [removable]="true"
+                        (removed)="removeKeyword(keyword)">
+                        {{keyword}}
+                        <mat-icon matChipRemove>cancel</mat-icon>
+                    </mat-chip>
+                    <input placeholder="Aritlce keywords that interest me" [matChipInputFor]="chipList"
+                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="true"
+                        (matChipInputTokenEnd)="addKeyword($event)">
+                </mat-chip-list>
+            </mat-form-field>
         </mat-card-content>
         <mat-card-actions>
             <div class="center">

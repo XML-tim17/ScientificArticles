@@ -36,13 +36,13 @@ module.exports.register = async (userObject) => {
     // create xml from object
     let userXML
     try {
-         userXML = userObjectToXml(userObject);
+        userXML = userObjectToXml(userObject);
     } catch (e) {
         let error = new Error(`Invalid user data: ${e.message}`);
         error.status = 400;
         throw error;
     }
-    
+
     // write to database
     let userId = await userRepository.incrementUserCount(1);
     await userRepository.addUser(userId, userXML);
@@ -62,11 +62,13 @@ userObjectToXml = (userObject) => {
     </address>
     <toReview>${userObject.toReview.map(articleId => `\n\t\t<articleId>${articleId}</articleId>`)}
     </toReview>
+    <keywords>${userObject.keywords.map(keyword => `\n\t\t<keyword>${keyword}</keyword>`)}
+    </keywords>
 </user>`
 
     return userXML;
 }
-    
+
 
 userDomToObject = (userDOM) => {
     let name = xpath.select('//name', userDOM)[0].textContent;
@@ -77,9 +79,13 @@ userDomToObject = (userDOM) => {
     let country = xpath.select('//country', userDOM)[0].textContent;
     let role = xpath.select('//role', userDOM)[0].textContent;
     let toReview;
+    let keywords;
     try {
         toReview = xpath.select('//toReview/articleId', userDOM)
             .map(node => node.textContent);
+        keywords = xpath.select('//keywords/keyword', userDOM)
+            .map(node => node.textContent);
+
     } catch (e) {
         toReview = [];
     }
@@ -93,9 +99,10 @@ userDomToObject = (userDOM) => {
             country
         },
         role,
-        toReview
+        toReview,
+        keywords
     }
-    
+
 }
 
 module.exports.login = async (email, password) => {
@@ -108,7 +115,7 @@ module.exports.login = async (email, password) => {
     }
     let userXML = await userRepository.getUserByEmail(email);
     let userDOM = new DOMParser().parseFromString(userXML, 'text/xml');
-    
+
     let userPassword = xpath.select('//password', userDOM)[0].textContent;
     if (userPassword !== password) {
         let error = new Error("Username or password incorrect.");

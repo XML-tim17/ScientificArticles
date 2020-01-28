@@ -63,9 +63,10 @@
                             <td></td>
                             <td id="search-buttons-td">
                                 <span class="search-buttons">
-                                    <button mat-button [disabled]="!searchForm.dirty" (click)="clearSearch()">Clear
+                                    <button type="button" mat-button [disabled]="!searchForm.dirty"
+                                        (click)="clearSearch()">Clear
                                         search</button>
-                                    <button mat-raised-button class="menuitem" color="primary"
+                                    <button type="submit" mat-raised-button class="menuitem" color="primary"
                                         (click)="doSearch()">Search</button>
                                 </span>
                             </td>

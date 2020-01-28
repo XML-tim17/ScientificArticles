@@ -6,6 +6,6 @@ declare function local:getUser($email as xs:string)
     return $user)[1]
 };
 
-let $email := "${email}"
+let $email := "${email.toString().replace(/"/g, '""')}"
 
-return update replace local:getUser($email)//role//text() with "${role}"` 
+return update replace local:getUser($email)//role//text() with "${role.toString().replace(/"/g, '""')}"` 

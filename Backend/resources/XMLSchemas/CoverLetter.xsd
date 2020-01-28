@@ -10,7 +10,7 @@
                     <xs:complexType>
                         <xs:sequence>
                             <xs:element name="author" type="TPerson"> </xs:element>
-                            <xs:element name="date" type="xs:dateTime"/>
+                            <xs:element name="date" type="xs:date"/>
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>

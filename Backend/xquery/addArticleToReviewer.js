@@ -5,8 +5,8 @@ declare function local:getUser($email as xs:string)
     where $user/email//text() = $email
     return $user)[1]
 };
-let $email := "${email}"
+let $email := "${email.toString().replace(/"/g, '""')}"
 
-return update insert <articleId>${articleURI}</articleId>
+return update insert <articleId>${articleURI.toString().replace(/"/g, '""')}</articleId>
     into local:getUser($email)//toReview
 `

@@ -13,7 +13,7 @@ declare function local:getReviewers($articleId as xs:string) {
     return $reviewer
 };
 
-let $articleId := "${articleId}"
+let $articleId := "${articleId.toString().replace(/"/g, '""')}"
 
 return count(local:getReviewers($articleId))
 `

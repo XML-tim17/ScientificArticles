@@ -1,7 +1,7 @@
-module.exports.query = (email) => 
-`
+module.exports.query = (email) =>
+    `
 xquery version "3.1";
     for $user in collection("/db/scientificArticles/users/")/user
-    where $user/email//text() = "${email}"
+    where $user/email//text() = "${email.toString().replace(/"/g, '""')}"
     return $user/password/text()
 `
