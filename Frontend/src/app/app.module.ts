@@ -32,7 +32,7 @@ import { CoverLetterViewComponent } from './cover-letter-view/cover-letter-view.
 import { CoverLetterViewPdfComponent } from './cover-letter-view-pdf/cover-letter-view-pdf.component';
 import { AdvancedSearchComponent } from './advanced-search/advanced-search.component';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
-import { MatFormFieldModule, MatChipsModule } from '@angular/material';
+import { MatFormFieldModule, MatChipsModule, MatGridListModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -70,7 +70,8 @@ import { MatFormFieldModule, MatChipsModule } from '@angular/material';
     MatFormFieldModule,
     ReactiveFormsModule,
     NgxDaterangepickerMd.forRoot(),
-    MatChipsModule
+    MatChipsModule,
+    MatGridListModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
