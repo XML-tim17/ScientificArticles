@@ -2,6 +2,7 @@ import { Router } from '@angular/router';
 import { AuthenticationService } from './../services/authentication.service';
 import { Component, OnInit } from '@angular/core';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { MatChipInputEvent } from '@angular/material/chips';
 
 @Component({
   selector: 'app-register',
