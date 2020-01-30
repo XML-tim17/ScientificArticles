@@ -1,5 +1,5 @@
 import { ArticlesService } from './../services/articles.service';
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ComponentFactoryResolver } from '@angular/core';
 import { XonomyService } from '../services/xonomy/xonomy.service';
 declare const Xonomy: any;
 
@@ -16,6 +16,8 @@ export class AddArticleComponentComponent implements OnInit {
   coverLetterXML: string;
   @ViewChild('articleXonomy', { static: false }) articleXonomy;
   @ViewChild('coverLetterXonomy', { static: false }) coverLetterXonomy;
+  @ViewChild('articleHTML', { static: false }) articleHTML;
+  @ViewChild('coverLetterHTML', { static: false }) coverLetterHTML;
 
   ngOnInit() {
 
@@ -24,41 +26,69 @@ export class AddArticleComponentComponent implements OnInit {
   ngAfterViewInit() {
     this.articleXML = this.xonomyService.getArticleTemplate();
     this.coverLetterXML = this.xonomyService.getCoverLetterTemplate();
-
-    Xonomy.render(this.articleXML, this.articleXonomy.nativeElement, this.xonomyService.getArticleSpec());
-    //Xonomy.render(this.coverLetterXML, this.coverLetterXonomy.nativeElement, this.xonomyService.getCoverLetterSpec());
+    this.renderArticle();
   }
 
-  handleFileInput(event, _placeResult, elemRef) {
+  onTabChanged($event) {
+    switch ($event.index) {
+      case (0):
+        this.coverLetterXonomy.nativeElement.innerHTML = '';
+        this.renderArticle();
+        break;
+      case (1):
+        this.articleXonomy.nativeElement.innerHTML = '';
+        this.renderCoverLetter();
+        break;
+    }
+  }
+
+  handleFileInputArticle(event) {
     let reader = new FileReader();
     reader.onload = (e) => {
-      _placeResult = reader.result as string;
-      Xonomy.render(_placeResult, elemRef, this.xonomyService.getArticleSpec());
+      this.articleXML = reader.result as string;
+      this.renderArticle();
     }
     reader.readAsText(event.target.files[0]);
   }
 
+  handleFileInputCoverLetter(event) {
+    let reader = new FileReader();
+    reader.onload = (e) => {
+      this.coverLetterXML = reader.result as string;
+      this.renderCoverLetter();
+    }
+    reader.readAsText(event.target.files[0]);
+  }
+
+  onArticleChange() {
+    this.articleXML = Xonomy.harvest();
+    this.articleHTML.nativeElement.innerHTML = this.xonomyService.convertArticleXSLT(this.articleXML);
+  }
+
+  renderArticle() {
+    Xonomy.render(this.articleXML, this.articleXonomy.nativeElement, {
+      elements: this.xonomyService.getArticleElements(),
+      onchange: () => { this.onArticleChange() }
+    });
+    this.articleHTML.nativeElement.innerHTML = this.xonomyService.convertArticleXSLT(this.articleXML);
+  }
+
+  onCoverLetterChange() {
+    this.coverLetterXML = Xonomy.harvest();
+    this.coverLetterHTML.nativeElement.innerHTML = this.xonomyService.convertCoverLetterXSLT(this.coverLetterXML);
+  }
+
+  renderCoverLetter() {
+    Xonomy.render(this.coverLetterXML, this.coverLetterXonomy.nativeElement, {
+      elements: this.xonomyService.getCoverLetterElements(),
+      onchange: () => { this.onCoverLetterChange() }
+    });
+    this.coverLetterHTML.nativeElement.innerHTML = this.xonomyService.convertCoverLetterXSLT(this.coverLetterXML);
+  }
+
   async onSubmit() {
-    //   if (!this.articleFile && !this.coverLetterFile) {
-    //     alert("Select both article and cover letter please.")
-    //     return;
-    //   }
-
-    //   let reader = new FileReader();
-
-    //   let reader2 = new FileReader();
-
-    //   reader2.onload = (e) => {
-    //     this.articlesService.addArticle(reader.result as string, reader2.result as string);
-    //     // add toaster
-    //   }
-
-    //   reader.onload = (e) => {
-    //     reader2.readAsText(this.coverLetterFile);
-    //   }
-
-    //   reader.readAsText(this.articleFile)
-
+    this.articlesService.addArticle(this.articleXML, this.coverLetterXML);
+    // add toaster
   }
 
 }
