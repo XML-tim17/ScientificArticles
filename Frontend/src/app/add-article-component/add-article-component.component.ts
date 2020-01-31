@@ -67,6 +67,7 @@ export class AddArticleComponentComponent implements OnInit {
 
   renderArticle() {
     Xonomy.render(this.articleXML, this.articleXonomy.nativeElement, {
+      allowModeSwitching: true,
       elements: this.xonomyService.getArticleElements(),
       onchange: () => { this.onArticleChange() }
     });
@@ -87,7 +88,7 @@ export class AddArticleComponentComponent implements OnInit {
   }
 
   async onSubmit() {
-    this.articlesService.addArticle(this.articleXML, this.coverLetterXML);
+    this.articlesService.addArticle(this.xonomyService.importArticleImages(this.articleXML), this.coverLetterXML);
     // add toaster
   }
 
