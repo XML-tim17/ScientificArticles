@@ -130,16 +130,17 @@
                     <xs:element name="figure">
                         <xs:complexType>
                             <xs:sequence>
+                                <xs:element name="title" type="xs:string"/>
                                 <xs:element name="image" type="xs:base64Binary"/>
                             </xs:sequence>
                             <xs:attribute ref="id"/>
-                            <xs:attribute name="title"/>
                         </xs:complexType>
                     </xs:element>
                     <xs:element name="table">
                         <xs:complexType>
-                            <xs:sequence maxOccurs="unbounded" minOccurs="1">
-                                <xs:element name="tr">
+                            <xs:sequence maxOccurs="1" minOccurs="1">
+                                <xs:element name="title" type="xs:string"/>
+                                <xs:element name="tr" maxOccurs="unbounded" minOccurs="0">
                                     <xs:complexType>
                                         <xs:sequence>
                                             <xs:element maxOccurs="unbounded" minOccurs="1"

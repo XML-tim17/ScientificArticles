@@ -20,7 +20,7 @@ export class AddArticleComponentComponent implements OnInit {
   @ViewChild('coverLetterHTML', { static: false }) coverLetterHTML;
 
   ngOnInit() {
-
+    Xonomy.articleImages = {};
   }
 
   ngAfterViewInit() {

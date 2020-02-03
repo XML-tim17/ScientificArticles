@@ -172,7 +172,7 @@ export const articleXSLT = `<?xml version="1.0" encoding="UTF-8"?>
                             (<xsl:value-of select="./ns1:publication-date"></xsl:value-of>). 
                             <xsl:value-of select="./ns1:title"></xsl:value-of>,
                             <xsl:value-of select="./ns1:publisher/ns1:institution"></xsl:value-of>,
-                            <xsl:value-of select="/ns1:publisher/ns1:city"></xsl:value-of>,
+                            <xsl:value-of select="./ns1:publisher/ns1:city"></xsl:value-of>,
                             
                         </p>
                         <p>
@@ -181,10 +181,10 @@ export const articleXSLT = `<?xml version="1.0" encoding="UTF-8"?>
                                     <xsl:attribute name="href">/article/<xsl:value-of select="./ns1:website-id"></xsl:value-of></xsl:attribute>
                                     Click to navigate to article
                                 </a>
-                            </xsl:if>
-                            <xsl:if test="count(./ns1:website-id)=0">
+                            <!-- </xsl:if>
+                                <xsl:if test="count(./ns1:website-id)=0">
                                     Article is not on our website
-                            </xsl:if>
+                            </xsl:if>-->
                         </p>
                     </div>
                         <hr></hr>
@@ -200,10 +200,10 @@ export const articleXSLT = `<?xml version="1.0" encoding="UTF-8"?>
                 <td align="center">
                     <img>
                         <xsl:attribute name="src">
-                            data:image/png;base64, <xsl:value-of select="./ns1:image"></xsl:value-of>
+                            <xsl:value-of select="./ns1:image"></xsl:value-of>
                         </xsl:attribute>
                         <xsl:attribute name="alt">
-                            <xsl:value-of select="./@title"></xsl:value-of>
+                            <xsl:value-of select="./ns1:title"></xsl:value-of>
                         </xsl:attribute>
                     </img>
                 </td>
@@ -211,7 +211,7 @@ export const articleXSLT = `<?xml version="1.0" encoding="UTF-8"?>
             <tr>
                 <td align="center">
                     <p>
-                        <xsl:value-of select="./@title"></xsl:value-of>
+                        <xsl:value-of select="./ns1:title"></xsl:value-of>
                     </p>
                 </td>
             </tr>

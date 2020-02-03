@@ -4,34 +4,50 @@ import { coverLetterTemplate } from './templates/coverLetterTemplate';
 import { articleXSLT } from './xslt/articleXSLT';
 import { coverLetterXSLT } from './xslt/coverLetterXSLT';
 import { v4 as uuid } from 'uuid';
+import _ from 'lodash';
 
 declare const Xonomy: any;
 const xsltProcessor = new XSLTProcessor();
 const domParser = new DOMParser();
 const xmlSerializer = new XMLSerializer();
 const ns = `xmlns:ns1='https://github.com/XML-tim17/ScientificArticles'`;
+const articleIDs = [];
+
+const changeElementValueAction = (htmlID, param) => {
+  var div = document.getElementById(htmlID);
+  var jsElement = Xonomy.harvestElement(div);
+  jsElement.value = param;
+  Xonomy.replace(htmlID, jsElement);
+}
 
 const generateId = (elem) => {
   if (!elem.hasAttribute('ns1:id')) {
-    let prefix = generatePrefix(elem, '');
+    let prefix = generatePrefix(elem);
     let parent = elem.parent();
-    let elemNumber = parent.children.filter((child) => child.name === elem.name).length;
-    elem.setAttribute('ns1:id', `${prefix}/${elem.name}${elemNumber}`);
+    let elemNumber = 1 + Math.max(...parent.children.filter((child) => child.name === elem.name).map((child) => {
+      let attirbuteValue = child.getAttributeValue('ns1:id', null);
+      if (attirbuteValue) {
+        return +_.last(attirbuteValue.split('/')).replace(child.name, '');
+      }
+      return -1;
+    }).concat([-1]));
+    let id = `${prefix}/${elem.name}${elemNumber}`;
+    elem.setAttribute('ns1:id', id);
+    articleIDs.push(id);
   }
   return false;
 }
 
-const generatePrefix = (elem, currentPrefix) => {
+const generatePrefix = (elem) => {
   let parent = elem.parent();
   if (!parent) {
-    return currentPrefix;
+    return '';
   }
   let parentid = parent.getAttributeValue('ns1:id', null);
   if (!parentid) {
-    return generatePrefix(parent, currentPrefix);
+    return generatePrefix(parent);
   }
-  return generatePrefix(parent, currentPrefix + parentid);
-
+  return parentid;
 }
 
 const generateLevel = (elem) => {
@@ -102,7 +118,7 @@ const tParagraph = {
       caption: "Insert internal reference here",
       action: Xonomy.wrap,
       actionParameter: {
-        template: `<ns1:internal-ref ${ns}></ns1:internal-ref>`, placeholder: "$"
+        template: `<ns1:internal-ref ${ns}>Insert internal reference here</ns1:internal-ref>`, placeholder: "$"
       }
     }
   ])
@@ -128,7 +144,8 @@ export class XonomyService {
         menu: [{
           caption: "Add author",
           action: Xonomy.newElementChild,
-          actionParameter: `<ns1:author ${ns}><ns1:name>Insert author's name</ns1:name>
+          actionParameter: `<ns1:author ${ns}>
+                <ns1:name>Insert author's name</ns1:name>
                 <ns1:institution>Insert author's institution</ns1:institution>
                 <ns1:phone-number>Insert author's number</ns1:phone-number>
                 <ns1:email>Insert author's email</ns1:email>
@@ -205,19 +222,19 @@ export class XonomyService {
           action: Xonomy.newElementChild,
           actionParameter: `<ns1:item ${ns}>Insert list item</ns1:item>`
         },]),
-
       },
       "ns1:item": tParagraph,
       "ns1:ref": {
         menu: removableMenu
-      }, "ns1:internal-ref": {
-        menu: removableMenu
+      },
+      "ns1:internal-ref": {
+        menu: removableMenu,
+        asker: Xonomy.askPicklist,
+        askerParameter: articleIDs,
       },
       "ns1:formule": {
         menu: removableMenu
       },
-
-
       "ns1:content": {
         menu: [{
           caption: "Add section",
@@ -279,20 +296,52 @@ export class XonomyService {
           return `
           <form onsubmit="
             let key = this.val.value + '-${uuid()}-${elem.parent().getAttributeValue('ns1:id', null)}';
-            Xonomy.answer(key);
             let reader = new FileReader();  
             reader.onload = (e) => {
-              let storage = window['articleImages'];
-              if(!storage) {storage = {}; window['articleImages'] = storage}
-              storage[key] = reader.result;
+              Xonomy.articleImages[key] = reader.result;
+              Xonomy.answer(key);
             }
-            reader.readAsText(this.val.files[0]);
+            reader.readAsDataURL(this.val.files[0]);
             return false;
           ">
             <input name='val' type='file' accept="image/*">
             <input type='submit' value='Ok'>
           </form>`
         }
+      },
+      "ns1:references": {
+        menu: [{
+          caption: "Add reference",
+          action: Xonomy.newElementChild,
+          actionParameter:
+            `<ns1:reference ${ns}>
+            <ns1:referencedAuthors>
+                <ns1:referencedAuthor>
+                  <ns1:name>Insert author's name</ns1:name>
+                  <ns1:institution>Insert author's institution</ns1:institution>
+                  <ns1:phone-number>Insert author's number</ns1:phone-number>
+                  <ns1:email>Insert author's email</ns1:email>
+                  <ns1:address>
+                      <ns1:city>Insert author's city</ns1:city>
+                      <ns1:country>Insert author's country</ns1:country>
+                  </ns1:address>
+                </ns1:referencedAuthor>
+            </ns1:referencedAuthors>
+            <ns1:publication-date>Insert publication date</ns1:publication-date>
+            <ns1:title>Insert reference title</ns1:title>
+            <ns1:publisher>
+                <ns1:institution>Insert reference publisher's institution</ns1:institution>
+                <ns1:city>Insert reference publisher's city</ns1:city>
+            </ns1:publisher>
+           </ns1:reference>`
+        }]
+      },
+      "ns1:reference": {
+        isReadOnly: generateId,
+        menu: removableMenu
+      },
+      "ns1:referencedAuthor": {
+        menu: removableMenu
       }
     }
 
@@ -313,19 +362,17 @@ export class XonomyService {
 
   convertArticleXSLT(articleXML: string): string {
     articleXML = this.importArticleImages(articleXML);
-    console.log(articleXML);
     xsltProcessor.reset();
     xsltProcessor.importStylesheet(domParser.parseFromString(articleXSLT, 'text/xml'));
     let result = xsltProcessor.transformToDocument(domParser.parseFromString(articleXML, 'text/xml'));
     return xmlSerializer.serializeToString(result);
   }
   importArticleImages(articleXML): string {
-    let articleImages = window['articleImages'];
+    let articleImages = Xonomy.articleImages;
     console.log(articleImages);
     if (!articleImages) return articleXML;
-    let imagesDictionary: any = articleImages;
-    for (let key in imagesDictionary) {
-      articleXML = articleXML.replace(key, imagesDictionary[key]);
+    for (let key in articleImages) {
+      articleXML = articleXML.replace(key, articleImages[key]);
     }
     return articleXML;
   }
