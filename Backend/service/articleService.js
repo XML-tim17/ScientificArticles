@@ -13,6 +13,7 @@ var XMLSerializer = xmldom.XMLSerializer;
 var DOMParser = xmldom.DOMParser;
 var xpath = require('xpath')
 var _ = require('lodash')
+const mailService = require('./mailService')
 
 const test = require('./test');
 
@@ -67,6 +68,9 @@ module.exports.addNewArticle = async (articleXML, coverLetterXML, author) => {
     await rdfRepository.setStatus(articleId, 'toBeReviewed');
 
     await coverLetterRepository.addCoverLetter(articleId, version, coverLetterXML);
+
+    mailService.sendMailToAllEditors("Scientific articles - new article", `A new aricle has been propsed by aythor ${author.email}.`);
+
     return "success";
 
 }
@@ -345,6 +349,8 @@ module.exports.postRevision = async (articleId, articleXML, coverLetterXML, auth
     await articlesRepository.incrementVersionCount(articleId, 1);
 
     await coverLetterRepository.addCoverLetter(articleId, version + 1, coverLetterXML);
+
+    mailService.sendMailToAllEditors('Scientific article - article revised', `A new article revision has been sent by ${author.email}.`);
     return "success";
 }
 
@@ -430,6 +436,19 @@ module.exports.setStatus = async (articleId, status) => {
     if (isNextStateValid(currentStatus, status)) {
         await articlesRepository.setStatus(articleId, version, status);
         await rdfRepository.setStatus(articleId, status);
+
+
+        if (status == 'inReviewProcess') {
+            mailService.sendMailToReviewersForArticle(articleId, "Scientific articles - new article to review.", "A review for an article has been requested from you.");
+        } else if (status == 'accepted') {
+            let email = await articlesRepository.getCorrespondingAuthor(articleId, version);
+            mailService.sendMail(email, "Scientific articles - article accepted", `Your aricle has been approved by an editor.`);
+        } else if (status == 'rejected') {
+            mailService.sendMail(email, "Scientific articles - article rejected", `Your aricle has been rejected by an editor.`);
+        } else if (status == 'revisionRequired') {
+            mailService.sendMail(email, "Scientific articles - article revision required", `A revision has been requested for your article.`);
+        }
+
         return true;
     }
 
@@ -466,6 +485,8 @@ module.exports.giveUp = async (articleId, user) => {
     }
 
     await this.setStatus(articleId, 'outdated');
+    mailService.sendMailToAllEditors('Scientific articles - article withdrawn', `An article has been withdrawn by author with email ${correspondingAuthorEmail}.`)
+    mailService.sendMailToReviewersForArticle(articleId, 'Scientific articles - article withdrawn', `An article has been withdrawn by author with email ${correspondingAuthorEmail}.`)
     return 'success';
 }
 
