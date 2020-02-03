@@ -53,7 +53,7 @@ export class HomeComponent implements OnInit {
       document.execCommand('copy');
       document.body.removeChild(selBox);
       this.snackBar.open(`Reference copied to clipboard: ${article.id}`, '', {
-        duration: 2000,
+        duration: 20000,
       });
   }
 

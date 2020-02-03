@@ -16,7 +16,6 @@ var rdfRepository = require('./repository/rdfRepository');
 
 const authorizationInterceptor = require('./authorization/authorizationInterceptor')
 
-
 var app = express();
 
 var corsOptions = {
@@ -51,6 +50,7 @@ app.use('/reviews', reviewsRouter);
 app.use('/coverLetters', coverLettersRouter);
 app.use('/authors', authorsRouter);
 app.use('/users', userRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

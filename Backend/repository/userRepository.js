@@ -6,6 +6,8 @@ var DOMParser = xmldom.DOMParser;
 const setUserRoleXQ = require('../xquery/setUserRole');
 const getUserRoleXQ = require('../xquery/getUserRole');
 const getAllUsersXQ = require('../xquery/getAllUsers');
+const getAllEditorEmailsXQ = require('../xquery/getAllEditorEmails');
+const getReviewerEmailsForArticleXQ = require('../xquery/getReviewerEmailsForArticle')
 
 const exist = require('@existdb/node-exist');
 const options = require('./existConfig');
@@ -74,4 +76,17 @@ module.exports.getUserRole = async (email) => {
     const db = exist.connect(options);
     let result = await db.queries.readAll(getUserRoleXQ.query(email), {});
     return Buffer.concat(result.pages).toString();
+}
+
+module.exports.getEditorEmails = async () => {
+    const db = exist.connect(options);
+    let result = await db.queries.readAll(getAllEditorEmailsXQ.query(), {});
+    return result.pages.map(page => Buffer(page).toString());
+}
+
+
+module.exports.getReviewerEmailsForArticle = async (articleId) => {
+    const db = exist.connect(options);
+    let result = await db.queries.readAll(getReviewerEmailsForArticleXQ.query(articleId), {});
+    return result.pages.map(page => Buffer(page).toString());
 }
