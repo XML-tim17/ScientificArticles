@@ -64,7 +64,7 @@
                         <td align="left">
                             <img>
                                 <xsl:attribute name="src">
-                                    <xsl:value-of select="./ns1:image"></xsl:value-of>
+                                    data:image/png;base64, <xsl:value-of select="./ns1:image"></xsl:value-of>
                                 </xsl:attribute>
                             </img>
                         </td>

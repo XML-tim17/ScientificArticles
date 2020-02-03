@@ -200,7 +200,7 @@ export const articleXSLT = `<?xml version="1.0" encoding="UTF-8"?>
                 <td align="center">
                     <img>
                         <xsl:attribute name="src">
-                            <xsl:value-of select="./ns1:image"></xsl:value-of>
+                            data:image/png;base64, <xsl:value-of select="./ns1:image"></xsl:value-of>
                         </xsl:attribute>
                         <xsl:attribute name="alt">
                             <xsl:value-of select="./ns1:title"></xsl:value-of>

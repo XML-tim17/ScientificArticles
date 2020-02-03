@@ -18,7 +18,7 @@ const imageAsker = (imagesStore) => (_, __, elem) =>
       let key = this.val.value + '-${uuid()}';
       let reader = new FileReader();  
       reader.onload = (e) => {
-        Xonomy.${imagesStore}[key] = reader.result;
+        Xonomy.${imagesStore}[key] = reader.result.split(',')[1];
         Xonomy.answer(key);
       }
       reader.readAsDataURL(this.val.files[0]);
@@ -233,6 +233,15 @@ export class XonomyService {
         asker: Xonomy.askString
       }, "ns1:author": {
         menu: removableMenu
+      },
+      "ns1:received": {
+        isReadOnly: true
+      },
+      "ns1:accepted": {
+        isReadOnly: true
+      },
+      "ns1:status": {
+        isReadOnly: true
       },
       "ns1:abstract": {
         menu: [{
