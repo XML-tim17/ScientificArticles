@@ -64,7 +64,7 @@ export const coverLetterXSLT = `<?xml version="1.0" encoding="UTF-8"?>
                         <td align="left">
                             <img>
                                 <xsl:attribute name="src">
-                                    data:image/png;base64, <xsl:value-of select="./ns1:image"></xsl:value-of>
+                                    <xsl:value-of select="./ns1:image"></xsl:value-of>
                                 </xsl:attribute>
                             </img>
                         </td>

@@ -6,7 +6,8 @@ declare const Xonomy: any;
 @Component({
   selector: 'app-add-article-component',
   templateUrl: './add-article-component.component.html',
-  styleUrls: ['./add-article-component.component.css']
+  styleUrls: ['./add-article-component.component.css'],
+  providers: [XonomyService]
 })
 export class AddArticleComponentComponent implements OnInit {
 
@@ -20,7 +21,6 @@ export class AddArticleComponentComponent implements OnInit {
   @ViewChild('coverLetterHTML', { static: false }) coverLetterHTML;
 
   ngOnInit() {
-    Xonomy.articleImages = {};
   }
 
   ngAfterViewInit() {
@@ -46,6 +46,7 @@ export class AddArticleComponentComponent implements OnInit {
     let reader = new FileReader();
     reader.onload = (e) => {
       this.articleXML = reader.result as string;
+      this.articleXML = this.xonomyService.storeImagesArticle(this.articleXML);
       this.renderArticle();
     }
     reader.readAsText(event.target.files[0]);
@@ -55,6 +56,7 @@ export class AddArticleComponentComponent implements OnInit {
     let reader = new FileReader();
     reader.onload = (e) => {
       this.coverLetterXML = reader.result as string;
+      this.coverLetterXML = this.xonomyService.storeImagesCoverLetter(this.coverLetterXML);
       this.renderCoverLetter();
     }
     reader.readAsText(event.target.files[0]);
@@ -88,7 +90,7 @@ export class AddArticleComponentComponent implements OnInit {
   }
 
   async onSubmit() {
-    this.articlesService.addArticle(this.xonomyService.importArticleImages(this.articleXML), this.coverLetterXML);
+    this.articlesService.addArticle(this.xonomyService.importArticleImages(this.articleXML), this.xonomyService.importCoverLetterImages(this.coverLetterXML));
     // add toaster
   }
 

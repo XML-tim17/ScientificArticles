@@ -175,17 +175,17 @@ export const articleXSLT = `<?xml version="1.0" encoding="UTF-8"?>
                             <xsl:value-of select="./ns1:publisher/ns1:city"></xsl:value-of>,
                             
                         </p>
-                        <p>
+                        <!--<p>
                             <xsl:if test="count(./ns1:website-id)>0">
                                 <a>
                                     <xsl:attribute name="href">/article/<xsl:value-of select="./ns1:website-id"></xsl:value-of></xsl:attribute>
                                     Click to navigate to article
                                 </a>
-                            <!-- </xsl:if>
+                            </xsl:if>
                                 <xsl:if test="count(./ns1:website-id)=0">
                                     Article is not on our website
-                            </xsl:if>-->
-                        </p>
+                            </xsl:if>
+                        </p>-->
                     </div>
                         <hr></hr>
                     </xsl:for-each>

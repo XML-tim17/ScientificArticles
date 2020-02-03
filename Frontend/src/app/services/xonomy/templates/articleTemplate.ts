@@ -13,7 +13,6 @@ export const articleTemplate = `<ns1:article xmlns:vc="http://www.w3.org/2007/XM
                     <ns1:country>Insert your country</ns1:country>
                 </ns1:address>
             </ns1:corresponding-author>
-
         </ns1:authors>
         <ns1:received>2020-01-01</ns1:received>
         <ns1:accepted>2020-01-01</ns1:accepted>

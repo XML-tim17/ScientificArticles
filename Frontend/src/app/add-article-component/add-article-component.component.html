@@ -2,7 +2,7 @@
     <mat-tab-group (selectedTabChange)="onTabChanged($event)" animationDuration="0ms">
         <mat-tab label="Article">
             <mat-toolbar>
-                <div><input type="file" (change)="handleFileInputArticle($event)"></div>
+                <div><input type="file" accept="text/xml" (change)="handleFileInputArticle($event)"></div>
             </mat-toolbar>
             <table>
                 <tr>
@@ -17,7 +17,7 @@
         </mat-tab>
         <mat-tab label="Cover letter">
             <mat-toolbar>
-                <div><input type="file" (change)="handleFileInputCoverLetter($event)"></div>
+                <div><input type="file" accept="text/xml" (change)="handleFileInputCoverLetter($event)"></div>
             </mat-toolbar>
             <table>
                 <tr>

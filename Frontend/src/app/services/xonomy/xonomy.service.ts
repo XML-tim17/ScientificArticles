@@ -11,16 +11,24 @@ const xsltProcessor = new XSLTProcessor();
 const domParser = new DOMParser();
 const xmlSerializer = new XMLSerializer();
 const ns = `xmlns:ns1='https://github.com/XML-tim17/ScientificArticles'`;
-const articleIDs = [];
 
-const changeElementValueAction = (htmlID, param) => {
-  var div = document.getElementById(htmlID);
-  var jsElement = Xonomy.harvestElement(div);
-  jsElement.value = param;
-  Xonomy.replace(htmlID, jsElement);
-}
 
-const generateId = (elem) => {
+const imageAsker = (imagesStore) => (_, __, elem) =>
+  `<form onsubmit="
+      let key = this.val.value + '-${uuid()}';
+      let reader = new FileReader();  
+      reader.onload = (e) => {
+        Xonomy.${imagesStore}[key] = reader.result;
+        Xonomy.answer(key);
+      }
+      reader.readAsDataURL(this.val.files[0]);
+      return false;
+    ">
+      <input name='val' type='file' accept="image/*">
+      <input type='submit' value='Ok'>
+    </form>`;
+
+const generateId = (ids) => (elem) => {
   if (!elem.hasAttribute('ns1:id')) {
     let prefix = generatePrefix(elem);
     let parent = elem.parent();
@@ -33,7 +41,7 @@ const generateId = (elem) => {
     }).concat([-1]));
     let id = `${prefix}/${elem.name}${elemNumber}`;
     elem.setAttribute('ns1:id', id);
-    articleIDs.push(id);
+    ids.push(id);
   }
   return false;
 }
@@ -124,15 +132,66 @@ const tParagraph = {
   ])
 };
 
+const paragraphElement = (ids) => {
+  return {
+    "ns1:paragraph": tParagraph,
+    "ns1:bold": {
+      menu: removableMenu,
+      hasText: true,
+      inlineMenu: decoratorInlineMenu
+    },
+    "ns1:italic": {
+      menu: removableMenu,
+      hasText: true,
+      inlineMenu: decoratorInlineMenu
+    },
+    "ns1:underline": {
+      menu: removableMenu,
+      hasText: true,
+      inlineMenu: decoratorInlineMenu
+    },
+    "ns1:quote": {
+      isReadOnly: generateId(ids),
+      menu: removableMenu,
+      hasText: true,
+      inlineMenu: decoratorInlineMenu
+    },
+    "ns1:list": {
+      isReadOnly: generateId(ids),
+      menu: removableMenu.concat([{
+        caption: "Add list item",
+        action: Xonomy.newElementChild,
+        actionParameter: `<ns1:item ${ns}>Insert list item</ns1:item>`
+      },]),
+    },
+    "ns1:item": tParagraph,
+    "ns1:ref": {
+      menu: removableMenu
+    },
+    "ns1:internal-ref": {
+      menu: removableMenu,
+      asker: Xonomy.askPicklist,
+      askerParameter: ids,
+    },
+    "ns1:formule": {
+      menu: removableMenu
+    },
+
+
+
+  }
+};
+
 @Injectable({
   providedIn: 'root'
 })
 export class XonomyService {
 
-  getCoverLetterTemplate(): string {
-    return coverLetterTemplate;
+  private articleIDs = [];
+  private coverLetterIDs = [];
 
-  }
+
+  // ARTICLE
 
   getArticleTemplate(): string {
     return articleTemplate;
@@ -193,48 +252,7 @@ export class XonomyService {
         menu: removableMenu,
         asker: Xonomy.askString
       },
-      "ns1:paragraph": tParagraph,
-      "ns1:bold": {
-        menu: removableMenu,
-        hasText: true,
-        inlineMenu: decoratorInlineMenu
-      },
-      "ns1:italic": {
-        menu: removableMenu,
-        hasText: true,
-        inlineMenu: decoratorInlineMenu
-      },
-      "ns1:underline": {
-        menu: removableMenu,
-        hasText: true,
-        inlineMenu: decoratorInlineMenu
-      },
-      "ns1:quote": {
-        isReadOnly: generateId,
-        menu: removableMenu,
-        hasText: true,
-        inlineMenu: decoratorInlineMenu
-      },
-      "ns1:list": {
-        isReadOnly: generateId,
-        menu: removableMenu.concat([{
-          caption: "Add list item",
-          action: Xonomy.newElementChild,
-          actionParameter: `<ns1:item ${ns}>Insert list item</ns1:item>`
-        },]),
-      },
-      "ns1:item": tParagraph,
-      "ns1:ref": {
-        menu: removableMenu
-      },
-      "ns1:internal-ref": {
-        menu: removableMenu,
-        asker: Xonomy.askPicklist,
-        askerParameter: articleIDs,
-      },
-      "ns1:formule": {
-        menu: removableMenu
-      },
+      ...paragraphElement(this.articleIDs),
       "ns1:content": {
         menu: [{
           caption: "Add section",
@@ -243,7 +261,7 @@ export class XonomyService {
         }]
       },
       "ns1:section": {
-        isReadOnly: (elem) => { generateLevel(elem); return generateId(elem); },
+        isReadOnly: (elem) => { generateLevel(elem); return generateId(this.articleIDs)(elem); },
         menu: removableMenu.concat([{
           caption: "Add paragraph",
           action: Xonomy.newElementChild,
@@ -269,7 +287,7 @@ export class XonomyService {
         asker: Xonomy.askString
       },
       "ns1:table": {
-        isReadOnly: generateId,
+        isReadOnly: generateId(this.articleIDs),
         menu: removableMenu.concat({
           caption: "Add row",
           action: Xonomy.newElementChild,
@@ -288,26 +306,11 @@ export class XonomyService {
         asker: Xonomy.askString
       },
       "ns1:figure": {
-        isReadOnly: generateId,
+        isReadOnly: generateId(this.articleIDs),
         menu: removableMenu
       },
       "ns1:image": {
-        asker: (_, __, elem) => {
-          return `
-          <form onsubmit="
-            let key = this.val.value + '-${uuid()}-${elem.parent().getAttributeValue('ns1:id', null)}';
-            let reader = new FileReader();  
-            reader.onload = (e) => {
-              Xonomy.articleImages[key] = reader.result;
-              Xonomy.answer(key);
-            }
-            reader.readAsDataURL(this.val.files[0]);
-            return false;
-          ">
-            <input name='val' type='file' accept="image/*">
-            <input type='submit' value='Ok'>
-          </form>`
-        }
+        asker: imageAsker('articleImages')
       },
       "ns1:references": {
         menu: [{
@@ -337,16 +340,63 @@ export class XonomyService {
         }]
       },
       "ns1:reference": {
-        isReadOnly: generateId,
+        isReadOnly: generateId(this.articleIDs),
         menu: removableMenu
       },
       "ns1:referencedAuthor": {
         menu: removableMenu
       }
     }
-
   };
 
+  convertArticleXSLT(articleXML: string): string {
+    articleXML = this.importArticleImages(articleXML);
+    xsltProcessor.reset();
+    xsltProcessor.importStylesheet(domParser.parseFromString(articleXSLT, 'text/xml'));
+    let result = xsltProcessor.transformToDocument(domParser.parseFromString(articleXML, 'text/xml'));
+    return xmlSerializer.serializeToString(result);
+  }
+
+  importArticleImages(articleXML): string {
+    let articleImages = Xonomy.articleImages;
+    if (!articleImages) return articleXML;
+    for (let key in articleImages) {
+      articleXML = articleXML.replace(key, articleImages[key]);
+    }
+    return articleXML;
+  }
+
+  storeImagesArticle(articleXML): string {
+    let articleDOM: Document = domParser.parseFromString(articleXML, 'text/xml');
+    let nsResolver = (nsName) => nsName == 'ns1' ? 'https://github.com/XML-tim17/ScientificArticles' : null;
+    let imagesIterator: XPathResult = articleDOM.evaluate("//ns1:image", articleDOM, nsResolver, XPathResult.ANY_TYPE, null);
+    let articleImages = {};
+    let imageNodes = [];
+
+    var imageNode = imagesIterator.iterateNext();
+    while (imageNode) {
+      imageNodes.push(imageNode);
+      imageNode = imagesIterator.iterateNext();
+    }
+
+    imageNodes.forEach(imageNode => {
+      let key = `${uuid()}-${uuid()}`;
+      articleImages[key] = imageNode.textContent;
+      imageNode.textContent = key;
+    });
+
+    Xonomy.articleImages = articleImages;
+    this.articleIDs = [];
+    return xmlSerializer.serializeToString(articleDOM);
+  }
+
+
+  // COVER LETTER
+
+  getCoverLetterTemplate(): string {
+    return coverLetterTemplate;
+
+  }
 
   getCoverLetterElements(): any {
     return {
@@ -356,33 +406,70 @@ export class XonomyService {
           action: Xonomy.newElementChild,
           actionParameter: "<ns1:id></ns1:id>"
         }]
-      }
+      },
+      "ns1:date": {
+        isReadOnly: true
+      },
+      "ns1:image": {
+        asker: imageAsker('coverLetterImages')
+      },
+      "ns1:content": {
+        menu: [{
+          caption: "Add paragraph",
+          action: Xonomy.newElementChild,
+          actionParameter: `<ns1:paragraph ${ns}></ns1:paragraph>`
+        }]
+      },
+      ...paragraphElement(this.coverLetterIDs),
     };
   }
 
-  convertArticleXSLT(articleXML: string): string {
-    articleXML = this.importArticleImages(articleXML);
-    xsltProcessor.reset();
-    xsltProcessor.importStylesheet(domParser.parseFromString(articleXSLT, 'text/xml'));
-    let result = xsltProcessor.transformToDocument(domParser.parseFromString(articleXML, 'text/xml'));
-    return xmlSerializer.serializeToString(result);
-  }
-  importArticleImages(articleXML): string {
-    let articleImages = Xonomy.articleImages;
-    console.log(articleImages);
-    if (!articleImages) return articleXML;
-    for (let key in articleImages) {
-      articleXML = articleXML.replace(key, articleImages[key]);
-    }
-    return articleXML;
-  }
-
   convertCoverLetterXSLT(coverLetterXML: string): string {
+    coverLetterXML = this.importCoverLetterImages(coverLetterXML);
     xsltProcessor.reset();
     xsltProcessor.importStylesheet(domParser.parseFromString(coverLetterXSLT, 'text/xml'));
     let result = xsltProcessor.transformToDocument(domParser.parseFromString(coverLetterXML, 'text/xml'));
     return xmlSerializer.serializeToString(result);
   }
 
-  constructor() { }
+  importCoverLetterImages(coverLetterXML): string {
+    let coverLetterImages = Xonomy.coverLetterImages;
+    if (!coverLetterImages) return coverLetterXML;
+    for (let key in coverLetterImages) {
+      coverLetterXML = coverLetterXML.replace(key, coverLetterImages[key]);
+    }
+    return coverLetterXML;
+  }
+
+  storeImagesCoverLetter(coverLetterXML): string {
+    let coverLetterDOM: Document = domParser.parseFromString(coverLetterXML, 'text/xml');
+    let nsResolver = (nsName) => nsName == 'ns1' ? 'https://github.com/XML-tim17/ScientificArticles' : null;
+    let imagesIterator: XPathResult = coverLetterDOM.evaluate("//ns1:image", coverLetterDOM, nsResolver, XPathResult.ANY_TYPE, null);
+    let coverLetterImages = {};
+    let imageNodes = [];
+
+    var imageNode = imagesIterator.iterateNext();
+    while (imageNode) {
+      imageNodes.push(imageNode);
+      imageNode = imagesIterator.iterateNext();
+    }
+
+    imageNodes.forEach(imageNode => {
+      let key = `${uuid()}-${uuid()}`;
+      coverLetterImages[key] = imageNode.textContent;
+      imageNode.textContent = key;
+    });
+
+    Xonomy.coverLetterImages = coverLetterImages;
+    this.coverLetterIDs = [];
+    return xmlSerializer.serializeToString(coverLetterDOM);
+  }
+
+
+  constructor() {
+    this.articleIDs = [];
+    Xonomy.articleImages = {};
+    this.coverLetterIDs = [];
+    Xonomy.coverLetterImages = {};
+  }
 }
