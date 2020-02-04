@@ -9,56 +9,74 @@ export const reviewXSLT = `
                         <tr>
                             <td>
                                 <table class="review-view-content">
+                                    <tr><td colspan="2" align="center">Date: <xsl:value-of select="./ns1:date"></xsl:value-of></td></tr>
                                     <tr>
                                         <td>
-                                            <h2>Grades: </h2>
-                                            <xsl:for-each select="./ns1:grades/ns1:grade">
+                                            <h2>Grade: </h2>
+                                            <xsl:value-of select="./ns1:grade">
                                                     <span font-size="18pt"
                                                             line-height="21pt"
                                                             font-family="serif"><xsl:value-of select="./text()"></xsl:value-of>&#160;&#160;
                                                     </span>
-                                            </xsl:for-each>           
+                                            </xsl:value-of>           
                                         </td>
                                            
                                         <td align="right">
                                             
-                                            <h2>Judgments: </h2>
-                                            <xsl:for-each select="./ns1:judgments/ns1:judgment">
+                                            <h2>Judgment: </h2>
+                                            <xsl:value-of select="./@judgment">
                                                     <span font-size="18pt"
                                                             line-height="21pt"
                                                             font-family="serif"><xsl:value-of select="./text()"></xsl:value-of>&#160;&#160;
                                                     </span>
-                                            </xsl:for-each> 
+                                            </xsl:value-of> 
                                         </td>
                                     </tr>
                                 </table>
                             </td>
                         </tr>
-                        <xsl:apply-templates/>
-
+                        <tr>
+                            <td align="center">
+                                <h4><xsl:value-of select="./ns1:reviewer/ns1:name"></xsl:value-of></h4>
+                                <p><xsl:value-of select="./ns1:reviewer/ns1:email"></xsl:value-of></p>
+                                <p><xsl:value-of select="./ns1:reviewer/ns1:institution"></xsl:value-of></p>
+                                <p><xsl:value-of select="./ns1:reviewer/ns1:address/ns1:city"></xsl:value-of>, <xsl:value-of select="./ns1:reviewer/ns1:address/ns1:country"></xsl:value-of></p>
+                            </td>
+                        </tr>
                         <tr>
                             <td>
-                                
                                 <hr/>
+                                <h2>Comments:</h2>
+                                <div class="review-view-questionaire">
+                                    <xsl:for-each select="./ns1:comments">
+                                        <xsl:for-each select="./ns1:comment">
+                                            <h3><xsl:value-of select="./@reference-id"></xsl:value-of>: </h3>
+                                            <p class="review-view-margin review-view-block review-view-lp30"><xsl:value-of select="./text()"/></p>
+                                        </xsl:for-each>
+                                    </xsl:for-each>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
                                 <hr/>
                                 <h2>Questionaire:</h2>
                                 <div class="review-view-questionaire">
-                                    <xsl:for-each select="./ns1:questionaires/ns1:questionaire">
+                                    <xsl:for-each select="./ns1:questionaire">
                                         <xsl:for-each select="./ns1:questions/ns1:yes-no-question">
                                             <h3><xsl:value-of select="./ns1:question-text/text()"></xsl:value-of></h3>
-                                            <p class="review-view-margin review-view-block review-view-lp30"><xsl:apply-templates/></p>
+                                            <p class="review-view-margin review-view-block review-view-lp30"><xsl:value-of select="./ns1:answer"/></p>
                                         </xsl:for-each>
                                         
                                         <xsl:for-each select="./ns1:questions/ns1:question">
                                             <h3><xsl:value-of select="./ns1:question-text/text()"></xsl:value-of></h3>
-                                            <p class="review-view-margin review-view-block review-view-lp30"><xsl:apply-templates/></p>
+                                            <p class="review-view-margin review-view-block review-view-lp30"><xsl:value-of select="./ns1:answer"/></p>
                                         </xsl:for-each>
                                         <hr/>
                                     </xsl:for-each>
                                 </div>
                             </td>
                         </tr>
-                        
                     </table>
                 </div>
     </xsl:template

@@ -1,0 +1,23 @@
+<user>
+    <role>AUTHOR</role>
+    <name>Alberto Domo</name>
+    <institution>Sorbonne University</institution>
+    <phoneNumber>0652772886</phoneNumber>
+    <email>author3@mailinator.com</email>
+    <password>123</password>
+    <address>
+        <city>Paris</city>
+        <country>France</country>
+    </address>
+    <toReview></toReview>
+    <keywords>
+        <keyword>Parfeum</keyword>
+        <keyword>Hat</keyword>
+        <keyword>Cylinder</keyword>
+        <keyword>Catwalk</keyword>
+        <keyword>Elvis Presley</keyword>
+        <keyword>Lorem</keyword>
+        <keyword>Ipsum</keyword>
+        <keyword>Vegetation</keyword>
+    </keywords>
+</user>

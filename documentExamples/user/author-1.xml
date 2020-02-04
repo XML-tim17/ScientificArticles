@@ -1,0 +1,25 @@
+<user>
+    <role>AUTHOR</role>
+    <name>Richard Mangus</name>
+    <institution>University of Toronto</institution>
+    <phoneNumber>0652772886</phoneNumber>
+    <email>author1@mailinator.com</email>
+    <password>123</password>
+    <address>
+        <city>Toronto</city>
+        <country>Canada</country>
+    </address>
+    <toReview></toReview>
+    <keywords>
+        <keyword>Lorem</keyword>
+        <keyword>Guns</keyword>
+        <keyword>Push</keyword>
+        <keyword>Motor sa tri cilindra</keyword>
+        <keyword>Parna masina</keyword>
+        <keyword>Steam machine</keyword>
+        <keyword>Steam engine</keyword>
+        <keyword>Tank</keyword>
+        <keyword>Vegetation</keyword>
+        <keyword>Chicken stock</keyword>
+    </keywords>
+</user>

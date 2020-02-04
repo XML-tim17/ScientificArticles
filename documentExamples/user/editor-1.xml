@@ -1,0 +1,23 @@
+<user>
+    <role>EDITOR</role>
+    <name>Silvija Mirana</name>
+    <institution>Taras Shevchenko National University of Kyiv</institution>
+    <phoneNumber>0692772886</phoneNumber>
+    <email>editor1@mailinator.com</email>
+    <password>123</password>
+    <address>
+        <city>Kyiv</city>
+        <country>Ukraine</country>
+    </address>
+    <toReview></toReview>
+    <keywords>
+        <keyword>Meditation</keyword>
+        <keyword>Radiation</keyword>
+        <keyword>Chernobyl</keyword>
+        <keyword>Catwalk</keyword>
+        <keyword>Elvis Presley</keyword>
+        <keyword>Lorem</keyword>
+        <keyword>Nuclear reactor</keyword>
+        <keyword>Latin language</keyword>
+    </keywords>
+</user>

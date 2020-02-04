@@ -1,39 +1,47 @@
 <div class="container">
-    <mat-tab-group (selectedTabChange)="onTabChanged($event)" animationDuration="0ms">
-        <mat-tab label="Article">
-            <mat-toolbar>
-                <div><input type="file" accept="text/xml" (change)="handleFileInputArticle($event)"></div>
-            </mat-toolbar>
-            <table>
-                <tr>
-                    <td class="halfScreen">
-                        <div #articleXonomy class="xonomyDiv"></div>
-                    </td>
-                    <td class="halfScreen">
-                        <div #articleHTML class="htmlView"></div>
-                    </td>
-                </tr>
-            </table>
-        </mat-tab>
-        <mat-tab label="Cover letter">
-            <mat-toolbar>
-                <div><input type="file" accept="text/xml" (change)="handleFileInputCoverLetter($event)"></div>
-            </mat-toolbar>
-            <table>
-                <tr>
-                    <td class="halfScreen">
-                        <div #coverLetterXonomy class="xonomyDiv"></div>
-                    </td>
-                    <td class="halfScreen">
-                        <div #coverLetterHTML class="htmlView"></div>
-                    </td>
-                </tr>
-            </table>
-        </mat-tab>
-        <mat-tab>
-            <ng-template mat-tab-label>
-                <button mat-raised-button color="primary" (click)="onSubmit()">Submit</button>
-            </ng-template>
-        </mat-tab>
-    </mat-tab-group>
+    <table>
+        <tr>
+            
+            <td align="right" valign="top">
+                <button mat-raised-button color="primary" class="sumbitBtn" (click)="onSubmit()">Submit</button>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <mat-tab-group (selectedTabChange)="onTabChanged($event)" animationDuration="0ms">
+                    <mat-tab label="Article">
+                        <mat-toolbar class="upload">
+                            <div><input type="file" accept="text/xml" (change)="handleFileInputArticle($event)"></div>
+                        </mat-toolbar>
+                        <table>
+                            <tr>
+                                <td class="halfScreen">
+                                    <div #articleXonomy class="xonomyDiv"></div>
+                                </td>
+                                <td class="halfScreen">
+                                    <div #articleHTML class="htmlView"></div>
+                                </td>
+                            </tr>
+                        </table>
+                    </mat-tab>
+                    <mat-tab label="Cover letter">
+                        <mat-toolbar>
+                            <div><input type="file" accept="text/xml" (change)="handleFileInputCoverLetter($event)"></div>
+                        </mat-toolbar>
+                        <table>
+                            <tr>
+                                <td class="halfScreen">
+                                    <div #coverLetterXonomy class="xonomyDiv"></div>
+                                </td>
+                                <td class="halfScreen">
+                                    <div #coverLetterHTML class="htmlView"></div>
+                                </td>
+                            </tr>
+                        </table>
+                    </mat-tab>
+                </mat-tab-group>
+            </td>
+        </tr>
+    </table>
+    
 </div>

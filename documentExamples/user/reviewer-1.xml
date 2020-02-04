@@ -1,0 +1,26 @@
+<user>
+    <role>REVIEWER</role>
+    <name>Zoran Horvat</name>
+    <institution>Gimnazija Jovan Jovanović Zmaj</institution>
+    <phoneNumber>0632772886</phoneNumber>
+    <email>reviewer1@mailinator.com</email>
+    <password>123</password>
+    <address>
+        <city>Novi Sad</city>
+        <country>Srbija</country>
+    </address>
+    <toReview></toReview>
+    <keywords>
+        <keyword>History</keyword>
+        <keyword>Croatia</keyword>
+        <keyword>Serbia</keyword>
+        <keyword>PanzerkampfwagenTiger2</keyword>
+        <keyword>Heroes</keyword>
+        <keyword>Generals</keyword>
+        <keyword>Narodna muzika</keyword>
+        <keyword>Football</keyword>
+        <keyword>Smite</keyword>
+        <keyword>Hrast</keyword>
+        <keyword>Hades</keyword>
+    </keywords>
+</user>

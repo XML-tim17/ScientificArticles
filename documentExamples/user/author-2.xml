@@ -1,0 +1,25 @@
+<user>
+    <role>AUTHOR</role>
+    <name>Nedim Kauffman</name>
+    <institution>Tecnische Universitat Wien</institution>
+    <phoneNumber>0652772876</phoneNumber>
+    <email>author2@mailinator.com</email>
+    <password>123</password>
+    <address>
+        <city>Wien</city>
+        <country>Deutschland</country>
+    </address>
+    <toReview></toReview>
+    <keywords>
+        <keyword>Lorem</keyword>
+        <keyword>Ipsum</keyword>
+        <keyword>Guns</keyword>
+        <keyword>Gewehr</keyword>
+        <keyword>PanzerKampfwagenTiger2</keyword>
+        <keyword>KV-II</keyword>
+        <keyword>Lorem</keyword>
+        <keyword>Paintball</keyword>
+        <keyword>Vegetation</keyword>
+        <keyword>Bečka šnicla</keyword>
+    </keywords>
+</user>

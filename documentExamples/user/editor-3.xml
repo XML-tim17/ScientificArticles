@@ -1,0 +1,26 @@
+<user>
+    <role>EDITOR</role>
+    <name>Vladislav Užasnik</name>
+    <institution>American University in Bulgaria</institution>
+    <phoneNumber>0692772886</phoneNumber>
+    <email>editor3@mailinator.com</email>
+    <password>123</password>
+    <address>
+        <city>Blagoevgrad</city>
+        <country>Bulgaria</country>
+    </address>
+    <toReview></toReview>
+    <keywords>
+        <keyword>Alchemy</keyword>
+        <keyword>Drowners</keyword>
+        <keyword>Drekavac</keyword>
+        <keyword>Securitz</keyword>
+        <keyword>Ipsum</keyword>
+        <keyword>Pasta</keyword>
+        <keyword>Draža</keyword>
+        <keyword>Četnici</keyword>
+        <keyword>Černobog</keyword>
+        <keyword>Hrast</keyword>
+        <keyword>Hades</keyword>
+    </keywords>
+</user>

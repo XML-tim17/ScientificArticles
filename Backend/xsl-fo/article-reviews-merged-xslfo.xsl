@@ -502,7 +502,7 @@
                                     padding-after="3pt">
                         <fo:block text-align="center">
                             <fo:block font-size="12pt" line-height="15pt" space-after="12pt">
-                                <xsl:value-of select="./@title"></xsl:value-of>
+                                <xsl:value-of select="./ns1:title"></xsl:value-of>
                             </fo:block>
                         </fo:block>
                     </fo:table-cell>
