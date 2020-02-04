@@ -87,7 +87,7 @@ const generateLevel = (elem) => {
     }
     parent = parent.parent();
   }
-  elem.setAttribute('ns1:level', depth);
+  elem.setAttribute('level', depth);
 }
 
 const removableMenu: Array<any> = [{
@@ -556,10 +556,22 @@ export class XonomyService {
     let nsResolver = (nsName) => nsName == 'xml' ? 'http://www.w3.org/XML/1998/namespace' : null;
     let nodeIterator = xmlDOM.evaluate('//*[@xml:space]', xmlDOM, nsResolver, XPathResult.ANY_TYPE, null);
 
-    for (let i = 0; i < nodeIterator.snapshotLength; i++) {
-      const elementWithAtt = nodeIterator.snapshotItem(i) as Element;
-      elementWithAtt.removeAttributeNS('http://www.w3.org/XML/1998/namespace', 'space');
+    let nodes = [];
+
+    let node = nodeIterator.iterateNext();
+    while (node) {
+      nodes.push(node);
+      node = nodeIterator.iterateNext();
     }
+    nodes.forEach((node) => {
+      node.removeAttributeNS('http://www.w3.org/XML/1998/namespace', 'space');
+    })
+
+
+    // for (let i = 0; i < nodeIterator.snapshotLength; i++) {
+    //   const elementWithAtt = nodeIterator.snapshotItem(i) as Element;
+    //   elementWithAtt.removeAttributeNS('http://www.w3.org/XML/1998/namespace', 'space');
+    // }
     return xmlSerializer.serializeToString(xmlDOM);
   }
 
