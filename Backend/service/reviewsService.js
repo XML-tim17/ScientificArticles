@@ -1,6 +1,7 @@
 var reviewsRepository = require('../repository/reviewsRepository');
 var articleRepository = require('../repository/articlesRepository');
 var userRepository = require('../repository/userRepository');
+const authorizationService = require('./authorizationService')
 const mailService = require('./mailService')
 var xmldom = require('xmldom');
 var XMLSerializer = xmldom.XMLSerializer;
@@ -135,9 +136,39 @@ module.exports.readXML = async (reviewId) => {
     return reviewsRepository.readXML(reviewId);
 }
 
-module.exports.getReviewsForArticle = async(articleId) => {
+module.exports.getReviewsForArticle = async(articleId, user) => {
     let version = await articleRepository.getLastVersion(articleId);
+    let correspondingAuthorEmail = await articleRepository.getCorrespondingAuthor(articleId, version);
+    let status = await articleRepository.getStatusOf(articleId, version);
+    let access = checkArticleAccess(articleId, user, status, correspondingAuthorEmail)
+    if (status == 'inReviewProcess' || access !== 'full') {
+        let error = new Error('Unauthorized')
+        error.status = 403;
+        throw error;
+    }
     return await reviewsRepository.getReviewsForArticle(articleId, version);
+}
+
+checkArticleAccess = (articleId, user, status, correspondingAuthorEmail) => {
+    if (status === "accepted") {
+        return 'full';
+    } else {
+        if (correspondingAuthorEmail === user.email) {
+            return 'full';
+        } 
+        if (user.role === authorizationService.roles.editor) {
+            if (user.toReview.includes(`article${articleId}`)) {
+                return 'no-authors';
+            }
+            return 'full';
+        }
+        if (user.role === authorizationService.roles.reviewer && status === 'inReviewProcess') {
+            if (user.toReview.includes(`article${articleId}`)) {
+                return 'no-authors';
+            }
+        }
+        return 'denied';
+    }
 }
 
 module.exports.articlesToListItemHtml = async (articles) => {

@@ -82,8 +82,15 @@ router.post('/assign/article/:articleId', async (req, res, next) => {
 })
 
 
+// get article with reviews PDF
 router.get('/pdf/:articleId/:token', async (req, res, next) => {
     try {
+        if (!authorizationService.checkAuthorization(req, authorizationService.roles.reviewer)) {
+            let error = new Error('Unauthorized')
+            error.status = 403;
+            next(error);
+            return;
+        }
         const mergedXml = await reviewsService.getReviewsForArticle(req.params.articleId);
         let xslfoString = fs.readFileSync('./xsl-fo/article-reviews-merged-xslfo.xsl', 'utf8');
         
@@ -96,9 +103,17 @@ router.get('/pdf/:articleId/:token', async (req, res, next) => {
     }
 })
 
+// get article with reviews
 router.get('/html/:articleId/', async (req, res, next) => {
     try {
-        const mergedXml = await reviewsService.getReviewsForArticle(req.params.articleId);
+        if (!authorizationService.checkAuthorization(req, authorizationService.roles.reviewer)) {
+            let error = new Error('Unauthorized')
+            error.status = 403;
+            next(error);
+            return;
+        }
+
+        const mergedXml = await reviewsService.getReviewsForArticle(req.params.articleId, req.user);
         let xslfoString = fs.readFileSync('./xsl/article-reviews-merged.xsl', 'utf8');
         
         let htmlString = await xsltService.transform(mergedXml, xslfoString)
