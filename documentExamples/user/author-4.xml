@@ -1,0 +1,25 @@
+<user>
+    <role>AUTHOR</role>
+    <name>Thomas Wibler</name>
+    <institution>University of Greifswald</institution>
+    <phoneNumber>0652772886</phoneNumber>
+    <email>author4@mailinator.com</email>
+    <password>123</password>
+    <address>
+        <city>Greifswald</city>
+        <country>Deutschland</country>
+    </address>
+    <toReview></toReview>
+    <keywords>
+        <keyword>Aquaduct</keyword>
+        <keyword>Library of Alexandria</keyword>
+        <keyword>Liverwurst</keyword>
+        <keyword>Dampfmaschinewagen</keyword>
+        <keyword>Parfeum</keyword>
+        <keyword>Lorem</keyword>
+        <keyword>Ipsum</keyword>
+        <keyword>Tank</keyword>
+        <keyword>Paintball</keyword>
+        <keyword>Vegetation</keyword>
+    </keywords>
+</user>

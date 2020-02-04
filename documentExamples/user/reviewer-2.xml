@@ -1,0 +1,26 @@
+<user>
+    <role>REVIEWER</role>
+    <name>Vladimir Orahovac</name>
+    <institution>Ivo Lola Ribar</institution>
+    <phoneNumber>0632772886</phoneNumber>
+    <email>reviewer2@mailinator.com</email>
+    <password>123</password>
+    <address>
+        <city>Sremska Kamenica</city>
+        <country>Srbija</country>
+    </address>
+    <toReview></toReview>
+    <keywords>
+        <keyword>Kobasica</keyword>
+        <keyword>Wurst</keyword>
+        <keyword>Apatinac</keyword>
+        <keyword>Fishing</keyword>
+        <keyword>Tambura</keyword>
+        <keyword>Mađarska</keyword>
+        <keyword>Tice</keyword>
+        <keyword>Lorem</keyword>
+        <keyword>Černobog</keyword>
+        <keyword>Hrast</keyword>
+        <keyword>Ipsum</keyword>
+    </keywords>
+</user>

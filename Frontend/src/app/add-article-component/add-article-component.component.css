@@ -26,3 +26,20 @@
   .mat-tab-body-wrapper{
     /* flex-grow: 1; */
   } 
+
+  .sumbitBtn {
+    margin-top: 5px;
+    margin-right: 20px;
+    margin-left: 20px;
+    margin-bottom: -30px;
+  }
+
+  .upload {
+    background-color: #00000000;
+  }
+
+  .mat-tab-group {
+    margin-top: -35px;
+    display: flex;
+    flex-direction: column;
+}

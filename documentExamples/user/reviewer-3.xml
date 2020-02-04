@@ -1,0 +1,32 @@
+<user>
+    <role>REVIEWER</role>
+    <name>Kristofer Kalamari</name>
+    <institution>University of Verona</institution>
+    <phoneNumber>0632772886</phoneNumber>
+    <email>reviewer3@mailinator.com</email>
+    <password>123</password>
+    <address>
+        <city>Verona</city>
+        <country>Italy</country>
+    </address>
+    <toReview></toReview>
+    <keywords>
+        <keyword>Sailboat</keyword>
+        <keyword>Drowners</keyword>
+        <keyword>Drekavac</keyword>
+        <keyword>Saint Helena</keyword>
+        <keyword>dot io domain</keyword>
+        <keyword>Pasta</keyword>
+        <keyword>Pizza</keyword>
+        <keyword>Četnici</keyword>
+        <keyword>Černobog</keyword>
+        <keyword>Ipsum</keyword>
+        <keyword>Hades</keyword>
+        <keyword>Wine</keyword>
+        <keyword>Cheese</keyword>
+        <keyword>Hawaii</keyword>
+        <keyword>Pinaple</keyword>
+        <keyword>Coctails</keyword>
+        <keyword>Women</keyword>
+    </keywords>
+</user>

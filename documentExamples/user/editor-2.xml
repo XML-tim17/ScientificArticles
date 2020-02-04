@@ -1,0 +1,24 @@
+<user>
+    <role>EDITOR</role>
+    <name>John Timber</name>
+    <institution>Poljoprivredni Fakultet</institution>
+    <phoneNumber>0692772886</phoneNumber>
+    <email>editor2@mailinator.com</email>
+    <password>123</password>
+    <address>
+        <city>Beograd</city>
+        <country>Srbija</country>
+    </address>
+    <toReview></toReview>
+    <keywords>
+        <keyword>Timber</keyword>
+        <keyword>Bukva</keyword>
+        <keyword>Hrast</keyword>
+        <keyword>Panj</keyword>
+        <keyword>Čutura</keyword>
+        <keyword>Javor</keyword>
+        <keyword>Stihl</keyword>
+        <keyword>Lorem</keyword>
+        <keyword>Vegetation</keyword>
+    </keywords>
+</user>
