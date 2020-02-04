@@ -1,5 +1,6 @@
 import { ArticlesService } from './../services/articles.service';
 import { Component, OnInit, ViewChild, ElementRef, ComponentFactoryResolver } from '@angular/core';
+import { MatSnackBar } from '@angular/material';
 import { XonomyService } from '../services/xonomy/xonomy.service';
 declare const Xonomy: any;
 
@@ -11,7 +12,7 @@ declare const Xonomy: any;
 })
 export class AddArticleComponentComponent implements OnInit {
 
-  constructor(private articlesService: ArticlesService, private xonomyService: XonomyService) { }
+  constructor(private articlesService: ArticlesService, private xonomyService: XonomyService, private snackBar: MatSnackBar) { }
 
   articleXML: string;
   coverLetterXML: string;
@@ -90,8 +91,10 @@ export class AddArticleComponentComponent implements OnInit {
   }
 
   async onSubmit() {
-    this.articlesService.addArticle(this.xonomyService.importArticleImages(this.articleXML), this.xonomyService.importCoverLetterImages(this.coverLetterXML));
-    // add toaster
+    let result: any = await this.articlesService.addArticle(this.xonomyService.importArticleImages(this.articleXML), this.xonomyService.importCoverLetterImages(this.coverLetterXML));
+    this.snackBar.open(result.status ? result.status : result.message, '', {
+      duration: 20000,
+    });
   }
 
 }

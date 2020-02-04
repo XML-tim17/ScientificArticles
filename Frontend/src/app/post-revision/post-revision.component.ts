@@ -2,6 +2,7 @@ import { ArticlesService } from './../services/articles.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { XonomyService } from '../services/xonomy/xonomy.service';
+import { MatSnackBar } from '@angular/material';
 declare const Xonomy: any;
 
 @Component({
@@ -12,7 +13,8 @@ declare const Xonomy: any;
 export class PostRevisionComponent implements OnInit {
 
 
-  constructor(private articlesService: ArticlesService, private xonomyService: XonomyService, private route: ActivatedRoute) { }
+  constructor(private articlesService: ArticlesService, private xonomyService: XonomyService, private route: ActivatedRoute,
+    private snackBar: MatSnackBar) { }
 
   articleId: any;
   articleXML: string;
@@ -93,9 +95,11 @@ export class PostRevisionComponent implements OnInit {
   }
 
   async onSubmit() {
-    this.articlesService.postRevision(this.articleId, this.xonomyService.importArticleImages(this.articleXML),
+    let result: any = await this.articlesService.postRevision(this.articleId, this.xonomyService.importArticleImages(this.articleXML),
       this.xonomyService.importCoverLetterImages(this.coverLetterXML));
-    // add toaster
+    this.snackBar.open(result.status ? result.status : result.message, '', {
+      duration: 20000,
+    });
   }
 
 }
