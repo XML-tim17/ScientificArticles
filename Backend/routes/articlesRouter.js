@@ -46,6 +46,24 @@ router.get('/pdf/:articleId/:token', async (req, res, next) => {
     }
 });
 
+// get XML of article
+// GUEST
+router.get('/xml/:articleId', async (req, res, next) => {
+    try {
+        if (!authorizationService.checkAuthorization(req, authorizationService.roles.guest)) {
+            let error = new Error('Unauthorized')
+            error.status = 403;
+            next(error);
+            return;
+        }
+
+        let xml = await articlesService.getArticleXML(+req.params.articleId, req.user)
+        res.send({ data: xml });
+    } catch (e) {
+        next(e);
+    }
+});
+
 // get metadata of article
 // GUEST
 router.get('/metadata/:articleId', async (req, res, next) => {

@@ -6,6 +6,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
   providedIn: 'root'
 })
 export class ArticlesService {
+
   constructor(private httpClient: HttpClient) { }
 
 
@@ -52,5 +53,7 @@ export class ArticlesService {
   getMetadata(articleId: any) {
     return this.httpClient.get(`${environment.apiEndpoint}articles/metadata/${articleId}`).toPromise();
   }
-
+  getArticleXML(articleId: any) {
+    return this.httpClient.get(`${environment.apiEndpoint}articles/xml/${articleId}`).toPromise();
+  }
 }

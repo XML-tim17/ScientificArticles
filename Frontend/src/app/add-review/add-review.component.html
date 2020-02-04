@@ -1,15 +1,15 @@
-
 <div class="container">
-    <mat-card>
-        <mat-form-field>
-            <input matInput type="file" id="file" (change)="handleFileInput($event)">
-
-        </mat-form-field>
-        <button mat-button (click)="onSubmit()">Submit Review</button>
-
-    </mat-card>
+    <mat-toolbar>
+        <div><input type="file" accept="text/xml" (change)="handleFileInputReview($event)"></div>
+    </mat-toolbar>
+    <table>
+        <tr>
+            <td class="halfScreen">
+                <div #reviewXonomy class="xonomyDiv"></div>
+            </td>
+            <td class="halfScreen">
+                <div #reviewHTML class="htmlView"></div>
+            </td>
+        </tr>
+    </table>
 </div>
-
-
-
-

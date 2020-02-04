@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { articleTemplate } from './templates/articleTemplate';
 import { coverLetterTemplate } from './templates/coverLetterTemplate';
+import { reviewTemplate } from './templates/reviewTemplate';
 import { articleXSLT } from './xslt/articleXSLT';
 import { coverLetterXSLT } from './xslt/coverLetterXSLT';
+import { reviewXSLT } from './xslt/reviewXSLT';
 import { v4 as uuid } from 'uuid';
 import _ from 'lodash';
 
@@ -27,6 +29,24 @@ const imageAsker = (imagesStore) => (_, __, elem) =>
       <input name='val' type='file' accept="image/*">
       <input type='submit' value='Ok'>
     </form>`;
+
+const generateCommentMenu = [{
+  caption: "Generate comment",
+  action: (htmlID) => {
+    let div = document.getElementById(htmlID);
+    let jsElement = Xonomy.harvestElement(div);
+    let id = jsElement.getAttributeValue('ns1:id', null);
+    let reviewDiv = document.getElementById('xonomy1');
+    let reviewElement = Xonomy.harvestElement(reviewDiv);
+    for (var i = 0; i < reviewElement.children.length; i++) {
+      var jsChild = reviewElement.children[i];
+      if (jsChild.name == "ns1:comments") {
+        Xonomy.newElementChild(jsChild.htmlID, `<ns1:comment reference-id="${id}" ${ns}>Insert comment here</ns1:comment>`);
+        return;
+      }
+    }
+  }
+}]
 
 const generateId = (ids) => (elem) => {
   if (!elem.hasAttribute('ns1:id')) {
@@ -407,18 +427,10 @@ export class XonomyService {
 
   getCoverLetterTemplate(): string {
     return coverLetterTemplate;
-
   }
 
   getCoverLetterElements(): any {
     return {
-      "ns1:cover-letter": {
-        menu: [{
-          caption: "Dodaj id",
-          action: Xonomy.newElementChild,
-          actionParameter: "<ns1:id></ns1:id>"
-        }]
-      },
       "ns1:date": {
         isReadOnly: true
       },
@@ -477,6 +489,79 @@ export class XonomyService {
     return xmlSerializer.serializeToString(coverLetterDOM);
   }
 
+
+  // REVIEW
+
+  addArticleInReviewXML(reviewXML, articleXML) {
+    let reviewDOM = domParser.parseFromString(reviewXML, 'text/xml').documentElement;
+    let articleDOM = domParser.parseFromString(articleXML, 'text/xml').documentElement;
+    reviewDOM.insertBefore(articleDOM, reviewDOM.firstChild);
+    return xmlSerializer.serializeToString(reviewDOM);
+  }
+  removeArticleFromReview(reviewXML) {
+    let reviewDOM: Document = domParser.parseFromString(reviewXML, 'text/xml');
+    let nsResolver = (nsName) => nsName == 'ns1' ? 'https://github.com/XML-tim17/ScientificArticles' : null;
+    let articlesIterator: XPathResult = reviewDOM.evaluate("//ns1:article", reviewDOM, nsResolver, XPathResult.ANY_TYPE, null);
+    let articleNode = articlesIterator.iterateNext();
+    reviewDOM.documentElement.removeChild(articleNode);
+    return xmlSerializer.serializeToString(reviewDOM);
+  }
+
+  getReviewTemplate(): string {
+    return reviewTemplate;
+  }
+
+  getReviewElements(): any {
+    return {
+      "ns1:article": {
+        collapsed: true
+      },
+      "ns1:date": {
+        isReadOnly: true
+      },
+      "ns1:quote": {
+        menu: generateCommentMenu
+      },
+      "ns1:list": {
+        menu: generateCommentMenu
+      },
+      "ns1:section": {
+        menu: generateCommentMenu
+      },
+      "ns1:table": {
+        menu: generateCommentMenu
+      },
+      "ns1:figure": {
+        menu: generateCommentMenu
+      },
+      "ns1:reference": {
+        menu: generateCommentMenu
+      }
+    };
+  }
+
+
+  convertReviewXSLT(reviewXML: string): string {
+    xsltProcessor.reset();
+    xsltProcessor.importStylesheet(domParser.parseFromString(reviewXSLT, 'text/xml'));
+    let result = xsltProcessor.transformToDocument(domParser.parseFromString(reviewXML, 'text/xml'));
+    return xmlSerializer.serializeToString(result);
+  }
+
+
+  // UTILITY
+
+  removeXMLSpaceAttribute(xml) {
+    let xmlDOM = domParser.parseFromString(xml, 'text/xml');
+    let nsResolver = (nsName) => nsName == 'xml' ? 'http://www.w3.org/XML/1998/namespace' : null;
+    let nodeIterator = xmlDOM.evaluate('//*[@xml:space]', xmlDOM, nsResolver, XPathResult.ANY_TYPE, null);
+
+    for (let i = 0; i < nodeIterator.snapshotLength; i++) {
+      const elementWithAtt = nodeIterator.snapshotItem(i) as Element;
+      elementWithAtt.removeAttributeNS('http://www.w3.org/XML/1998/namespace', 'space');
+    }
+    return xmlSerializer.serializeToString(xmlDOM);
+  }
 
   constructor() {
     this.articleIDs = [];
