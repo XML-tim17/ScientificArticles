@@ -46,6 +46,17 @@ router.get('/pdf/:articleId/:token', async (req, res, next) => {
     }
 });
 
+// get metadata of article
+// GUEST
+router.get('/metadata/:articleId', async (req, res, next) => {
+    try {
+        let metadata = await articlesService.getArticleMetadata(+req.params.articleId)
+        res.send(metadata);
+    } catch (e) {
+        next(e);
+    }
+});
+
 // get all published articles
 // GUEST
 router.get('', async (req, res, next) => {
@@ -193,7 +204,7 @@ router.post('/:articleId', async (req, res, next) => {
         let valid2 = await validateCoverLetter(req.body.coverLetterXML);
         if (valid && valid2) {
             let status = await articlesService.postRevision(+req.params.articleId, req.body.articleXML, req.body.coverLetterXML, req.user);
-            res.send({status})
+            res.send({ status })
         } else {
             throw Error('Document is not valid according to schema.');
         }

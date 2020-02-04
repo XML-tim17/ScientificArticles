@@ -220,6 +220,14 @@ module.exports.getArticlePDF = async (articleId, user) => {
     return bindata;
 }
 
+
+module.exports.getArticleMetadata = async (articleId) => {
+    let rdfResult = await rdfRepository.getArticleMetadata(articleId);
+    if (!rdfResult.data)
+        return 'No metadata found';
+    return rdfResult.data;
+}
+
 checkArticleAccess = (articleId, user, status, correspondingAuthorEmail) => {
     if (status === "accepted") {
         return 'full';

@@ -7,6 +7,7 @@ const deleteArticleById = require('../sparql/deleteArticleById');
 const setArticleStatus = require('../sparql/setArticleStatus');
 const advancedArticleSearch = require('../sparql/advancedArticleSearch');
 const getKeywordsFromArticle = require('../sparql/getKeywordsFromArticle');
+const getArticleMetadata = require('../sparql/getArticleMetadata');
 const datasetName = 'articlesDS';
 const rdfSubjectBase = 'https://github.com/XML-tim17/ScientificArticles';
 
@@ -63,6 +64,14 @@ module.exports.getKeywordsFromArticle = async (articleId) => {
     const rdfSubject = `<${rdfSubjectBase}/${articleId}>`;
     return await axios.post(`${baseUrl}/${datasetName}/query`, querystring.stringify({
         query: getKeywordsFromArticle(rdfSubject)
+    }))
+        .catch(e => { console.log(e) });
+}
+
+module.exports.getArticleMetadata = async (articleId) => {
+    const rdfSubject = `<${rdfSubjectBase}/${articleId}>`;
+    return await axios.post(`${baseUrl}/${datasetName}/query`, querystring.stringify({
+        query: getArticleMetadata(rdfSubject)
     }))
         .catch(e => { console.log(e) });
 }

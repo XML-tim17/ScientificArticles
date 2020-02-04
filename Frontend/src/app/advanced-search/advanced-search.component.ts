@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ArticlesService } from '../services/articles.service';
+import { saveAs as importedSaveAs } from "file-saver";
+import beautify from "json-beautify";
 
 @Component({
   selector: 'app-advanced-search',
@@ -36,6 +38,13 @@ export class AdvancedSearchComponent implements OnInit {
     this.searchForm.reset();
     this.searchForm.markAsPristine();
     this.articles = [];
+  }
+
+  getMetadata(articleId) {
+    this.articlesService.getMetadata(articleId).then(data => {
+      const blob = new Blob([beautify(data, null, 2, 100)], { type: 'text/json' });
+      importedSaveAs(blob, 'metadata.json');
+    });
   }
 
 }

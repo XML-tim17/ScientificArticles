@@ -6,10 +6,9 @@ import { HttpClient, HttpParams } from '@angular/common/http';
   providedIn: 'root'
 })
 export class ArticlesService {
-
   constructor(private httpClient: HttpClient) { }
 
-  
+
   addArticle(articleXML: string, coverLetterXML: string) {
     return this.httpClient.post(environment.apiEndpoint + 'articles', { articleXML, coverLetterXML }).toPromise();
   }
@@ -50,4 +49,8 @@ export class ArticlesService {
   withdrawArticle(articleId) {
     return this.httpClient.get(`${environment.apiEndpoint}articles/${articleId}/giveUp`).toPromise();
   }
+  getMetadata(articleId: any) {
+    return this.httpClient.get(`${environment.apiEndpoint}articles/metadata/${articleId}`).toPromise();
+  }
+
 }

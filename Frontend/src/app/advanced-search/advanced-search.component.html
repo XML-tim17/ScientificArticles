@@ -96,6 +96,9 @@
                                     <button mat-raised-button color="primary" class="minimenuitem"
                                         [routerLink]="['/articlePdf', article.id.substring(7)]">View article
                                         (PDF)</button>
+                                    <button mat-raised-button color="primary" class="minimenuitem"
+                                        (click)="getMetadata(article.id.substring(7))">Download
+                                        metadata</button>
                                 </mat-menu>
                                 <button mat-raised-button (click)="copyMessage(article)">Copy reference to
                                     clipboard</button>
