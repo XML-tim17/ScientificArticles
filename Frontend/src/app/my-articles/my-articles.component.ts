@@ -2,6 +2,7 @@ import { ArticlesService } from './../services/articles.service';
 import { Component, OnInit } from '@angular/core';
 import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
 import {AuthorsService} from '../services/authors.service';
+import { saveAs as importedSaveAs } from "file-saver";
 
 @Component({
   selector: 'app-my-articles',
@@ -79,6 +80,14 @@ export class MyArticlesComponent implements OnInit {
       
     }, err => {
       alert(err.message);
+    })
+  }
+
+  getXML(articleId) {
+    this.articlesService.getArticleXML(articleId).then(data => {
+      const blob = new Blob([data['data']], { type: 'text/xml' });
+      importedSaveAs(blob, `article${articleId}.xml`);
+      
     })
   }
 

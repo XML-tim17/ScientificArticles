@@ -47,4 +47,12 @@ export class AdvancedSearchComponent implements OnInit {
     });
   }
 
+  getXML(articleId) {
+    this.articlesService.getArticleXML(articleId).then(data => {
+      const blob = new Blob([data['data']], { type: 'text/json' });
+      importedSaveAs(blob, `article${articleId}.xml`);
+      
+    })
+  }
+
 }
