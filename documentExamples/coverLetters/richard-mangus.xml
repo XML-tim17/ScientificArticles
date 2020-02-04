@@ -5,12 +5,12 @@
     <ns1:info>
         <ns1:author>
 			<ns1:name>Richard Mangus</ns1:name>
-			<ns1:institution>Fakultet Tehničkih Nauka</ns1:institution>
-			<ns1:phone-number>0632772886</ns1:phone-number>
-			<ns1:email>aleksandar.nedimovic@gmail.com</ns1:email>
+			<ns1:institution>University of Toronto</ns1:institution>
+			<ns1:phone-number>0652772886</ns1:phone-number>
+			<ns1:email>author1@mailinator.com</ns1:email>
 			<ns1:address>
-				<ns1:city>Novi Sad</ns1:city>
-				<ns1:country>Srbija</ns1:country>
+				<ns1:city>Toronto</ns1:city>
+				<ns1:country>Canada</ns1:country>
 			</ns1:address>
         </ns1:author>
         <ns1:date>2020-01-01</ns1:date>

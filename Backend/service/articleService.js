@@ -478,6 +478,9 @@ module.exports.setStatus = async (articleId, status) => {
         } else if (status == 'accepted') {
             let email = await articlesRepository.getCorrespondingAuthor(articleId, version);
             mailService.sendMail(email, "Scientific articles - article accepted", `Your aricle has been approved by an editor.`);
+            let dateAccepted = (new Date()).toISOString().substr(0, 10);
+            articlesRepository.setDateAccepted(articleId, version, dateAccepted);
+            rdfRepository.setDateAccepted(articleId, dateAccepted);
         } else if (status == 'rejected') {
             mailService.sendMail(email, "Scientific articles - article rejected", `Your aricle has been rejected by an editor.`);
         } else if (status == 'revisionRequired') {
