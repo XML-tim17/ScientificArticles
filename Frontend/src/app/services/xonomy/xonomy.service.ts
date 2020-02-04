@@ -373,7 +373,14 @@ export class XonomyService {
       },
       "ns1:reference": {
         isReadOnly: generateId(this.articleIDs),
-        menu: removableMenu
+        menu: removableMenu.concat([{
+          caption:"Add website id",
+          action: Xonomy.newElementChild,
+          actionParameter: `<ns1:website-id${ns}>Insert website id</ns1:website-id>`
+        }])
+      },
+      "ns1:website-id": {
+        menu:removableMenu
       },
       "ns1:referencedAuthor": {
         menu: removableMenu
@@ -513,6 +520,17 @@ export class XonomyService {
 
   getReviewElements(): any {
     return {
+      "ns1:review": {
+        attributes:{
+          "judgment": {
+            asker: Xonomy.askPicklist,
+            askerParameter: ["accept", "reject", "revise"]
+          }
+        }
+      },
+      "ns1:comment": {
+        menu: removableMenu
+      },
       "ns1:article": {
         collapsed: true
       },
