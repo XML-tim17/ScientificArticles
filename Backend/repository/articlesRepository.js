@@ -14,6 +14,7 @@ const getArticleStatusByURI = require('../xquery/getArticleStatusByURI');
 
 const updateArticleStatus = require('../xquery/updateArticleStatus');
 const updateArticleId = require('../xquery/updateArticleId');
+const updateArticleDateAccepted = require('../xquery/updateArticleDateAccepted');
 
 const setArticleStatusByURI = require('../xquery/setArticleStatusByURI');
 const getArticlesByStatus = require('../xquery/getArticlesByStatus')
@@ -158,4 +159,9 @@ module.exports.getCorrespondingAuthor = async (articleId, version) => {
     const db = exist.connect(options);
     let result = await db.queries.readAll(getCorrespondingAuthorXQ.query(articleId, version), {});
     return Buffer.concat(result.pages).toString();
+}
+
+module.exports.setDateAccepted = async (articleId, version, dateAccepted) => {
+    const db = exist.connect(options);
+    await db.queries.execute(updateArticleDateAccepted.query(articleId, version), {});
 }
