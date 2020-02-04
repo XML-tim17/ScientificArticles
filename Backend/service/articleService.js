@@ -256,10 +256,13 @@ checkArticleAccess = (articleId, user, status, correspondingAuthorEmail) => {
     if (status === "accepted") {
         return 'full';
     } else {
-        if (user.role === authorizationService.roles.editor) {
-            return 'full';
-        }
         if (correspondingAuthorEmail === user.email) {
+            return 'full';
+        } 
+        if (user.role === authorizationService.roles.editor) {
+            if (user.toReview.includes(`article${articleId}`)) {
+                return 'no-authors';
+            }
             return 'full';
         }
         if (user.role === authorizationService.roles.reviewer && status === 'inReviewProcess') {
