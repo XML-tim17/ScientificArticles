@@ -95,8 +95,8 @@ export class PostRevisionComponent implements OnInit {
   }
 
   async onSubmit() {
-    let result: any = await this.articlesService.postRevision(this.articleId, this.xonomyService.importArticleImages(this.articleXML),
-      this.xonomyService.importCoverLetterImages(this.coverLetterXML));
+    let result: any = await this.articlesService.postRevision(this.articleId, this.xonomyService.removeXMLSpaceAttribute(this.xonomyService.importArticleImages(this.articleXML)),
+      this.xonomyService.removeXMLSpaceAttribute(this.xonomyService.importCoverLetterImages(this.coverLetterXML)));
     this.snackBar.open(result.status ? result.status : result.message, '', {
       duration: 20000,
     });

@@ -1,4 +1,4 @@
-export const coverLetterTemplate = `<?xml version="1.0" encoding="UTF-8"?>
+export const coverLetterTemplate = `
 <ns1:cover-letter xmlns:ns1="https://github.com/XML-tim17/ScientificArticles"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="https://github.com/XML-tim17/ScientificArticles ./../../coverLetter.xsd">

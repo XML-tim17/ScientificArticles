@@ -220,6 +220,30 @@ module.exports.getArticlePDF = async (articleId, user) => {
     return bindata;
 }
 
+module.exports.getArticleXML = async (articleId, user) => {
+    var lastVersion = await this.getLastVersion(+articleId);
+    let articleStatus = await articlesRepository.getStatusOf(articleId, lastVersion);
+    const correspondingAuthorEmail = await articlesRepository.getCorrespondingAuthor(articleId, lastVersion);
+
+    // check users level of access to this documnet
+    let access = checkArticleAccess(articleId, user, articleStatus, correspondingAuthorEmail);
+    if (access === 'denied') {
+        let error = new Error("User does not have access to this article.");
+        error.status = 403;
+        throw error;
+    }
+
+    let dom = await this.readXML(+articleId, lastVersion);
+    let select = xpath.useNamespaces({ "ns1": ns1 });
+
+    if (access === "no-authors") {
+        select('//ns1:authors', dom).forEach(authorsNode => authorsNode.textContent = '');
+        select('//ns1:image', dom).forEach(imageNode => imageNode.textContent = 'image');
+    }
+    let document = new XMLSerializer().serializeToString(dom)
+
+    return document;
+}
 
 module.exports.getArticleMetadata = async (articleId) => {
     let rdfResult = await rdfRepository.getArticleMetadata(articleId);
@@ -241,7 +265,7 @@ checkArticleAccess = (articleId, user, status, correspondingAuthorEmail) => {
             }
             return 'full';
         }
-        if (user.role === authorizationService.roles.reviewer) {
+        if (user.role === authorizationService.roles.reviewer && status === 'inReviewProcess') {
             if (user.toReview.includes(`article${articleId}`)) {
                 return 'no-authors';
             }
