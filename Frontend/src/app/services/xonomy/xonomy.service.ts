@@ -234,6 +234,9 @@ export class XonomyService {
       }, "ns1:author": {
         menu: removableMenu
       },
+      "ns1:id": {
+        isReadOnly: true
+      },
       "ns1:received": {
         isReadOnly: true
       },
