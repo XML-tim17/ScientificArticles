@@ -172,7 +172,7 @@
                             (<xsl:value-of select="./ns1:publication-date"></xsl:value-of>). 
                             <xsl:value-of select="./ns1:title"></xsl:value-of>,
                             <xsl:value-of select="./ns1:publisher/ns1:institution"></xsl:value-of>,
-                            <xsl:value-of select="/ns1:publisher/ns1:city"></xsl:value-of>,
+                            <xsl:value-of select="./ns1:publisher/ns1:city"></xsl:value-of>,
                             
                         </p>
                         <p>
@@ -203,7 +203,7 @@
                             data:image/png;base64, <xsl:value-of select="./ns1:image"></xsl:value-of>
                         </xsl:attribute>
                         <xsl:attribute name="alt">
-                            <xsl:value-of select="./@title"></xsl:value-of>
+                            <xsl:value-of select="./ns1:title"></xsl:value-of>
                         </xsl:attribute>
                     </img>
                 </td>
@@ -211,7 +211,7 @@
             <tr>
                 <td align="center">
                     <p>
-                        <xsl:value-of select="./@title"></xsl:value-of>
+                        <xsl:value-of select="./ns1:title"></xsl:value-of>
                     </p>
                 </td>
             </tr>

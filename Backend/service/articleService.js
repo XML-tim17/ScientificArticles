@@ -13,6 +13,7 @@ var XMLSerializer = xmldom.XMLSerializer;
 var DOMParser = xmldom.DOMParser;
 var xpath = require('xpath')
 var _ = require('lodash')
+const mailService = require('./mailService')
 
 const test = require('./test');
 
@@ -39,7 +40,10 @@ module.exports.addNewArticle = async (articleXML, coverLetterXML, author) => {
         throw error;
     }
 
-    articleDOM = checkAndGenerateIds(articleDOM);
+    //update articleSequencer
+    let articleId = await articlesRepository.incrementArticleCount(1);
+
+    articleDOM = checkAndGenerateIds(articleDOM, articleId);
 
     articleXML = new XMLSerializer().serializeToString(articleDOM);
 
@@ -49,9 +53,6 @@ module.exports.addNewArticle = async (articleXML, coverLetterXML, author) => {
     // save to rdf
     await rdfRepository.saveRDFxml(articleRDFxml);
 
-    //update articleSequencer
-    let articleId = await articlesRepository.incrementArticleCount(1);
-
     // create collection for article
     await articlesRepository.addNewArticleCollection(articleId);
     await coverLetterRepository.addNewCoverLetterCollection(articleId);
@@ -60,15 +61,16 @@ module.exports.addNewArticle = async (articleXML, coverLetterXML, author) => {
     let version = await articlesRepository.createVersionSequencer(articleId);
 
     // create new xml document
-    await articlesRepository.addNewArticle(articleXML, articleId, version);
+    await articlesRepository.addNewArticle(articleRDFa, articleId, version);
 
-    await articlesRepository.updateArticleId(articleId, version);
-    await rdfRepository.updateArticleId(articleId, version);
 
     await articlesRepository.setStatus(articleId, version, 'toBeReviewed');
-    await rdfRepository.setStatus(articleId, version, 'toBeReviewed');
+    await rdfRepository.setStatus(articleId, 'toBeReviewed');
 
     await coverLetterRepository.addCoverLetter(articleId, version, coverLetterXML);
+
+    mailService.sendMailToAllEditors("Scientific articles - new article", `A new aricle has been propsed by aythor ${author.email}.`);
+
     return "success";
 
 }
@@ -85,9 +87,16 @@ checkCorrespondingAuthor = (articleDOM, email) => {
     return corrAuthorEmail === email;
 }
 
-checkAndGenerateIds = (articleDOM) => {
-    // validate ids
+checkAndGenerateIds = (articleDOM, articleId) => {
     let select = xpath.useNamespaces({ "ns1": ns1 });
+
+
+    // set article's id value
+    select('//ns1:id', articleDOM).forEach(idNode => idNode.textContent = articleId);
+    // update received date
+    select('//ns1:received', articleDOM).forEach(idNode => idNode.textContent = (new Date()).toISOString().substr(0, 10));
+
+    // validate ids
     let nodes = select('//@ns1:id', articleDOM)
     let ids = nodes.map(node => node.value)
 
@@ -162,13 +171,13 @@ module.exports.getAll = async () => {
 }
 
 module.exports.getArticleHTML = async (articleId, user) => {
-    var lastVersion =   await this.getLastVersion(+articleId);
+    var lastVersion = await this.getLastVersion(+articleId);
     // check users level of access to this documnet
     let articleStatus = await articlesRepository.getStatusOf(articleId, lastVersion);
-    
+
     const correspondingAuthorEmail = await articlesRepository.getCorrespondingAuthor(articleId, lastVersion);
     let xsltString;
-    
+
     let access = checkArticleAccess(articleId, user, articleStatus, correspondingAuthorEmail);
     if (access === 'full') xsltString = fs.readFileSync('./xsl/article-detail-html.xsl', 'utf8');
     else if (access === 'no-authors') xsltString = fs.readFileSync('./xsl/article-detail-html-no-authors.xsl', 'utf8');
@@ -177,23 +186,23 @@ module.exports.getArticleHTML = async (articleId, user) => {
         error.status = 403;
         throw error;
     }
-    
+
     var dom = await this.readXML(+articleId, lastVersion);
     var document = new XMLSerializer().serializeToString(dom)
 
-    
+
     let articleHTML = await xsltService.transform(document, xsltString);
     return articleHTML;
 }
 
 module.exports.getArticlePDF = async (articleId, user) => {
-    var lastVersion =   await this.getLastVersion(+articleId);
+    var lastVersion = await this.getLastVersion(+articleId);
     // check users level of access to this documnet
     let articleStatus = await articlesRepository.getStatusOf(articleId, lastVersion);
-    
+
     const correspondingAuthorEmail = await articlesRepository.getCorrespondingAuthor(articleId, lastVersion);
     let xslfoString;
-    
+
     let access = checkArticleAccess(articleId, user, articleStatus, correspondingAuthorEmail);
     if (access === 'full') xslfoString = fs.readFileSync('./xsl-fo/article-detail-xslfo.xsl', 'utf8');
     else if (access === 'no-authors') xslfoString = fs.readFileSync('./xsl-fo/article-detail-xslfo-no-authors.xsl', 'utf8');
@@ -202,13 +211,21 @@ module.exports.getArticlePDF = async (articleId, user) => {
         error.status = 403;
         throw error;
     }
-    
+
     var dom = await this.readXML(+articleId, lastVersion);
     var document = new XMLSerializer().serializeToString(dom)
 
-    
+
     let bindata = await pdfService.transform(document, xslfoString)
     return bindata;
+}
+
+
+module.exports.getArticleMetadata = async (articleId) => {
+    let rdfResult = await rdfRepository.getArticleMetadata(articleId);
+    if (!rdfResult.data)
+        return 'No metadata found';
+    return rdfResult.data;
 }
 
 checkArticleAccess = (articleId, user, status, correspondingAuthorEmail) => {
@@ -322,29 +339,29 @@ module.exports.postRevision = async (articleId, articleXML, coverLetterXML, auth
         throw error;
     }
 
-    articleDOM = checkAndGenerateIds(articleDOM);
+    articleDOM = checkAndGenerateIds(articleDOM, articleId);
 
     articleXML = new XMLSerializer().serializeToString(articleDOM);
 
     const articleRDFa = await xsltService.transform(articleXML, fs.readFileSync('./xsl/article-to-rdfa.xsl', 'utf8'));
     let articleRDFxml = await xsltService.transform(articleRDFa, fs.readFileSync(grddlPath, 'utf8'));
 
+    // delete current metadata
+    await rdfRepository.deleteArticleById(articleId);
     // save to rdf
     await rdfRepository.saveRDFxml(articleRDFxml);
 
-    await articlesRepository.addNewArticle(articleXML, articleId, version + 1);
+    await articlesRepository.addNewArticle(articleRDFa, articleId, version + 1);
 
-    await articlesRepository.updateArticleId(articleId, version + 1);
-    await rdfRepository.updateArticleId(articleId, version + 1);
-
-    await this.setStatus(articleId, 'revisionRecieved');
+    await articlesRepository.setStatus(articleId, version, 'outdated');
+    await articlesRepository.setStatus(articleId, version + 1, 'revisionRecieved');
+    await rdfRepository.setStatus(articleId, 'revisionRecieved');
 
     await articlesRepository.incrementVersionCount(articleId, 1);
 
-    await articlesRepository.setStatus(articleId, version, 'outdated');
-    await rdfRepository.setStatus(articleId, version, 'outdated');
-
     await coverLetterRepository.addCoverLetter(articleId, version + 1, coverLetterXML);
+
+    mailService.sendMailToAllEditors('Scientific article - article revised', `A new article revision has been sent by ${author.email}.`);
     return "success";
 }
 
@@ -370,10 +387,29 @@ module.exports.basicSearch = async (queryString) => {
 }
 
 module.exports.advancedSearch = async (searchData) => {
-    result = [];
     // do advanced search on rdf database
     // extract simple data from articles
-    return result;
+    let rdfResult = await rdfRepository.advancedSearch(searchData);
+    if (!rdfResult.data)
+        return [];
+    let ids = rdfResult.data.results.bindings.map(binding => binding.articleID.value);
+    let articleListXml = await articlesRepository.getAllByIds(ids);
+    let xsltString = fs.readFileSync('./xsl/article-list-item.xsl', 'utf8');
+    let select = xpath.useNamespaces({ "ns1": ns1 });
+
+    articleListHtml = await Promise.all(articleListXml.map(async (articleXML) => {
+        let articleDOM = new DOMParser().parseFromString(articleXML);
+        let id = `article${select('//ns1:id//text()', articleDOM)[0].textContent}`
+        let html = await xsltService.transform(articleXML, xsltString)
+
+        return {
+            id,
+            html
+        }
+    }))
+
+
+    return articleListHtml;
 }
 
 
@@ -410,7 +446,20 @@ module.exports.setStatus = async (articleId, status) => {
     let currentStatus = await articlesRepository.getStatusOf(articleId, version);
     if (isNextStateValid(currentStatus, status)) {
         await articlesRepository.setStatus(articleId, version, status);
-        await rdfRepository.setStatus(articleId, version, status);
+        await rdfRepository.setStatus(articleId, status);
+
+
+        if (status == 'inReviewProcess') {
+            mailService.sendMailToReviewersForArticle(articleId, "Scientific articles - new article to review.", "A review for an article has been requested from you.");
+        } else if (status == 'accepted') {
+            let email = await articlesRepository.getCorrespondingAuthor(articleId, version);
+            mailService.sendMail(email, "Scientific articles - article accepted", `Your aricle has been approved by an editor.`);
+        } else if (status == 'rejected') {
+            mailService.sendMail(email, "Scientific articles - article rejected", `Your aricle has been rejected by an editor.`);
+        } else if (status == 'revisionRequired') {
+            mailService.sendMail(email, "Scientific articles - article revision required", `A revision has been requested for your article.`);
+        }
+
         return true;
     }
 
@@ -426,8 +475,7 @@ module.exports.requestRevision = async (articleId) => {
         error.status = 400;
         throw error;
     }
-    await articlesRepository.setStatus(articleId, version, 'revisionRequired');
-    await rdfRepository.setStatus(articleId, version, 'revisionRequired');
+    await this.setStatus(articleId, 'revisionRequired');
 }
 
 module.exports.giveUp = async (articleId, user) => {
@@ -447,7 +495,9 @@ module.exports.giveUp = async (articleId, user) => {
         throw error;
     }
 
-    await articlesRepository.setStatus(articleId, version, 'outdated');
+    await this.setStatus(articleId, 'outdated');
+    mailService.sendMailToAllEditors('Scientific articles - article withdrawn', `An article has been withdrawn by author with email ${correspondingAuthorEmail}.`)
+    mailService.sendMailToReviewersForArticle(articleId, 'Scientific articles - article withdrawn', `An article has been withdrawn by author with email ${correspondingAuthorEmail}.`)
     return 'success';
 }
 

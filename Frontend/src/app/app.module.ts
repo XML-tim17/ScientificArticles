@@ -1,7 +1,7 @@
 
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from './material/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -31,6 +31,8 @@ import { HomeComponent } from './home/home.component';
 import { CoverLetterViewComponent } from './cover-letter-view/cover-letter-view.component';
 import { CoverLetterViewPdfComponent } from './cover-letter-view-pdf/cover-letter-view-pdf.component';
 import { AdvancedSearchComponent } from './advanced-search/advanced-search.component';
+import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
+import { MatFormFieldModule, MatChipsModule, MatGridListModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -65,6 +67,11 @@ import { AdvancedSearchComponent } from './advanced-search/advanced-search.compo
     HttpClientModule,
     MaterialModule,
     FormsModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    NgxDaterangepickerMd.forRoot(),
+    MatChipsModule,
+    MatGridListModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

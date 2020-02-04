@@ -2,7 +2,7 @@
 <ns1:review xmlns:art="https://github.com/XML-tim17/ScientificArticles/Article"
  xmlns:ns1="https://github.com/XML-tim17/ScientificArticles"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:schemaLocation="https://github.com/XML-tim17/ScientificArticles ./../../Review.xsd" judgment="accept">
+ xsi:schemaLocation="https://github.com/XML-tim17/ScientificArticles ./../../Backend/resources/XMLSchemas/Review.xsd" judgment="accept">
     <ns1:article-id>article14/v2</ns1:article-id>
     <ns1:reviewer>
         <ns1:name>Dusanko Milunovic</ns1:name>

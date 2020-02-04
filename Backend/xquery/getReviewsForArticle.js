@@ -4,28 +4,28 @@ module.exports.query = (articleId, version) => `
     declare function local:getAllComments()
     {
     for $review in collection("/db/scientificArticles/reviews/")/ns1:review
-        where $review/ns1:article-id = "article${articleId}/v${version}"
+        where $review/ns1:article-id = "article${articleId.toString().replace(/"/g, '""')}/v${version.toString().replace(/"/g, '""')}"
         return $review/ns1:comments/ns1:comment
     };
     declare function local:getAllQuestionaires()
     {
     for $review in collection("/db/scientificArticles/reviews/")/ns1:review
-        where $review/ns1:article-id = "article${articleId}/v${version}"
+        where $review/ns1:article-id = "article${articleId.toString().replace(/"/g, '""')}/v${version.toString().replace(/"/g, '""')}"
         return $review/ns1:questionaire
     };
     declare function local:getAllGrades()
     {
     for $review in collection("/db/scientificArticles/reviews/")/ns1:review
-        where $review/ns1:article-id = "article${articleId}/v${version}"
+        where $review/ns1:article-id = "article${articleId.toString().replace(/"/g, '""')}/v${version.toString().replace(/"/g, '""')}"
         return $review/ns1:grade
     };
     declare function local:getAllJudgments()
     {
     for $review in collection("/db/scientificArticles/reviews/")/ns1:review
-        where $review/ns1:article-id = "article${articleId}/v${version}"
+        where $review/ns1:article-id = "article${articleId.toString().replace(/"/g, '""')}/v${version.toString().replace(/"/g, '""')}"
         return <ns1:judgment>{data($review//@judgment)}</ns1:judgment>
     };
-    let $article := doc("/db/scientificArticles/articles/article${articleId}/v${version}.xml")/ns1:article
+    let $article := doc("/db/scientificArticles/articles/article${articleId.toString().replace(/"/g, '""')}/v${version.toString().replace(/"/g, '""')}.xml")/ns1:article
     return 
         <ns1:merged-reviews>
             {$article}

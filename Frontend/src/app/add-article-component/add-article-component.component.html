@@ -1,15 +1,39 @@
-
 <div class="container">
-    <mat-card>
-        <h2>Choose article</h2>
-        <mat-form-field>
-            <input matInput type="file" id="file" (change)="handleFileInput($event)">
-        </mat-form-field>
-        <br>
-        <h2>Choose cover letter</h2>
-        <mat-form-field>
-            <input matInput type="file" id="file" (change)="handleFileInput2($event)">
-        </mat-form-field>
-        <button mat-button (click)="onSubmit()">Submit Article</button>
-    </mat-card>
+    <mat-tab-group (selectedTabChange)="onTabChanged($event)" animationDuration="0ms">
+        <mat-tab label="Article">
+            <mat-toolbar>
+                <div><input type="file" accept="text/xml" (change)="handleFileInputArticle($event)"></div>
+            </mat-toolbar>
+            <table>
+                <tr>
+                    <td class="halfScreen">
+                        <div #articleXonomy class="xonomyDiv"></div>
+                    </td>
+                    <td class="halfScreen">
+                        <div #articleHTML class="htmlView"></div>
+                    </td>
+                </tr>
+            </table>
+        </mat-tab>
+        <mat-tab label="Cover letter">
+            <mat-toolbar>
+                <div><input type="file" accept="text/xml" (change)="handleFileInputCoverLetter($event)"></div>
+            </mat-toolbar>
+            <table>
+                <tr>
+                    <td class="halfScreen">
+                        <div #coverLetterXonomy class="xonomyDiv"></div>
+                    </td>
+                    <td class="halfScreen">
+                        <div #coverLetterHTML class="htmlView"></div>
+                    </td>
+                </tr>
+            </table>
+        </mat-tab>
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <button mat-raised-button color="primary" (click)="onSubmit()">Submit</button>
+            </ng-template>
+        </mat-tab>
+    </mat-tab-group>
 </div>

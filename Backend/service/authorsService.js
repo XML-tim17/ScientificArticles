@@ -1,5 +1,7 @@
 const authorsRepository = require('../repository/authorsRepository');
+const rdfRepository = require('../repository/rdfRepository');
 const xsltService = require('./xsltService');
+const userService = require('./userService');
 const fs = require('fs');
 
 var xmldom = require('xmldom');
@@ -15,7 +17,7 @@ module.exports.getArticles = async (authorEmail, status) => {
     // if status === '' return all
     // extract simple data
     let result = await authorsRepository.getUsersArticlesInStatus(authorEmail, status);
-    if (!result){
+    if (!result) {
         return {
             status: status,
             htmls: []
@@ -43,9 +45,17 @@ module.exports.getArticles = async (authorEmail, status) => {
     };
 }
 
-module.exports.getCorresponcingAuthors = async (articleId) => {
-    let result = [];
+module.exports.getCorrespondingAuthors = async (articleId) => {
     // get all authors
     // rank them by correspondance
-    return result;
+
+    let users = await userService.getAll();
+    let rdfResult = await rdfRepository.getKeywordsFromArticle(articleId);
+    if (!rdfResult.data)
+        return users;
+    let keywords = rdfResult.data.results.bindings.map(binding => binding.keyword.value);
+    users.forEach(user => {
+        user.correspondanceLevel = keywords.filter(keyword => user.keywords.includes(keyword)).length;
+    });
+    return users.sort((a, b) => b.correspondanceLevel - a.correspondanceLevel);
 }

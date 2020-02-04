@@ -1,0 +1,55 @@
+.search {
+  width: 70%;
+}
+
+.search td {
+  text-align: center;
+}
+#search-buttons-td {
+  text-align: right;
+}
+.container {
+  margin: 20px auto;
+}
+
+.stretch {
+  width: 100%;
+}
+
+.lowstretch {
+  width: 75%;
+}
+.white {
+  color: #FFFFFF;
+}
+
+.mat-button {
+  color: white;
+}
+
+.form-control {
+  color: #FFFFFF;
+}
+
+.mat-form-field {
+  width: 80%;
+}
+
+.search-buttons {
+  margin-right: 10%;
+}
+
+
+
+.menuitem {
+  margin-left: 20px;
+}
+
+.minimenuitem {
+  width: 90%;
+  margin: 5px 5%;
+}
+
+.mat-icon {
+  margin-left: 10px;
+}

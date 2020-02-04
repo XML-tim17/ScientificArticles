@@ -6,6 +6,6 @@ module.exports.query = (matchingTitle) => `
       return lower-case($elem)
     };
     for $article in collection("/db/scientificArticles/articles/")/ns1:article
-    where contains(local:tolower($article//*[not(name()='ns1:image')]/text()), lower-case("${matchingTitle}")) and $article/ns1:info/ns1:status/text() = "accepted"
+    where contains(local:tolower($article//*[not(name()='ns1:image')]/text()), lower-case("${matchingTitle.toString().replace(/"/g, '""')}")) and $article/ns1:info/ns1:status/text() = "accepted"
         return $article
     `;

@@ -1,52 +1,100 @@
 import { ArticlesService } from './../services/articles.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ComponentFactoryResolver } from '@angular/core';
+import { MatSnackBar } from '@angular/material';
+import { XonomyService } from '../services/xonomy/xonomy.service';
+declare const Xonomy: any;
 
 @Component({
   selector: 'app-add-article-component',
   templateUrl: './add-article-component.component.html',
-  styleUrls: ['./add-article-component.component.css']
+  styleUrls: ['./add-article-component.component.css'],
+  providers: [XonomyService]
 })
 export class AddArticleComponentComponent implements OnInit {
 
-  constructor(private articlesService: ArticlesService) { }
+  constructor(private articlesService: ArticlesService, private xonomyService: XonomyService, private snackBar: MatSnackBar) { }
 
-  articleFile: File;
-  coverLetterFile: File;
+  articleXML: string;
+  coverLetterXML: string;
+  @ViewChild('articleXonomy', { static: false }) articleXonomy;
+  @ViewChild('coverLetterXonomy', { static: false }) coverLetterXonomy;
+  @ViewChild('articleHTML', { static: false }) articleHTML;
+  @ViewChild('coverLetterHTML', { static: false }) coverLetterHTML;
 
   ngOnInit() {
   }
 
-  handleFileInput(event) {
-    this.articleFile = event.target.files[0]
+  ngAfterViewInit() {
+    this.articleXML = this.xonomyService.getArticleTemplate();
+    this.coverLetterXML = this.xonomyService.getCoverLetterTemplate();
+    this.renderArticle();
   }
-  
-  handleFileInput2(event) {
-    this.coverLetterFile = event.target.files[0]
+
+  onTabChanged($event) {
+    switch ($event.index) {
+      case (0):
+        this.coverLetterXonomy.nativeElement.innerHTML = '';
+        this.renderArticle();
+        break;
+      case (1):
+        this.articleXonomy.nativeElement.innerHTML = '';
+        this.renderCoverLetter();
+        break;
+    }
+  }
+
+  handleFileInputArticle(event) {
+    let reader = new FileReader();
+    reader.onload = (e) => {
+      this.articleXML = reader.result as string;
+      this.articleXML = this.xonomyService.storeImagesArticle(this.articleXML);
+      this.renderArticle();
+    }
+    reader.readAsText(event.target.files[0]);
+  }
+
+  handleFileInputCoverLetter(event) {
+    let reader = new FileReader();
+    reader.onload = (e) => {
+      this.coverLetterXML = reader.result as string;
+      this.coverLetterXML = this.xonomyService.storeImagesCoverLetter(this.coverLetterXML);
+      this.renderCoverLetter();
+    }
+    reader.readAsText(event.target.files[0]);
+  }
+
+  onArticleChange() {
+    this.articleXML = Xonomy.harvest();
+    this.articleHTML.nativeElement.innerHTML = this.xonomyService.convertArticleXSLT(this.articleXML);
+  }
+
+  renderArticle() {
+    Xonomy.render(this.articleXML, this.articleXonomy.nativeElement, {
+      allowModeSwitching: true,
+      elements: this.xonomyService.getArticleElements(),
+      onchange: () => { this.onArticleChange() }
+    });
+    this.articleHTML.nativeElement.innerHTML = this.xonomyService.convertArticleXSLT(this.articleXML);
+  }
+
+  onCoverLetterChange() {
+    this.coverLetterXML = Xonomy.harvest();
+    this.coverLetterHTML.nativeElement.innerHTML = this.xonomyService.convertCoverLetterXSLT(this.coverLetterXML);
+  }
+
+  renderCoverLetter() {
+    Xonomy.render(this.coverLetterXML, this.coverLetterXonomy.nativeElement, {
+      elements: this.xonomyService.getCoverLetterElements(),
+      onchange: () => { this.onCoverLetterChange() }
+    });
+    this.coverLetterHTML.nativeElement.innerHTML = this.xonomyService.convertCoverLetterXSLT(this.coverLetterXML);
   }
 
   async onSubmit() {
-    if (!this.articleFile && !this.coverLetterFile) {
-      alert("Select both article and cover letter please.")
-      return;
-    }
-
-    
-    let reader = new FileReader();
-    
-    let reader2 = new FileReader();
-
-
-    reader2.onload = (e) => {
-      this.articlesService.addArticle(reader.result as string, reader2.result as string);
-      // add toaster
-    }
-
-    reader.onload = (e) => {
-      reader2.readAsText(this.coverLetterFile);
-    }
-
-    reader.readAsText(this.articleFile)
-    
+    let result: any = await this.articlesService.addArticle(this.xonomyService.importArticleImages(this.articleXML), this.xonomyService.importCoverLetterImages(this.coverLetterXML));
+    this.snackBar.open(result.status ? result.status : result.message, '', {
+      duration: 20000,
+    });
   }
 
 }

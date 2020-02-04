@@ -5,6 +5,6 @@ declare function local:getReviews($articleId as xs:string) {
     where $review//ns1:article-id//text() = $articleId 
     return $review
 };
-let $articleId := "${articleURI}"
+let $articleId := "${articleURI.toString().replace(/"/g, '""')}"
 
 return count(local:getReviews($articleId))`

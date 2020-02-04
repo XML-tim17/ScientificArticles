@@ -60,6 +60,7 @@ module.exports.addArticleToReviewer = async (email, articleURI) => {
 
 module.exports.getArticleReviewCount = async (articleURI) => {
     const db = exist.connect(options);
+
     let result = await db.queries.readAll(getReviewsByArticleURIXQ.query(articleURI), {});
     return Buffer.concat(result.pages).toString();
 

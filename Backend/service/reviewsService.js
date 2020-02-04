@@ -1,6 +1,7 @@
 var reviewsRepository = require('../repository/reviewsRepository');
 var articleRepository = require('../repository/articlesRepository');
 var userRepository = require('../repository/userRepository');
+const mailService = require('./mailService')
 var xmldom = require('xmldom');
 var XMLSerializer = xmldom.XMLSerializer;
 var DOMParser = xmldom.DOMParser;
@@ -78,6 +79,7 @@ module.exports.postReview = async (reviewXML, reviewer) => {
 
     if (articleReviewCount >= toReviewCount) {
         articleRepository.setStatusByURI(articleId, 'reviewed');
+        mailService.sendMailToAllEditors("Scientific articles - article reviewed", `Article "${select("/ns:title//text()", articleNode)}" has been reviewed by all reviewers.`);
     }
 }
 

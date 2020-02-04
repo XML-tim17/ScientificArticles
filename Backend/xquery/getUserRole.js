@@ -6,5 +6,5 @@ declare function local:getUser($email as xs:string)
     return $user)[1]
 };
 
-let $email := "${email}"
+let $email := "${email.toString().replace(/"/g, '""')}"
 return local:getUser($email)//role//text()`

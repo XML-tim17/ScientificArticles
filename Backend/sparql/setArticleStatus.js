@@ -1,8 +1,10 @@
-module.exports = (rdfSubject, articleId) => `PREFIX rdfa: <http://www.w3.org/ns/rdfa#> 
+module.exports = (rdfSubject, status) => `
+    PREFIX rdfa: <http://www.w3.org/ns/rdfa#> 
+    PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 
-        DELETE { ${rdfSubject} rdfa:identifier ?current_identifier }
-        INSERT { ${rdfSubject} rdfa:identifier "${articleId}" }
-        WHERE
-        { 
-          ${rdfSubject} rdfa:identifier ?current_identifier
-        }`;
+    DELETE { ${rdfSubject} rdfa:creativeWorkStatus ?current_status }
+    INSERT { ${rdfSubject} rdfa:creativeWorkStatus "${status.toString().replace(/"/g, '\\"')}"^^rdf:XMLLiteral }
+    WHERE
+    { 
+        ${rdfSubject} rdfa:creativeWorkStatus ?current_status
+    }`;

@@ -32,7 +32,8 @@ router.get('/password', async (req, res, next) => {
 //     "address": {
 //         "city": "Novi Sad",
 //         "country": "Serbija"
-//     }
+//     },
+//     "keywords": ["word1", "word2"]
 // }
 router.post('/register', async (req, res, next) => {
     try {
@@ -40,7 +41,7 @@ router.post('/register', async (req, res, next) => {
         res.send({ status: "success" });
     } catch (e) {
         next(e);
-    }   
+    }
 });
 
 router.post('/login', async (req, res, next) => {
@@ -56,7 +57,7 @@ router.post('/login', async (req, res, next) => {
 // get all users
 // EDITOR
 router.get('/', async (req, res, next) => {
-    if(!authorizationService.checkAuthorization(req, authorizationService.roles.editor)) {
+    if (!authorizationService.checkAuthorization(req, authorizationService.roles.editor)) {
         let error = new Error('Unauthorized')
         error.status = 403;
         next(error);

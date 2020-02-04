@@ -7,7 +7,7 @@ const authorizationService = require('../service/authorizationService')
 // AUTHOR
 router.get('/articles/:status', async (req, res, next) => {
     try {
-        if(!authorizationService.checkAuthorization(req, authorizationService.roles.author)) {
+        if (!authorizationService.checkAuthorization(req, authorizationService.roles.author)) {
             let error = new Error('Unauthorized')
             error.status = 403;
             next(error);
@@ -25,13 +25,13 @@ router.get('/articles/:status', async (req, res, next) => {
 // EDITOR
 router.get('/:articleId', async (req, res, next) => {
     try {
-        if(!authorizationService.checkAuthorization(req, authorizationService.roles.editor)) {
-            let error = new Error('Unauthorized')
-            error.status = 403;
-            next(error);
-            return;
-        }
-        let authors = await authorsService.getCorresponcingAuthors(req.params.articleId);
+        // if (!authorizationService.checkAuthorization(req, authorizationService.roles.editor)) {
+        //     let error = new Error('Unauthorized')
+        //     error.status = 403;
+        //     next(error);
+        //     return;
+        // }
+        let authors = await authorsService.getCorrespondingAuthors(req.params.articleId);
         res.send(authors);
     } catch (e) {
         next(e);

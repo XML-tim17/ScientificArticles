@@ -15,10 +15,10 @@ const xsltService = require('../service/xsltService');
 const validateDocument = (xml) => {
     return new Promise((resolve, reject) => {
         validator.validateXML(xml, articleSchemaLocation, (err, data) => {
-          if (err) return reject(err)
-          resolve(data.valid)
+            if (err) return reject(err)
+            resolve(data.valid)
         });
-      });
+    });
 }
 
 const validateCoverLetter = (xml) => {
@@ -32,7 +32,7 @@ const validateCoverLetter = (xml) => {
 
 // get pdf of article
 // GUEST
-router.get('/pdf/:articleId/:token', async(req,res, next) => {
+router.get('/pdf/:articleId/:token', async (req, res, next) => {
     try {
         if (req.user.role === authorizationService.roles.guest) {
             req = await authorizationService.getUserFromTokenParam(req);
@@ -41,6 +41,17 @@ router.get('/pdf/:articleId/:token', async(req,res, next) => {
         let bindata = await articlesService.getArticlePDF(+req.params.articleId, req.user)
         res.contentType("application/pdf");
         res.send(bindata);
+    } catch (e) {
+        next(e);
+    }
+});
+
+// get metadata of article
+// GUEST
+router.get('/metadata/:articleId', async (req, res, next) => {
+    try {
+        let metadata = await articlesService.getArticleMetadata(+req.params.articleId)
+        res.send(metadata);
     } catch (e) {
         next(e);
     }
@@ -62,7 +73,7 @@ router.get('', async (req, res, next) => {
 // AUTHOR
 router.post('', async (req, res, next) => {
     try {
-        if(!authorizationService.checkAuthorization(req, authorizationService.roles.author)) {
+        if (!authorizationService.checkAuthorization(req, authorizationService.roles.author)) {
             let error = new Error('Unauthorized')
             error.status = 403;
             next(error);
@@ -102,7 +113,7 @@ router.post('', async (req, res, next) => {
 // EDITOR
 router.get('/status/:status', async (req, res, next) => {
     try {
-        if(!authorizationService.checkAuthorization(req, authorizationService.roles.editor)) {
+        if (!authorizationService.checkAuthorization(req, authorizationService.roles.editor)) {
             let error = new Error('Unauthorized')
             error.status = 403;
             next(error);
@@ -132,7 +143,7 @@ router.get('/search', async (req, res, next) => {
 // GUEST
 router.post('/search', async (req, res, next) => {
     try {
-        let result = await articlesService.advancedSearch(req.body.data);
+        let result = await articlesService.advancedSearch(req.body);
         res.send(result);
     } catch (e) {
         next(e);
@@ -143,7 +154,7 @@ router.post('/search', async (req, res, next) => {
 // AUTHOR
 router.get('/html/:documentId', async (req, res, next) => {
     try {
-        if(!authorizationService.checkAuthorization(req, authorizationService.roles.author)) {
+        if (!authorizationService.checkAuthorization(req, authorizationService.roles.author)) {
             let error = new Error('Unauthorized')
             error.status = 403;
             next(error);
@@ -151,7 +162,7 @@ router.get('/html/:documentId', async (req, res, next) => {
         }
 
         let articleHTML = await articlesService.getArticleHTML(req.params.documentId, req.user);
-        res.send({data: articleHTML});
+        res.send({ data: articleHTML });
     } catch (e) {
         next(e);
     }
@@ -162,7 +173,7 @@ router.get('/html/:documentId', async (req, res, next) => {
 // AUTHOR
 router.get('/:documentId', async (req, res, next) => {
     try {
-        if(!authorizationService.checkAuthorization(req, authorizationService.roles.author)) {
+        if (!authorizationService.checkAuthorization(req, authorizationService.roles.author)) {
             let error = new Error('Unauthorized')
             error.status = 403;
             next(error);
@@ -173,7 +184,7 @@ router.get('/:documentId', async (req, res, next) => {
         var dom = await articlesService.readXML(+req.params.documentId, lastVersion);
         var document = new XMLSerializer().serializeToString(dom)
 
-        res.send({data: document});
+        res.send({ data: document });
     } catch (e) {
         next(e);
     }
@@ -183,7 +194,7 @@ router.get('/:documentId', async (req, res, next) => {
 // AUTHOR
 router.post('/:articleId', async (req, res, next) => {
     try {
-        if(!authorizationService.checkAuthorization(req, authorizationService.roles.author)) {
+        if (!authorizationService.checkAuthorization(req, authorizationService.roles.author)) {
             let error = new Error('Unauthorized')
             error.status = 403;
             next(error);
@@ -193,7 +204,7 @@ router.post('/:articleId', async (req, res, next) => {
         let valid2 = await validateCoverLetter(req.body.coverLetterXML);
         if (valid && valid2) {
             let status = await articlesService.postRevision(+req.params.articleId, req.body.articleXML, req.body.coverLetterXML, req.user);
-            res.send({status})
+            res.send({ status })
         } else {
             throw Error('Document is not valid according to schema.');
         }
@@ -208,7 +219,7 @@ router.post('/:articleId', async (req, res, next) => {
 // AUTHOR
 router.get('/:articleId/reviews', async (req, res, next) => {
     try {
-        if(!authorizationService.checkAuthorization(req, authorizationService.roles.author)) {
+        if (!authorizationService.checkAuthorization(req, authorizationService.roles.author)) {
             let error = new Error('Unauthorized')
             error.status = 403;
             next(error);
@@ -217,7 +228,7 @@ router.get('/:articleId/reviews', async (req, res, next) => {
         // check if user has access to this article
         var reviews = await articlesService.getReviews(+req.params.articleId);
         res.send(reviews);
-    } catch(e) {
+    } catch (e) {
         next(e);
     }
 })
@@ -226,14 +237,14 @@ router.get('/:articleId/reviews', async (req, res, next) => {
 // UREDNIK
 router.get('/:articleId/status/:status', async (req, res, next) => {
     try {
-        if(!authorizationService.checkAuthorization(req, authorizationService.roles.editor)) {
+        if (!authorizationService.checkAuthorization(req, authorizationService.roles.editor)) {
             let error = new Error('Unauthorized')
             error.status = 403;
             next(error);
             return;
         }
         await articlesService.setStatus(+req.params.articleId, req.params.status);
-        res.send({status: "success"})
+        res.send({ status: "success" })
     } catch (e) {
         next(e);
     }
@@ -243,14 +254,14 @@ router.get('/:articleId/status/:status', async (req, res, next) => {
 // EDITOR
 router.get('/:articleId/requestRevision', async (req, res, next) => {
     try {
-        if(!authorizationService.checkAuthorization(req, authorizationService.roles.editor)) {
+        if (!authorizationService.checkAuthorization(req, authorizationService.roles.editor)) {
             let error = new Error('Unauthorized')
             error.status = 403;
             next(error);
             return;
         }
         await articlesService.requestRevision(req.params.articleId);
-        res.send({status: "success"});
+        res.send({ status: "success" });
 
 
     } catch (e) {
@@ -262,7 +273,7 @@ router.get('/:articleId/requestRevision', async (req, res, next) => {
 // AUTHOR
 router.get('/:articleId/giveUp', async (req, res, next) => {
     try {
-        if(!authorizationService.checkAuthorization(req, authorizationService.roles.author)) {
+        if (!authorizationService.checkAuthorization(req, authorizationService.roles.author)) {
             let error = new Error('Unauthorized')
             error.status = 403;
             next(error);
@@ -270,7 +281,7 @@ router.get('/:articleId/giveUp', async (req, res, next) => {
         }
 
         let status = await articlesService.giveUp(req.params.articleId, req.user);
-        res.send( { status })
+        res.send({ status })
 
     } catch (e) {
         next(e);
