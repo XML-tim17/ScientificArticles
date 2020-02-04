@@ -66,4 +66,12 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  getXML(articleId) {
+    this.articlesService.getArticleXML(articleId).then(data => {
+      const blob = new Blob([data['data']], { type: 'text/xml' });
+      importedSaveAs(blob, `article${articleId}.xml`);
+      
+    })
+  }
+
 }

@@ -44,6 +44,10 @@ router.get('/html/:articleId', async (req, res, next) => {
 // AUTHOR
 router.get('/pdf/:articleId/:token', async (req, res, next) => {
     try {
+        if (req.user.role === authorizationService.roles.guest) {
+            req = await authorizationService.getUserFromTokenParam(req);
+        }
+        
         if(!authorizationService.checkAuthorization(req, authorizationService.roles.author)) {
             let error = new Error('Unauthorized')
             error.status = 403;

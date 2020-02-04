@@ -38,6 +38,4 @@ export const reviewTemplate = `
     </ns1:questionaire>
     <ns1:grade>10</ns1:grade>
 </ns1:review>
-
-
 `;

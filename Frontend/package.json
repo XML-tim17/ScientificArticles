@@ -29,9 +29,11 @@
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
     "ngx-daterangepicker-material": "^2.1.11",
+    "npm-formatter": "^0.1.0",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
     "uuid": "^3.4.0",
+    "xml-formatter": "^1.2.0",
     "xmldom": "^0.2.1",
     "zone.js": "~0.9.1"
   },

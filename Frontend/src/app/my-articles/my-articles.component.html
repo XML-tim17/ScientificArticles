@@ -28,6 +28,8 @@
                     <mat-menu #matMenuArticle="matMenu">
                       <button mat-raised-button color="primary" class="minimenuitem" [routerLink]="['/article', ht.id.substring(7)]">View article</button>
                       <button mat-raised-button color="primary" class="minimenuitem" [routerLink]="['/articlePdf', ht.id.substring(7)]">View article (PDF)</button>
+                      <button mat-raised-button color="primary" class="minimenuitem"
+                        (click)="getXML(ht.id.substring(7))">Download article (XML)</button>
                     </mat-menu>
                     <button mat-raised-button class="menuitem" [matMenuTriggerFor]="matMenuReview">
                       <span>Review</span>
