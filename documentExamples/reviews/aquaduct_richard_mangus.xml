@@ -2,7 +2,7 @@
  xmlns:ns1="https://github.com/XML-tim17/ScientificArticles"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="https://github.com/XML-tim17/ScientificArticles ./../../Backend/resources/XMLSchemas/Review.xsd" judgment="accept">
-    <ns1:article-id>article14/v2</ns1:article-id>
+    <ns1:article-id>article2/v1</ns1:article-id>
     <ns1:reviewer>
         <ns1:name>Richard Mangus</ns1:name>
         <ns1:institution>Tecnische Universitat Wien</ns1:institution>
@@ -24,7 +24,7 @@
             </ns1:yes-no-question>
             <ns1:yes-no-question>
                 <ns1:question-text>Da li apstrakt sadrži prave podatke o radu?</ns1:question-text>
-                <ns1:answer>Yes</ns1:answer>
+                <ns1:answer>No</ns1:answer>
             </ns1:yes-no-question>
             <ns1:yes-no-question>
                 <ns1:question-text>Da li je uvod uspešno privukao Vašu pažnju (generalni koncept je dobro uveden i rad dobro motivisan, a

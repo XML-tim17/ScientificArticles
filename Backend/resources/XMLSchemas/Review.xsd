@@ -46,7 +46,7 @@
                                                 </xs:sequence>
                                             </xs:complexType>
                                         </xs:element>
-                                        <xs:element name="question">
+                                        <xs:element maxOccurs="unbounded" minOccurs="0" name="question">
                                             <xs:complexType>
                                                 <xs:sequence>
                                                   <xs:element name="question-text" type="xs:string"/>
