@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+    targetNamespace="https://github.com/XML-tim17/ScientificArticles"
+    xmlns="https://github.com/XML-tim17/ScientificArticles" xmlns:cl="cover-letter" xmlns:ns1="tsp">
+    <xs:include schemaLocation="Utility.xsd"/>
+    <xs:element name="cover-letter">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="info">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="author" type="TPerson"> </xs:element>
+                            <xs:element name="date" type="xs:date"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="content">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element maxOccurs="unbounded" minOccurs="0" name="paragraph"
+                                type="TParagraph"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="signature">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="image" type="xs:base64Binary"/>
+                            <xs:element name="name" type="xs:string"/>
+                            <xs:element name="title" type="xs:string"/>
+                            <xs:element name="institution" type="xs:string"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

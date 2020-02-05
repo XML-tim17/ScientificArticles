@@ -1,17 +1,16 @@
-export const reviewTemplate = `
 <ns1:review xmlns:art="https://github.com/XML-tim17/ScientificArticles/Article"
  xmlns:ns1="https://github.com/XML-tim17/ScientificArticles"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="https://github.com/XML-tim17/ScientificArticles ./../../Backend/resources/XMLSchemas/Review.xsd" judgment="accept">
     <ns1:article-id>article14/v2</ns1:article-id>
     <ns1:reviewer>
-        <ns1:name>Insert your name</ns1:name>
-        <ns1:institution>Insert your institution</ns1:institution>
-        <ns1:phone-number>Insert your number</ns1:phone-number>
-        <ns1:email>Insert your email</ns1:email>
+        <ns1:name>Richard Mangus</ns1:name>
+        <ns1:institution>Tecnische Universitat Wien</ns1:institution>
+        <ns1:phone-number>0652772876</ns1:phone-number>
+        <ns1:email>author2@mailinator.com</ns1:email>
         <ns1:address>
-            <ns1:city>Insert your city</ns1:city>
-            <ns1:country>Insert your country</ns1:country>
+            <ns1:city>Wien</ns1:city>
+            <ns1:country>Deutschland</ns1:country>
         </ns1:address>
     </ns1:reviewer>
     <ns1:comments>
@@ -37,7 +36,7 @@ export const reviewTemplate = `
                 <ns1:answer>Yes</ns1:answer>
             </ns1:yes-no-question>
             <ns1:yes-no-question>
-                <ns1:question-text>Da li je rad lak ili težak za čitanje?</ns1:question-text>
+                <ns1:question-text>Da li je rad težak za čitanje?</ns1:question-text>
                 <ns1:answer>Yes</ns1:answer>
             </ns1:yes-no-question>
             <ns1:question>
@@ -52,4 +51,3 @@ export const reviewTemplate = `
     </ns1:questionaire>
     <ns1:grade>10</ns1:grade>
 </ns1:review>
-`;
