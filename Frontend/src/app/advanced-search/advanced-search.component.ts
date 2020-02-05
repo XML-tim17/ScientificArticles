@@ -21,6 +21,7 @@ export class AdvancedSearchComponent implements OnInit {
       'keywords': [''],
       'dateCreated': [''],
       'datePublished': [''],
+      'reference': ['']
     });
   }
 

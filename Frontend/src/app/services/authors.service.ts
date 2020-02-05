@@ -12,4 +12,8 @@ export class AuthorsService {
   getMyArticles(status: string) {
     return this.httpClient.get(environment.apiEndpoint + 'authors/articles/' + status).toPromise();
   }
+
+  getCorrespondingAuthors(articleId: any) {
+    return this.httpClient.get(`${environment.apiEndpoint}authors/${articleId}`).toPromise();
+  }
 }

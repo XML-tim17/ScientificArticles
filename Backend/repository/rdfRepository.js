@@ -79,8 +79,8 @@ module.exports.getArticleMetadata = async (articleId) => {
 
 module.exports.setDateAccepted = async (articleId, dateAccepted) => {
     const rdfSubject = `<${rdfSubjectBase}/${articleId}>`;
-    return await axios.post(`${baseUrl}/${datasetName}/query`, querystring.stringify({
-        query: updateDateAccepted(rdfSubject, dateAccepted)
+    return await axios.post(`${baseUrl}/${datasetName}/update`, querystring.stringify({
+        update: updateDateAccepted(rdfSubject, dateAccepted)
     }))
         .catch(e => { console.log(e) });
 }

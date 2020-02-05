@@ -1,17 +1,17 @@
-export const reviewTemplate = `
+export const reviewTemplate = (user, articleId) => `
 <ns1:review xmlns:art="https://github.com/XML-tim17/ScientificArticles/Article"
  xmlns:ns1="https://github.com/XML-tim17/ScientificArticles"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="https://github.com/XML-tim17/ScientificArticles ./../../Backend/resources/XMLSchemas/Review.xsd" judgment="accept">
-    <ns1:article-id>article14/v2</ns1:article-id>
+    <ns1:article-id>${articleId}</ns1:article-id>
     <ns1:reviewer>
-        <ns1:name>Insert your name</ns1:name>
-        <ns1:institution>Insert your institution</ns1:institution>
-        <ns1:phone-number>Insert your number</ns1:phone-number>
-        <ns1:email>Insert your email</ns1:email>
+        <ns1:name>${user.name}</ns1:name>
+        <ns1:institution>${user.institution}</ns1:institution>
+        <ns1:phone-number>${user.phoneNumber}</ns1:phone-number>
+        <ns1:email>${user.email}</ns1:email>
         <ns1:address>
-            <ns1:city>Insert your city</ns1:city>
-            <ns1:country>Insert your country</ns1:country>
+            <ns1:city>${user.address.city}</ns1:city>
+            <ns1:country>${user.address.country}</ns1:country>
         </ns1:address>
     </ns1:reviewer>
     <ns1:comments>

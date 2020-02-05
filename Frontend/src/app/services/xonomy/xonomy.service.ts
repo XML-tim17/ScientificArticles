@@ -36,8 +36,10 @@ const generateCommentMenu = [{
     let div = document.getElementById(htmlID);
     let jsElement = Xonomy.harvestElement(div);
     let id = jsElement.getAttributeValue('ns1:id', null);
-    let reviewDiv = document.getElementById('xonomy1');
-    let reviewElement = Xonomy.harvestElement(reviewDiv);
+    let reviewElement = jsElement;
+    while(reviewElement.parent()){
+      reviewElement = reviewElement.parent();
+    }
     for (var i = 0; i < reviewElement.children.length; i++) {
       var jsChild = reviewElement.children[i];
       if (jsChild.name == "ns1:comments") {
@@ -267,6 +269,7 @@ export class XonomyService {
         isReadOnly: true
       },
       "ns1:abstract": {
+        isReadOnly: generateId(this.articleIDs),
         menu: [{
           caption: "Add paragraph",
           action: Xonomy.newElementChild,
@@ -514,8 +517,9 @@ export class XonomyService {
     return xmlSerializer.serializeToString(reviewDOM);
   }
 
-  getReviewTemplate(): string {
-    return reviewTemplate;
+  getReviewTemplate(articleId: any): string {
+    let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    return reviewTemplate(currentUser, articleId);
   }
 
   getReviewElements(): any {
@@ -536,6 +540,12 @@ export class XonomyService {
       },
       "ns1:date": {
         isReadOnly: true
+      },
+      "ns1:article-id": {
+        isReadOnly: true
+      },
+      "ns1:abstract":{
+        menu: generateCommentMenu
       },
       "ns1:quote": {
         menu: generateCommentMenu

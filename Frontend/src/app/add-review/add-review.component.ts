@@ -26,7 +26,7 @@ export class AddReviewComponent implements OnInit {
   }
 
   async ngAfterViewInit() {
-    this.reviewXML = this.xonomyService.getReviewTemplate();
+    this.reviewXML = this.xonomyService.getReviewTemplate(this.articleId);
     this.reviewXML = this.xonomyService.addArticleInReviewXML(this.reviewXML, await this.articlesService.getArticleXML(this.articleId).then(result => result['data']));
     this.renderReview();
   }

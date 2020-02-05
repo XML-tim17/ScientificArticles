@@ -163,5 +163,5 @@ module.exports.getCorrespondingAuthor = async (articleId, version) => {
 
 module.exports.setDateAccepted = async (articleId, version, dateAccepted) => {
     const db = exist.connect(options);
-    await db.queries.execute(updateArticleDateAccepted.query(articleId, version), {});
+    await db.queries.execute(updateArticleDateAccepted.query(articleId, version, dateAccepted), {});
 }

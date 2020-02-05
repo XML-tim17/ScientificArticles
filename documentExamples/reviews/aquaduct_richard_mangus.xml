@@ -1,16 +1,16 @@
 <ns1:review xmlns:art="https://github.com/XML-tim17/ScientificArticles/Article"
  xmlns:ns1="https://github.com/XML-tim17/ScientificArticles"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:schemaLocation="https://github.com/XML-tim17/ScientificArticles ./../../Backend/resources/XMLSchemas/Review.xsd" judgment="accept">
+ xsi:schemaLocation="https://github.com/XML-tim17/ScientificArticles ./../../Backend/resources/XMLSchemas/Review.xsd" judgment="revise">
     <ns1:article-id>article2/v1</ns1:article-id>
     <ns1:reviewer>
-        <ns1:name>Richard Mangus</ns1:name>
-        <ns1:institution>Tecnische Universitat Wien</ns1:institution>
-        <ns1:phone-number>0652772876</ns1:phone-number>
-        <ns1:email>author2@mailinator.com</ns1:email>
+        <ns1:name>Kristofer Kalamari</ns1:name>
+        <ns1:institution>University of Verona</ns1:institution>
+        <ns1:phone-number>0632772886</ns1:phone-number>
+        <ns1:email>reviewer3@mailinator.com</ns1:email>
         <ns1:address>
-            <ns1:city>Wien</ns1:city>
-            <ns1:country>Deutschland</ns1:country>
+            <ns1:city>Verona</ns1:city>
+            <ns1:country>Italy</ns1:country>
         </ns1:address>
     </ns1:reviewer>
     <ns1:comments>
@@ -41,13 +41,13 @@
             </ns1:yes-no-question>
             <ns1:question>
                 <ns1:question-text>Da li je za razumevanje teksta potrebno predznanje i u kolikoj meri?</ns1:question-text>
-                <ns1:answer>Insert answer here</ns1:answer>
+                <ns1:answer>Potrebno je visoko predznanje o lorem ipsumu. Ostatak rada je vrlo razumljiv, pogoto onaj deo o traxu.</ns1:answer>
             </ns1:question>
             <ns1:question>
                 <ns1:question-text>Da li je terminologija korektna? Da li su autori demonstrirali poznavanje polja??</ns1:question-text>
-                <ns1:answer>Insert answer here</ns1:answer>
+                <ns1:answer>Autori su definitivno pokazali visoko razumevanje lorema. Terminologija u vezi sa ipsumom je diskutabilna. Potrebno je vise paznje obratiti na znacenje pojma amet.</ns1:answer>
             </ns1:question>
         </ns1:questions>
     </ns1:questionaire>
-    <ns1:grade>10</ns1:grade>
+    <ns1:grade>9</ns1:grade>
 </ns1:review>

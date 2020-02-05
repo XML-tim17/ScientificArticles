@@ -26,3 +26,7 @@
   .mat-tab-body-wrapper{
     /* flex-grow: 1; */
   } 
+
+  .stretch {
+    width: 100%;
+  }

@@ -1,16 +1,47 @@
-
 <div class="container">
-    <mat-card>
-        <mat-card-title>Post Revision</mat-card-title>
-        <h2>Choose article</h2>
-        <mat-form-field>
-            <input matInput type="file" id="file" (change)="handleFileInput($event)">
-        </mat-form-field>
-        <br>
-        <h2>Choose cover letter</h2>
-        <mat-form-field>
-            <input matInput type="file" id="file" (change)="handleFileInput2($event)">
-        </mat-form-field>
-        <button mat-button (click)="onSubmit()">Submit revision</button>
-    </mat-card>
+    <table>
+        <tr>
+            
+            <td align="right" valign="top">
+                <button mat-raised-button color="primary" class="sumbitBtn" (click)="onSubmit()">Submit</button>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <mat-tab-group (selectedTabChange)="onTabChanged($event)" animationDuration="0ms">
+                    <mat-tab label="Article">
+                        <mat-toolbar class="upload">
+                            <div><input type="file" accept="text/xml" (change)="handleFileInputArticle($event)"></div>
+                        </mat-toolbar>
+                        <table>
+                            <tr>
+                                <td class="halfScreen">
+                                    <div #articleXonomy class="xonomyDiv"></div>
+                                </td>
+                                <td class="halfScreen">
+                                    <div #articleHTML class="htmlView"></div>
+                                </td>
+                            </tr>
+                        </table>
+                    </mat-tab>
+                    <mat-tab label="Cover letter">
+                        <mat-toolbar>
+                            <div><input type="file" accept="text/xml" (change)="handleFileInputCoverLetter($event)"></div>
+                        </mat-toolbar>
+                        <table>
+                            <tr>
+                                <td class="halfScreen">
+                                    <div #coverLetterXonomy class="xonomyDiv"></div>
+                                </td>
+                                <td class="halfScreen">
+                                    <div #coverLetterHTML class="htmlView"></div>
+                                </td>
+                            </tr>
+                        </table>
+                    </mat-tab>
+                </mat-tab-group>
+            </td>
+        </tr>
+    </table>
+    
 </div>

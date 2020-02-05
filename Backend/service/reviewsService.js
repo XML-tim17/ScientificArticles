@@ -18,7 +18,11 @@ module.exports.postReview = async (reviewXML, reviewer) => {
     let reviewDOM = new DOMParser().parseFromString(reviewXML, 'text/xml');
     let select = xpath.useNamespaces({'ns': ns})
     let articleNode = select('//ns:article-id', reviewDOM)[0]
-    let articleId = articleNode.firstChild.data; // example: article1/v1
+    let articleId = articleNode.firstChild.data; // example: 1
+    let version = await articleRepository.getLastVersion(articleId);
+    articleId = `article${articleId}/v${version}`;
+    articleNode.firstChild.data = articleId;
+    reviewXML = new XMLSerializer().serializeToString(reviewDOM);
 
     // check if reviewer email is correct in review
     let reviewerEmail = select('//ns:reviewer/ns:email', reviewDOM)[0].textContent;

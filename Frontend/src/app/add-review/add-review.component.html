@@ -1,6 +1,18 @@
 <div class="container">
     <mat-toolbar>
-        <div><input type="file" accept="text/xml" (change)="handleFileInputReview($event)"></div>
+        <table class="stretch">
+            <tr>
+                <td align="left">
+
+                    <div><input type="file" accept="text/xml" (change)="handleFileInputReview($event)"></div>
+                    
+                </td>
+                <td align="right">
+                    
+                    <button mat-raised-button color="primary" (click)="onSubmit()">Submit</button>
+                </td>
+            </tr>
+        </table>
     </mat-toolbar>
     <table>
         <tr>

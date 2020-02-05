@@ -12,7 +12,7 @@ module.exports = (searchParams) => `
     ?article rdfa:datePublished ?datePublished.
     ?article rdfa:headline ?headline.
     ?article rdfa:keywords ?keywords.
-    ?article rdfa:citation ?reference.
+    ${searchParams.reference ? '?article rdfa:citation ?reference.':''}
     ?article rdfa:identifier ?articleID.
       
     FILTER (

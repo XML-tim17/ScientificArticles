@@ -1,28 +1,46 @@
 .container {
-    width: 100%;
-  }
-  
-  input {
-    display: block;
-    width: 100%;
-  }
+  width: 100%;
+}
 
-  .xonomyDiv{
-    margin: 0;
-    max-height: 76vh;
-    overflow-y: auto;
-    padding: 2%;
-  }
+input {
+  display: block;
+  width: 100%;
+}
 
-  .htmlView{
-    overflow-y: auto;
-    height: 76vh;
-    padding: 2%;
-    margin: 0;
-  }
-  .halfScreen{
-    width: 50vw;
-  }
-  .mat-tab-body-wrapper{
-    /* flex-grow: 1; */
-  } 
+.xonomyDiv{
+  margin: 0;
+  max-height: 76vh;
+  overflow-y: auto;
+  padding: 2%;
+}
+
+.htmlView{
+  overflow-y: auto;
+  height: 76vh;
+  padding: 2%;
+  margin: 0;
+}
+.halfScreen{
+  width: 50vw;
+}
+.mat-tab-body-wrapper{
+  /* flex-grow: 1; */
+} 
+
+.sumbitBtn {
+  margin-top: 5px;
+  margin-right: 20px;
+  margin-left: 20px;
+  margin-bottom: -30px;
+  z-index: 10000;
+}
+
+.upload {
+  background-color: #00000000;
+}
+
+.mat-tab-group {
+  margin-top: -35px;
+  display: flex;
+  flex-direction: column;
+}

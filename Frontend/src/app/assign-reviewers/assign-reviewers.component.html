@@ -34,6 +34,12 @@
                       <th class="header" mat-header-cell *matHeaderCellDef> Name </th>
                       <td class="cell" mat-cell *matCellDef="let element"> {{element.name}} </td>
                     </ng-container>
+                    
+                    <!-- Name Column -->
+                    <ng-container matColumnDef="correspondance">
+                      <th class="header" mat-header-cell *matHeaderCellDef> Correspondance </th>
+                      <td class="cell" mat-cell *matCellDef="let element"> {{element.correspondanceLevel}} </td>
+                    </ng-container>
                   
                   
                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
