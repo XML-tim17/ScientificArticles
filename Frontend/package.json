@@ -34,7 +34,7 @@
     "tslib": "^1.10.0",
     "uuid": "^3.4.0",
     "xml-formatter": "^1.2.0",
-    "xmldom": "^0.2.1",
+    "xmldom": "^0.6.0",
     "zone.js": "~0.9.1"
   },
   "devDependencies": {
